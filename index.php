@@ -6,4 +6,4 @@
     echo "hola amigos" . rand(0,10);
     ?>
     </body>
-    </html>
+    </html>x
