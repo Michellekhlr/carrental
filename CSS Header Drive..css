@@ -11,8 +11,14 @@ h3{
 
 }
 
-.navigator:hover, .logo:hover, .user:hover{
+.logo:hover, .user:hover{
     color: #ffbf00;
+}
+
+.navigator:hover{
+    color: #ffbf00;
+    transition: transform 0.3s;
+    transform: scale(1.1);
 }
 
 .logo{
