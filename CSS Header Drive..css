@@ -1,3 +1,5 @@
+/*Header*/
+
 h3{
     font-family: 'Bebas Neue', sans-serif;  
 }
@@ -10,10 +12,6 @@ h3{
     color: black;
     transition: transform 0.2s ease-in-out;
 
-}
-
-.user:hover{
-    color: #ffbf00;
 }
 
 .navigator:hover{
@@ -34,13 +32,6 @@ h3{
     transform: scale(1.4);
 }
 
-.slogan{
-    font-family: 'Bebas Neue', sans-serif;
-    float: left;
-    margin-left: 50px; 
-    margin-top: 0%;
-}
-
 .booknow{
     font-family: 'Bebas Neue', sans-serif; 
     float: left; 
@@ -49,11 +40,21 @@ h3{
     padding-top: 20px;
 }
 
-.user{
+.button1{
+    color: white;
+    background-color: black;
     font-family: 'Bebas Neue', sans-serif;
     float: right;
     margin-top: 10px;
     margin-left: 5px;
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    padding: 5px 10px;
+
+}
+
+.button1:hover{
+    background-color: #ffbf00;
 }
 
 /* Das ist dein normales Styling für das Band-Element */
@@ -67,5 +68,20 @@ h3{
       transform: translateX(100%); /* Bewege das Element um 100% der eigenen Breite nach rechts */
     }
   }
+
+/*Footer*/
+
+.slogan{
+    font-family: 'Bebas Neue', sans-serif;
+    float: left;
+    margin-left: 50px; 
+    margin-top: 0%;
+}
+
+
+
+
+
+
   
   
