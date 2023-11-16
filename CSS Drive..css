@@ -1,0 +1,163 @@
+/*Grundeinstellungen*/
+
+body{
+    font-family: 'Bebas Neue', sans-serif;
+    background-color: black;
+    color: #fff;
+}
+
+/*Header*/
+.header {
+    width: 100%; 
+    height: 80px; 
+    background-color: white; 
+    color:black; 
+    margin-top: 2px;
+    position: relative;
+    margin-top: 0;
+}
+
+h3{
+    font-family: 'Bebas Neue', sans-serif;  
+}
+
+.navigator{
+    font-family: 'Bebas Neue', sans-serif; 
+    float: left; 
+    margin-left: 40px; 
+    padding-top: 7px;
+    transition: transform 0.2s ease-in-out;
+
+}
+
+.navigator:hover{
+    color: #ffbf00;
+    transform: scale(1.1);
+}
+
+.logo{
+    font-family: 'Bebas Neue', sans-serif; 
+    float: left; 
+    margin-left: 50px; 
+    margin-top: 20px;
+    transition: transform 0.3s ease-in-out;
+    text-decoration: none;
+    color: black;
+}
+
+.logo:hover{
+    color: #ffbf00;
+    transform: scale(1.4);
+}
+
+.booknow{
+    font-family: 'Bebas Neue', sans-serif; 
+    float: left; 
+    margin-left: 10px; 
+    margin-right: 200px;
+    padding-top: 20px;
+}
+
+.button1{
+    color: white;
+    background-color: black;
+    font-family: 'Bebas Neue', sans-serif;
+    float: right;
+    margin-top: 10px;
+    margin-left: 5px;
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    padding: 5px 10px;
+
+}
+
+.button1:hover{
+    background-color: #ffbf00;
+}
+
+/* Das ist dein normales Styling für das Band-Element */
+.band {
+    position: relative;
+    animation: moveBand 20s linear infinite; /* Hier wird die Animation angewendet (5s Dauer, linearer Verlauf, unendlich wiederholen) */
+  }
+  
+  @keyframes moveBand {
+    to {
+      transform: translateX(100%); /* Bewege das Element um 100% der eigenen Breite nach rechts */
+    }
+  }
+/*Register/Login*/
+ #background-image {
+    margin: 0;
+    padding: 0;
+    background-image: url("Absolute_Reality_v16_one_black_BMW_M4_cruising_along_a_coastal_0.jpg");
+    background-repeat: no-repeat;
+    background-position: cover;
+    display: flex;
+    justify-content: center;
+    /* width: 1920px;
+    height: 780px; */
+  } 
+
+  #login-container {
+    background-color: rgba(75, 74, 74, 0.8); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
+    text-align: center;
+    display: flex;
+    width: 300px;
+    height: fit-content;
+    flex-direction: column;
+    margin: 5% 0 5% 0;
+  }
+
+  #login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+#loginButton {
+    background-color: #ffbf0080;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    
+}
+#username {
+    margin: 10px 0 0 0;
+}
+#password {
+    margin: 10px 0 20px 0;
+}
+
+
+/*Footer*/
+
+.slogan{
+    font-family: 'Bebas Neue', sans-serif;
+    float: left;
+    margin-left: 50px; 
+    top:0;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 20px 0;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+  }
+
+
+
+
+
+
+  
+  
