@@ -90,13 +90,13 @@ h3{
  #background-image {
     margin: 0;
     padding: 0;
-    background-image: url("Absolute_Reality_v16_one_black_BMW_M4_cruising_along_a_coastal_0.jpg");
+    background-image: url(Hintergrundbild.jpg);
     background-repeat: no-repeat;
     background-position: cover;
     display: flex;
     justify-content: center;
-    /* width: 1920px;
-    height: 780px; */
+    width: 1920px;
+    height: 840px;
   } 
 
   #login-container {
@@ -106,10 +106,10 @@ h3{
     box-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
     text-align: center;
     display: flex;
-    width: 300px;
+    width: 500px;
     height: fit-content;
     flex-direction: column;
-    margin: 5% 0 5% 0;
+    margin: 10% 0 20% 0;
   }
 
   #login-form input {

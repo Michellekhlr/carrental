@@ -21,7 +21,7 @@
         <div id="background-image">
             <div id="login-container">
                 <h2>Anmelden</h2>
-                <form id="login-form" action="#" method="post">
+                <form id="login-form" action="#" method="post"> <!--Willkommen Aktion einbauen-->
                 <label for="username">Benutzername:</label>
                 <input type="text" id="username" name="username" required>
         
