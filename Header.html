@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <!--Sprachenimport von Google Fonts-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
+    </style>
+
+    <!--Iconimport von Google-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!--Styleimport von CSS Datei-->
+    <link rel="stylesheet" href = "CSS Drive..css">
+
+    <!--Header--> 
+    <div class= "header">
+        <h1><a href="LandingPageDrive..php" class = "logo"><i>Drive.</i></a></h1>
+    <p class = "booknow">Book now!</p>
+    <h2 class = "navigator">Buchen</h2>
+    <h2 class = "navigator">Unsere Angebote</h2>
+    <h2 class = "navigator">Buchungen verwalten</h2>
+    <h2 class = "navigator">Über uns</h2>
+    <button class="button1" onclick="openLoginPage()">Login / Registrieren</button>
+    <script>
+      function openLoginPage() {
+        // window.open("LoginPageDrive.php"); 
+        window.history.back();
+      }
+    </script>
+</div>
+</head>
