@@ -2,10 +2,16 @@
 
 body{
     font-family: 'Bebas Neue', sans-serif;
-    background-color: black;
-    color: #fff;
+    background-color: #e9e9e9;
+    color: black;
 }
 
+/*Entfernt die Striche unter Hyperlinks*/
+a {
+    color: inherit; 
+    text-decoration: none;
+    transition: box-shadow 0.3s ease-in-out;
+}
 
 /*EInstellungen für alle Icons*/
 .icon1 {
@@ -34,6 +40,13 @@ p{
 
 p{
     font-family: 'Bebas Neue', sans-serif;
+}
+
+/*sorgt dafür, dass Zeilenabstände verhindert werden*/
+.nospacing{
+    margin: 0;
+    padding: 0;
+    line-height: 1;
 }
 
 /*Header*/
@@ -167,6 +180,27 @@ h3{
 #password {
     margin: 10px 0 20px 0;
 }
+
+/*Produktübersichtseite*/
+.p2{
+    list-style-type: none;
+}
+
+/*Buchungsfortschrittsbalken*/
+.progress{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+/*Schattierung des Buchungsfortschrittsbalken beim Hovern*/
+.progress1:hover{
+    text-transform: 0.5s;
+    box-shadow: 5px 5px 20px #888888;
+}
+
+
 
 
 /*Footer*/
