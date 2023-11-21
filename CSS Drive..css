@@ -6,6 +6,36 @@ body{
     color: #fff;
 }
 
+
+/*EInstellungen für alle Icons*/
+.icon1 {
+    color: white; /* Standardfarbe */
+    transition: color 0.3s; /* Füge eine sanfte Übergangsanimation hinzu */
+  }
+
+.icon1:hover {
+    color: #ffbf00; /* Farbe bei Hover-Zustand ändern */
+  }
+
+p{
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+
+/*EInstellungen für alle Icons*/
+.icon1 {
+    color: white; /* Standardfarbe */
+    transition: color 0.3s; /* Füge eine sanfte Übergangsanimation hinzu */
+  }
+
+.icon1:hover {
+    color: #ffbf00; /* Farbe bei Hover-Zustand ändern */
+  }
+
+p{
+    font-family: 'Bebas Neue', sans-serif;
+}
+
 /*Header*/
 .header {
     width: 1920px;
@@ -15,19 +45,21 @@ body{
     margin-top: 2px;
     position: relative;
     margin-top: 0;
+    justify-content: center;
 }
 
 h3{
     font-family: 'Bebas Neue', sans-serif;  
 }
 
+/*Suchleiste im Header*/
 .navigator{
     font-family: 'Bebas Neue', sans-serif; 
     float: left; 
     margin-left: 40px; 
     padding-top: 7px;
-    transition: transform 0.4s ease-in-out;
-
+    color: black;
+    transition: transform 0.2s ease-in-out;
 }
 
 .navigator:hover{
@@ -35,14 +67,13 @@ h3{
     transform: scale(1.1);
 }
 
+/*Drive Logo*/
 .logo{
     font-family: 'Bebas Neue', sans-serif; 
     float: left; 
-    margin-left: 50px; 
+    padding-left: 50px; 
     margin-top: 20px;
-    transition: transform 0.3s ease-in-out;
-    text-decoration: none;
-    color: black;
+    transition: transform 0.5s ease-in-out;
 }
 
 .logo:hover{
@@ -58,6 +89,7 @@ h3{
     padding-top: 20px;
 }
 
+/*Anmeldebutton*/
 .button1{
     color: white;
     background-color: black;
@@ -66,8 +98,9 @@ h3{
     margin-top: 10px;
     margin-right: 5px;
     border-radius: 10px;
-    transition-duration: 0.4s;
     padding: 5px 10px 5px 10px;
+    transition-duration: 0.2s;
+    padding: 5px 10px;
 
 }
 
@@ -137,6 +170,10 @@ h3{
 
 
 /*Footer*/
+footer {
+    background-color: black;
+    color: white;
+  }
 
 .slogan{
     font-family: 'Bebas Neue', sans-serif;
@@ -145,14 +182,52 @@ h3{
     top:0;
 }
 
-footer {
-    background-color: black;
+.flexcontainer {
+    align-items: stretch;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    list-style-type: none;
+}
+
+.logofooter{
+    font-family: 'Bebas Neue', sans-serif; 
+    float: left;  
+    margin-top: 20px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.logofooter:hover{
+    color: #ffbf00;
+    transform: scale(1.4);  
+}
+
+/*Einstellungen für Footer Links*/
+.p1{
+    transition: color 0.3s;
+}
+
+.p1:hover{
+    color: #ffbf00;
+}
+
+/*Einstellungen für AGB/Impressum/Datenschutz*/
+.legal{
     color: white;
-    padding: 20px 0;
-    position: relative;
+    /* position: relative;
     width: 1920px;
-    bottom: 0;
-  }
+    bottom: 0; */
+    float: right; 
+    font-size: 15px;
+    margin: 5px;
+    text-align: center;
+    transition: color 0.3s;
+}
+
+.legal:hover{
+    color: #ffbf00;
+}
 
 
 
