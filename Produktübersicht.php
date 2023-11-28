@@ -38,7 +38,7 @@
             <td id="progress1">
                 <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
                     <ul>
-                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Standort wählen <!--Leerzeichen--><i class="fas fa-edit" style="font-size: 15px; color:black"></i></span></li>
+                        <li class="p2" style="font-size: 20px; color: black;"><span class="nospacing">Standort wählen <!--Leerzeichen--><i class="fas fa-edit" style="font-size: 15px; color:black"></i></span></li>
                         <li class="p2" style="font-size: 15px;"><span class="nospacing">Anfang | Ende <!--Hier muss ein dynamisches Element rein, was abfragt, welcher Zeitraum ausgewählt ist--><!--Leerzeichen--><i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></span></li> 
                         <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>1.</b></i></li>
                     </ul>
