@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
         <head>
             <!--Sprachenimport von Google Fonts-->
             <style>
@@ -20,21 +19,19 @@
     <body >
         <div id="background-image">
             <div class="transparentflex-container">
-                <h2>Anmelden</h2>
-                <form class="login-form" action="#" method="post"> <!--Willkommen Aktion einbauen und Login-Status auf true-->
+                <h2>Registrieren</h2>
+                <form class="register-form" action="#" method="post"> <!--Willkommen Aktion einbauen und login-Status auf true-->
                 <table>
-                    <tr>
-                        <td><label for="username">Benutzername:</label></td>
-                        <td><input type="text" id="username" name="username" required> </td>
+                        <td class="register-td"><label for="email">Email:</label><input type="email" id="email" name="email" required></td>
+                        <td class="register-td"><label for="username">Benutzername:</label><input type="text" id="username" name="username" required></td>
                     </tr>
                     <tr>
-                        <td><label for="password">Passwort:</label></td>
-                        <td><input type="password" id="password" name="password" required> </td>
-                    </tr>
+                    <td class="register-td"><label for="password">Passwort:</label><input type="password" id="password" name="password" required></td>
+                    <td class="register-td"><label for="password">Wiederhole Passwort:</label><input type="password" id="password" name="password" required></td>
+                </tr>
                 </table>
-                <a href="RegisterPagePerson.php">Hier registrieren!</a><br>
-                
-                <button class="transparentflex-button" type="submit">Einloggen</button>
+                <a href="LoginPage.php">Stattdessen anmelden</a> <br>
+                <button class="transparentflex-button" type="submit">Registrieren</button>
             </form>
         </div>
     </div>
