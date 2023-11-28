@@ -16,9 +16,6 @@
 
     <!--Styleimport von CSS Datei-->
     <link rel="stylesheet" href="CSSMain.css">
-
-    <!--Import von CSS Datei-->
-    <link rel="stylesheet" href="Datenschutz.css">
 </head>
 
 <header>
