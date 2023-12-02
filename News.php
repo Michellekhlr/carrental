@@ -29,8 +29,8 @@
   <script>
   $( function() {
     $( "#accordion" ).accordion({
-      collapsible: true,
-      active: false
+      collapsible: true, // panels collapse to take less space
+      active: false // No panel is active before clicking 
     });
   } );
 </script>
