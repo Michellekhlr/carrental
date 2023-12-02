@@ -767,7 +767,277 @@ h3{
 }
 
 /* CSS-Code for AGB, Datenschutz and Impressum end*/
+/* CSS-Code for News and Story start*/
 
+/*Page Banner start*/
+/*Frame for page banner*/
+.FramePageBanner{
+    width: 1920px;
+    height: 750px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+}
+
+/*Main article picture inside FramePageBanner*/
+.MainPictureNews{
+    width: 1475px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-image: url(bilder/MainPictureNews.jpg);
+}
+
+/*Main article picture inside FramePageBanner*/
+.MainPictureStory{
+    position: relative;
+    width: 1475px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.MainPictureStory img {
+    position: absolute; /* Absolute Positionierung innerhalb des .MainPictureStory Containers */
+    z-index: 10; /* Stellt sicher, dass das Bild über anderen Elementen liegt */
+}
+
+.SloganNewsAndStory { 
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    width: 1920px;
+    height:70px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #FFFFFF;
+    margin-left: 0px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*Main Article start*/
+/*Frame for main article*/
+.FrameMainArticleNews{
+    width: 1920px;
+    height: 1590px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+/*Frame for main article*/
+.FrameMainArticleStory{
+    width: 1920px;
+    height: 1770px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+/*Frame for Content inside FrameMainArticle*/
+.FrameContentMainArticleNews{
+    width: 1475px;
+    height: 1470px;
+    display: flex;
+    flex-direction: column; 
+    align-items: top; 
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+/*Frame for Content inside FrameMainArticle*/
+.FrameContentMainArticleStory{
+    width: 1475px;
+    height: 1650px;
+    display: flex;
+    flex-direction: column; 
+    align-items: top; 
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*Frame for Title and Subtitle inside FrameContentMainArticle*/
+.FrameTitleSubtitleContentMainArticle{
+    width: 1475px;
+    height: 150px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/*Frame for Subtitle inside FrameTitleSubtitleContentMainArticle*/
+.FrameSubtitleContentMainArticle{
+    width: 1275px;
+    height: 60px;
+    display: flex;
+    align-items: flex-start; 
+    justify-content: flex-start;
+    flex-direction: row; 
+}
+
+/*Frame for Title inside FrameTitleSubtitleContentMainArticle*/
+.FrameTitleContentMainArticle{
+    width: 1275px;
+    height: 90px;
+    display: flex;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+/*Text Style for Subtitle inside Main Article*/
+.SubtitleMainArticle{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: grey;
+
+}
+
+/*Text Style for Title inside Main Article*/
+.TitleMainArticle{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+}
+
+/*Frame for Text inside FrameContentMainArticle*/
+.FrameTextContentMainArticle{
+    width: 100%; 
+    height: calc(100% - 150px); 
+    padding: 0;
+}
+
+/*Text inside FrameTextContentMainArticle*/
+.TextContentMainArticle{
+    width: 1275px; 
+    height: 100%; 
+    margin: auto; 
+    
+}
+
+/*Text Style for Text inside Main Article*/
+.TextMainArticle{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 30px;
+    font-weight: 300;
+    text-align: justify;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+
+}
+
+/*Bold Text Style for Highlight Text*/
+.boldText {
+    font-weight: bold;
+}
+
+/*Frame for Titel More Articles*/
+.FrameTitleMoreArticles {
+    width: 1920px;
+    height: 90px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/*InnerFrame for Title More Articles inside FrameTitleMoreArticles*/
+.InnerFrameTitleMoreArticles {
+    width: 1475px;
+    height: 90px;
+    display: flex;
+    align-items: flex-end; 
+    justify-content: flex-start; 
+    padding-left: 10px; 
+    padding-bottom: -20px;
+}
+
+/*Text Style for Title for More Articles*/
+.TitleMoreArticles{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+
+}
+
+/*More Articles start*/
+/*Frame for MoreArticles*/
+.FrameMoreArticles{
+    width: 1920px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Frame for Content inside MoreArticles*/
+.InnerFrameMoreArticles{
+    width: 1475px;
+    height: 100%; 
+    margin: auto; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Changing the Style of the Accordion Element with #accordion, 
+overwriting the standard style of the accordion by using a css-selector*/
+
+/*Text style for Titles inside Accordion*/
+#accordion .TitelMoreArticles{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+}
+
+.TextMoreArticles {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 30px;
+    font-weight: 300;
+    text-align: justify;
+    line-height: 1.5;
+    margin: 0 auto; 
+    max-width: 1275px; 
+}
+
+#accordion {
+    width: 100%; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+#accordion .ui-accordion-content {
+    width: 1400px; 
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    margin: auto;
+}
+
+#accordion .ui-accordion-header .ui-icon {
+    transform: scale(2); 
+    margin-top: -4px; 
+    margin-left: -4px; 
+}
+
+#accordion .ui-accordion-header.ui-state-active {
+    background: #ffbf00; 
+    color: #ffffff; 
+    border-color: #000000; 
+}
+/* CSS-Code for News and Story end*/
 
 
 /*Footer*/
