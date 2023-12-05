@@ -1,3 +1,202 @@
+<?php
+session_start();
+
+// Include the database connection file
+include_once 'dbConfig.php';
+
+// Check if the filter is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_POST["submit"])){ 
+        // Save filter selections to the session
+        $_SESSION['filter1'] = $_POST['filter1'];
+        $_SESSION['filter2'] = $_POST['filter2'];
+        $_SESSION['filter3'] = $_POST['filter3'];
+        $_SESSION['filter4'] = $_POST['filter4'];
+        $_SESSION['filter5'] = $_POST['filter5'];
+        $_SESSION['filter6'] = $_POST['filter6'];
+        $_SESSION['filter7'] = $_POST['filter7'];
+        $_SESSION['filter8'] = $_POST['filter8'];
+        $_SESSION['checkboxoverview1'] = isset($_POST['checkboxoverview1']) ? 1 : 0;
+        $_SESSION['checkboxoverview2'] = isset($_POST['checkboxoverview2']) ? 1 : 0;
+        $_SESSION['checkboxoverview3'] = isset($_POST['checkboxoverview3']) ? 1 : 0;
+
+        // Redirect to prevent form resubmission on page refresh
+        header("Location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+}  elseif (isset($_POST["clear"])) {
+        // Clear filter selections from the session
+        $_SESSION['filter1'] = 'alle';
+        $_SESSION['filter2'] = 'alle';
+        $_SESSION['filter3'] = 'alle';
+        $_SESSION['filter4'] = 'alle';
+        $_SESSION['filter5'] = 'alle';
+        $_SESSION['filter6'] = 'alle';
+        $_SESSION['filter7'] = 'alle';
+        $_SESSION['filter8'] = 'alle';
+        $_SESSION['checkboxoverview1'] = 0;
+        $_SESSION['checkboxoverview2'] = 0;
+        $_SESSION['checkboxoverview3'] = 0;
+
+        // Redirect to prevent filter resubmission on page refresh
+        header("Location: {$_SERVER['PHP_SELF']}");
+        exit;
+    } 
+}   
+
+// Set filter options
+$filterOptions = [
+    'filter1' => ['alle', 'BMW', 'Mercedes-Benz', 'Audi', 'Volkswagen', 'Ford', 'Range Rover', 'Jaguar', 'Mercedes-AMG', 'Maserati', 'Opel', 'Skoda'],
+    'filter2' => ['alle', '2', '4', '5', '7', '8', '9'],
+    'filter3' => ['alle', '2', '3', '4', '5'],
+    'filter4' => ['alle', 'manually', 'automatic'],
+    'filter5' => ['alle', 'Cabrio', 'SUV', 'Limousine', 'Combi', 'Mehrsitzer', 'Coupé'],
+    'filter6' => ['alle', 'Combuster', 'Electric'],
+    'filter7' => ['alle', '100 €', '200 €', '300 €', '400 €', '500 €', 'ab 500 €'],
+    'filter8' => ['alle', '18', '21', '25'],
+];
+
+//Initialize additional information variables 
+$carVendor = "";
+$carName = "";
+$nameExtension = "";
+$imagePath = "";
+$carAvailability = "";
+$carPricePerDay = "";
+
+//sets the order method for the price (ASC/DESC)
+// $ordermethod = "ASC";
+
+// function orderbyprice (){
+//     if($value = "teuerstes"){
+//         $ordermethod = "DESC";
+//     }else{
+//         $ordermethod = "ASC";
+//     }
+// }
+
+
+//sets a limit on maximum 12 loaded cars per page
+$limit = 12;
+
+//sets page no to 1 
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+//determine on which page the user is currently on
+if(!isset($_GET['page'])) {
+    $page = 1;
+} else{
+    $page = $_GET['page'];
+}
+
+//sets the start of the rows loaded in every page
+$start = ($page - 1) * $limit;
+
+
+//Check if values are set in the filters
+if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION['filter3']) || isset($_SESSION['filter4']) || isset($_SESSION['filter5']) || isset($_SESSION['filter6']) || isset($_SESSION['filter7']) || isset($_SESSION['filter8']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
+    
+    try{
+        //Dynamic SQL query based on the filters selected
+        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, cartype.trunk, nameExtension 
+                FROM vendor INNER JOIN cartype ON vendor.vendorID = cartype.vendorID WHERE 1 = 1"; 
+                            
+
+        if ($_SESSION['filter1'] != 'alle') {
+            $sql .= " AND vendor.vendorName = :filter1";
+        }
+
+        if ($_SESSION['filter2'] != 'alle') {
+            $sql .= " AND seats = :filter2";
+        }
+
+        if ($_SESSION['filter3'] != 'alle') {
+            $sql .= " AND doors = :filter3";
+        }
+
+        if ($_SESSION['filter4'] != 'alle') {
+            $sql .= " AND gear = :filter4";
+        }
+
+        if ($_SESSION['filter5'] != 'alle') {
+            $sql .= " AND cartype.type = :filter5";
+        }
+
+        if ($_SESSION['filter6'] != 'alle') {
+            $sql .= " AND drive = :filter6";
+        }
+
+        if ($_SESSION['filter7'] != 'alle') {
+            $sql .= " AND price <= :filter7";
+        }
+
+        if ($_SESSION['filter8'] != 'alle') {
+            $sql .= " AND minAge = :filter8";
+        }
+
+        if ($_SESSION['checkboxoverview1'] == '1') {
+            $sql .= " AND airCondition = 1";
+        }
+
+        if ($_SESSION['checkboxoverview2'] == '1') {
+            $sql .= " AND gps = 1";
+        }
+
+        if ($_SESSION['checkboxoverview3'] == '1') {
+            $sql .= " AND specialOffer = 1";
+        }
+
+        $sql .= " ORDER BY cartype.price DESC";    
+ 
+        $sql .= " LIMIT " . $start . ',' . $limit;
+
+        $stmt = $conn->prepare($sql);
+
+        // Bind parameters for the prepared statement
+        if ($_SESSION['filter1'] != 'alle') {
+            $stmt->bindParam(':filter1', $_SESSION['filter1']);
+        }
+
+        if ($_SESSION['filter2'] != 'alle') {
+            $stmt->bindParam(':filter2', $_SESSION['filter2']);
+        }
+
+        if ($_SESSION['filter3'] != 'alle') {
+            $stmt->bindParam(':filter3', $_SESSION['filter3']);
+        }
+
+        if ($_SESSION['filter4'] != 'alle') {
+            $stmt->bindParam(':filter4', $_SESSION['filter4']);
+        }
+
+        if ($_SESSION['filter5'] != 'alle') {
+            $stmt->bindParam(':filter5', $_SESSION['filter5']);
+        }
+
+        if ($_SESSION['filter6'] != 'alle') {
+            $stmt->bindParam(':filter6', $_SESSION['filter6']);
+        }
+
+        if ($_SESSION['filter7'] != 'alle') {
+            $stmt->bindParam(':filter7', $_SESSION['filter7']);
+        }
+
+        if ($_SESSION['filter8'] != 'alle') {
+            $stmt->bindParam(':filter8', $_SESSION['filter8']);
+        }
+
+        $stmt->execute();
+
+
+        //echo $sql;
+
+    } catch (PDOException $e){
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <head>
     <!--Sprachenimport von Google Fonts-->
@@ -11,21 +210,26 @@
     <!--Styleimport CSS Datei-->
     <link rel="stylesheet" href = "CSSMain.css">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+
+    <title>Produktübersicht</title>
+
     <!--Include Header-->
     <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div> 
     <?php
     include('Header.html');
-    ?><br><br><br>
+    ?><br>
 
     <!--Processbar dynmaic settings-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function(){
-            $("#progress1").fadeTo("slow", 0.4);
+            $("#progress1").fadeTo("slow", 0.6);
             $("#progress2").fadeTo(0.4);
-            $("#progress3").fadeTo("slow", 0.4);            
+            $("#progress3").fadeTo("slow", 0.2);            
             });    
-    </script>
+        </script>
 </head>
 
 <body>
@@ -33,7 +237,7 @@
 
 <!--Overview of booking process-->
 <div class="progress">
-    <table style="background-color: white;">
+    <table style="background-color: #e9e9e9;">
         <tr>
             <td id="progress1">
                 <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
@@ -64,14 +268,14 @@
             </td>
         </tr>
     </table>
-</div><br><br><br>
+</div><br>
 
 <div class="progress">
 <table border="0" width="1500px" height="1500px">
     <tr>
-        <td rowspan="4">
+        <td width="350px">
                 <!--Filter column-->
-                <div class="filtercolumn">
+            <div class="filtercolumn">
 
                 <!--Filterslogan-->
                 <div class="filtertitel">
@@ -81,26 +285,24 @@
                     </div>
                 </div><br>
 
-                <!--Sort by Price-->
-                <div style="display: flex; justify-content: center;">
+                <!--Sort by Price-->                
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+                    <div style="display: flex; justify-content: center;">
                         <select id="sortby">
                             <option value="günstigstes">Preis aufsteigend</option>
                             <option value="teuerstes">Preis absteigend</option>
                         </select>
-                        <button id="buttongo" onclick="applyFilter()"><i>Go.</i></button>
-                </div><br>
-
-                <!--Delete, Execute Button-->
-                <div style="display: flex; justify-content: center;">
-                        <button class="buttonproduktübersicht1" onclick="deleteFilter()">Löschen</button>
-                        <button class="buttonproduktübersicht2" onclick="applyFilter()">Anwenden</button>
-                </div><br><br>
+                        <button id="buttongo" onclick="orderbyprice()"><i>Go.</i></button>
+                    </div>
+                </form>    
+                <br>
 
                 <!--Filtercolumn-->
 
                 <!--resets all filters to "all"-->
                 <script>
                     function deleteFilter(){
+                        //gets the filter by his ID and resets it to the first value 'all' 
                         document.getElementById('filterdropdown1').selectedIndex = 0;
                         document.getElementById('filterdropdown2').selectedIndex = 0;
                         document.getElementById('filterdropdown3').selectedIndex = 0;
@@ -113,333 +315,239 @@
                         document.getElementById('checkboxfilter2').selectedIndex = 0;
                         document.getElementById('checkboxfilter3').selectedIndex = 0;
                     }
-                </script>            
+                </script>
+                    
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                
+                <!--delete, execute button-->
+                <div style="display: flex; justify-content: center;">
 
-                <!--Herstellerfilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Hersteller<br></label>
-                        <select id="filterdropdown1">
-                            <option value="alle">alle</option>
-                            <option value="BMW">BMW</option>
-                            <option value="Mercedes-Benz">Mercedes-Benz</option>
-                            <option value="Audi">Audi</option>
-                            <option value="Volkswagen">Volkswagen</option>
-                            <option value="Ford">Ford</option>
-                            <option value="Range-Rover">Range-Rover</option>
-                            <option value="Jaguar">Jaguar</option>
-                            <option value="Mercedes-AMG">Mercedes-AMG</option>
-                            <option value="Maserati">Maserati</option>
-                            <option value="Opel">Opel</option>
-                            <option value="Skoda">Skoda</option>
-                        </select>
-                    <button onclick="document.getElementById('filterdropdown1').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
+                    <input type="submit" name="clear" value="Löschen" class="buttonproduktübersicht1" onclick="deleteFilter()">
+                    <input type="submit" name="submit" value="Anwenden" class="buttonproduktübersicht2">  
 
-                <!--Sitzefilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Sitze<br></label>
-                        <select id="filterdropdown2">
-                            <option value="alle">alle</option>
-                            <option value="2">2</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
+                </div>
+
+                    <br>
+                    <!--manufacturerfilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter1" class="filterheader">Hersteller</label>
+                        <select name="filter1" id="filterdropdown1">
+                            <?php foreach ($filterOptions['filter1'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter1'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
+                        <button onclick="document.getElementById('filterdropdown1').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
+                    </div>
+                    <br>
+                    
+                    <!--seatfilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter2" class="filterheader">Sitze</label>
+                        <select name="filter2" id="filterdropdown2">
+                            <?php foreach ($filterOptions['filter2'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter2'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
                         <button onclick="document.getElementById('filterdropdown2').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
+                    </div>
+                    <br>
 
-                <!--Türenfilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Türen<br></label>
-                        <select id="filterdropdown3">
-                            <option value="alle">alle</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                    <!--doorfilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter3" class="filterheader">Türen</label>
+                        <select name="filter3" id="filterdropdown3">
+                            <?php foreach ($filterOptions['filter3'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter3'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
                         <button onclick="document.getElementById('filterdropdown3').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
-
-                <!--Getriebefilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Gertiebe<br></label>
-                        <select id="filterdropdown4">
-                            <option value="alle">alle</option>
-                            <option value="manually">Schaltung</option>
-                            <option value="automatic">Automatik</option>
+                    </div>
+                    <br>
+                    
+                    <!--gearsfilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter4" class="filterheader">Getriebe</label>
+                        <select name="filter4" id="filterdropdown4">
+                            <?php foreach ($filterOptions['filter4'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter4'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
                         <button onclick="document.getElementById('filterdropdown4').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
-
-                <!--Typfilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Typ<br></label>
-                        <select id="filterdropdown5"    >
-                            <option value="alle">alle</option>
-                            <option value="Cabrio">Cabrio</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Limousine">Limousine</option>
-                            <option value="Combi">Combi</option>
-                            <option value="Mehrsitzer">Mehrsitzer</option>
-                            <option value="Coupé">Coupé</option>
+                    </div>
+                    <br>
+                    
+                    <!--typfilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter5" class="filterheader">Typ</label>
+                        <select name="filter5" id="filterdropdown5">
+                            <?php foreach ($filterOptions['filter5'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter5'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
                         <button onclick="document.getElementById('filterdropdown5').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
+                    </div>
+                    <br>
 
-                <!--Anriebfilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Antrieb<br></label>
-                        <select id="filterdropdown6">
-                            <option value="alle">alle</option>
-                            <option value="Combuster">Verbrenner</option>
-                            <option value="Electric">Elektro</option>
+                    <!--drivefilter-->  
+                    <div style="margin-left: 20px;">
+                        <label for="filter6" class="filterheader">Antrieb</label>
+                        <select name="filter6" id="filterdropdown6">
+                            <?php foreach ($filterOptions['filter6'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter6'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
                         <button onclick="document.getElementById('filterdropdown6').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
-
-                <!--Preis-bis-Filter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Preis bis:<br></label>
-                        <select id="filterdropdown7">
-                            <option value="alle">alle</option>
-                            <option value="100">100€</option>
-                            <option value="200">200€</option>
-                            <option value="300">300€</option>
-                            <option value="400">400€</option>
-                            <option value="500">500€</option>
-                            <option value="501">ab 500€</option>
+                    </div>
+                    <br>
+                    
+                    <!--pricefilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter7" class="filterheader">Preis bis:</label>
+                        <select name="filter7" id="filterdropdown7">
+                            <?php foreach ($filterOptions['filter7'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter7'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
                         <button onclick="document.getElementById('filterdropdown7').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br>
-
-                <!--Altersfilter-->
-                <div style="margin-left: 20px;">
-                    <label for="filterdropdown" class="filterheader">Mindestalter<br></label>
-                        <select id="filterdropdown8">
-                            <option value="alle">alle</option>
-                            <option value="BMW">18</option>
-                            <option value="BMW">21</option>
-                            <option value="BMW">25</option>
+                    </div>
+                    <br>
+                    
+                    <!--minagefilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="filter8" class="filterheader">Mindestalter</label>
+                        <select name="filter8" id="filterdropdown8">
+                            <?php foreach ($filterOptions['filter8'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter8'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                        
                         <button onclick="document.getElementById('filterdropdown8').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                </div><br><br>
+                    </div>
+                    <br><br>              
+                            
+                    <!--air conditioning-->
+                    <div class="checkboxgeneral">
+                        <label for="checkboxoverview1" id="checkboxfilter1">KLimaanlage</label>
+                        <input type="checkbox" id="checkboxoverview1" name="checkboxoverview1" class="checkmarkcolumn" 
+                            <?php if (isset($_SESSION['checkboxoverview1']) && $_SESSION['checkboxoverview1'] == '1') echo 'checked'; ?>>
+                    </div>
+                    <br>
 
-                <!--Klimaanlage-->
-                <label id="checkboxfilter1">KLimaanlage
-                    <input type="checkbox" class="checkmarkcolumn">
-                </label><br>
+                    <!--navigationssystem-->
+                    <div class="checkboxgeneral">
+                        <label for="checkboxoverview2" id="checkboxfilter2">Navigationssystem</label>
+                        <input type="checkbox" id="checkboxoverview2" name="checkboxoverview2" class="checkmarkcolumn"
+                            <?php if (isset($_SESSION['checkboxoverview2']) && $_SESSION['checkboxoverview2'] == '1') echo 'checked'; ?>>
+                    </div>
+                    <br>
 
-                <!--Navigationssystem-->
-                <label id="checkboxfilter2">Navigationssystem
-                    <input type="checkbox" class="checkmarkcolumn">
-                </label><br>
+                    <!--offer-->
+                    <div class="checkboxgeneral">
+                        <label for="checkboxoverview3" id="checkboxfilter3">Im Angebot</label>
+                        <input type="checkbox" id="checkboxoverview3" name="checkboxoverview3" class="checkmarkcolumn"
+                            <?php if (isset($_SESSION['checkboxoverview3']) && $_SESSION['checkboxoverview3'] == '1') echo 'checked'; ?>>
+                    </div>
+                    <br>
 
-                <!--Im Angebot-->
-                <label id="checkboxfilter3">Im Angebot
-                    <input type="checkbox" class="checkmarkcolumn">
-                </label><br>
+                </form>
 
             </div><br> 
         </td>
+  
+        <?php
 
-<!--Productoverview-->
-        <td>
-            <!--carcell-->
-            <a href="https://www.google.com/?hl=de">
-            <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-            </div>
-            </a>
+        //define a variable which contains the number of results
+        $results = $stmt->rowCount(); 
+
+        //defines no of pages depending on the rows found in the query
+        $number_of_pages = ceil($results/$limit);  
+        ?>
+
+        <td style="display: flex; flex-wrap: wrap;">
+            <?php
+            echo '<div class="car-container">';
+            // If there's a matching record, fetch and set additional information
+            if ($stmt->rowCount() > 0) {
+                while($row = $stmt->fetch()){
+                $carVendor = $row['vendorName'];
+                $carName = $row['name'];
+                $nameExtension = $row['nameExtension'];
+                $imagePath = $row['img'];
+                $carAvailability = $row['trunk'];
+                $carPricePerDay = $row['price'];
+                    
+                echo '<div class="car-container">';
+                    //Html Output for each row
+                    echo '<div class="autozelle">';
+                        if (!empty($carVendor) && !empty($carName) || !empty($nameExtension)):
+                            echo '<div class="autozellenheader">' . $carVendor . " " . $carName . " " . $nameExtension . '</div>';
+                        endif;
+                    
+                        
+                        if (!empty($imagePath)): 
+                            echo '<div class="zellenimage1"><img src="data:image/jpg;charset=utf8;base64,' . base64_encode($imagePath) . '" alt="Car Image" class="zellenimage"></div>';
+                        endif; 
+
+                        
+                        if (!empty($carAvailability) && !empty($carPricePerDay)):
+                            echo '<div class="zellenfooter">';
+                                echo '<div class="zellenfooter1">' . "Verfügbar: " . $carAvailability . '</div>';
+                                echo '<div class="zellenfooter2">' . $carPricePerDay . " € pro Tag" . '</div>';
+                            echo '</div>';
+                        endif; 
+                    echo '</div>';
+                echo '</div>';        
+                }  
+
+                }else{
+                    echo '<div style="font-size: 40px;">';
+                    echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
+                    echo '</div>';
+                } 
+                echo '</div>';    
+            ?>
         </td>
 
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-
-        <td>
-        <div class="autozelle">
-                <div class="autozellenheader">
-                    <p>Hersteller/Bezeichnung/Typ</p>
-                </div>
-                <div>
-                    <img class="zellenimage" src="bilder/BMW i3.jpeg" alt="Bild aus Datenbank">
-                </div>
-                <div class="zellenfooter">
-                    <p class="zellenfooter1">Verfügbarkeit</p>
-                    <p class="zellenfooter2">Preis pro Tag</p>
-                </div>
-        </td>
-    </tr>
+    </tr>    
+    
 </table>
+</div>
 
-</div><br><br>
+        
+<!--Productoverview-->
+<!--carcell-->
+
+
 
 <!--Pagination-->
-<div class="pagination">
-  <a href="#">&laquo;</a>
-  <a href="#" class="active">1</a>
-  <a href="#">2</a>
-  <a href="#">3</a>
-  <a href="#">4</a>
-  <a href="#">5</a>
-  <a href="#">6</a>
-  <a href="#">&raquo;</a>
-</div><br><br><br><br><br><br>
-
+<?php 
+for($page = 1; $page <= $number_of_pages; $page++){
+    echo '<a href="Produktübersicht.php?page=' . $page . '">' . $page . '</a> ';
+}
+?>
 
 </body>
 
@@ -449,6 +557,5 @@
     include('Footer.html');
     ?>
 </footer>
-
 
 </html>
