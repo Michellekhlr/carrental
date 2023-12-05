@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <head>
     <!--Sprachenimport von Google Fonts-->
@@ -13,23 +16,33 @@
 
     <!--Include Header-->
     <?php
-        include('Header.html');
+        include('Header.php');
     ?> 
 </head>
 
 <body>
     <div id="background-image">
-        <div class="transparentflex-container">
+        <div class="LogRegWel-container">
             <div class="welcomeLogout-Div">
-            <h1 style="font-size: 50px;">Auf Wiedersehen</h1>
+            <div class="LogRegWel-title"><h1 style="margin: 0px">Auf Wiedersehen</h1> </div>
             <p style="font-size: 30px;"> Sie sind jetzt ausgeloggt </p>
-            <button onclick="goback()" class="transparentflex-button">Zurück</button>
+            <button onclick="goBack()" class="LogRegWel-button">Zurück</button>
             </div>
         </div>
     </div>
+    <div class="SloganLogRegWel">
+    Einfach.Flexibel.
+</div>
 <script>
-    function goBack() {
-    //hier kommt dann Funktion hin, dass zu der Stelle zurück gegangen wird, wo wir herkamen
+     function goBack() {  //go back to page where logout was called from
+        var previousURL = '<?php echo $_SESSION['previousURL'];?>';
+    if (previousURL) {
+        window.location.href = previousURL;
+        //window.open(previousURL);
+    }
+    else {
+        window.open('Homepage.php');
+    }
     }
 </script>
 </body>

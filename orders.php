@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <head>
     <!--Sprachenimport von Google Fonts-->
@@ -11,10 +14,9 @@
     <!--Styleimport von CSS Datei-->
     <link rel="stylesheet" href = "CSSMain.css">
 
-    <!--Include Header-->
-    <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div> 
+    <!--Include Header--> 
     <?php
-    include('Header.html');
+    include('Header.php');
     ?>
 </head>
 <body>
@@ -22,20 +24,17 @@
         <div class= "firstName-banner">
             <!--Name firstname in banner --> 
             <?php
-            require_once 'dbConfig.php';
-                $stmt = $conn->query("SELECT firstName FROM person WHERE PersonID = 1"); //hier noch mit PersonID des Users
-
-                if ($stmt->rowCount() > 0) {
-                while($row=$stmt->fetch()){
-                    //show first name
-                    echo "Moin " . $row["firstName"] . "!";
-                }
-                } else {    
+            if ($_SESSION["loginStatus"] == true) {
+                        echo "Moin " . $_SESSION["firstname"] . "!";    
+            }
+            else {    
                 echo "Bitte logge dich ein";
-                }
-            $conn = null;
+            }
             ?>
         </div>
+    </div>
+    <div class="SloganOrders">
+            Einfach.Flexibel.
     </div>
     <div class = "orders">
         <div class="orderDiv">
