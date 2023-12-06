@@ -91,11 +91,6 @@ session_start();
         </div>
     </div>
 </body>
-<br>
-<br>
-<br>
-<br>
-<br><br>
 
 <footer>
     <!--Include Footer-->

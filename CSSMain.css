@@ -766,12 +766,15 @@ h3{
     display: flex;
     align-items: center;
     text-align: left;
+    background-color: white;
 }
 
 /*Style title font*/
 .TextTitel{
     font-family: 'Bebas Neue', sans-serif;
     font-size: 40px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 
@@ -790,6 +793,8 @@ h3{
     display: flex;
     align-items: center;
     text-align: left;
+    background-color: white;
+  
 }
 
 /*Style subtitle font*/
@@ -797,14 +802,13 @@ h3{
     font-family: 'Source Sans 3', sans-serif;
     font-size: 22px;
     font-weight: 600;
-
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 /*Frame for Content*/
 .FrameContent{
     width: 1920px;
-    height: 2000px;
-    margin-top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -814,9 +818,9 @@ h3{
 /*Frame to align Content-Text*/
 .InnerFrameContent{
     width: 1415px;
-    height: 2000px;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 /*Style context-heading font*/
@@ -826,6 +830,7 @@ h3{
     font-weight: 600;
     margin-bottom: 0px;
     line-height: 200%;
+    padding-left: 30px;
 }
 
 /*Style context font*/
@@ -834,9 +839,128 @@ h3{
     font-size: 22px;
     font-weight: 400;
     line-height: 150%;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 /* CSS-Code for AGB, Datenschutz and Impressum end*/
+
+/* CSS AboutUs start */
+
+/* Stil für den weißen Banner mit Slogan */
+.WirSindDrive {
+    width: 1920px;
+    background-color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+    box-shadow: 0px 4px 8px #a9a9a9; /* Adds a shadow to the Banner-frame */
+}
+
+.WirSindDrive h1 {
+    margin: 0;
+}
+
+/* Stil für die Teammitglieder */
+.FrameAboutUs {
+    width: 1920px;
+    display: flex;
+    flex-direction: column;
+}
+
+.team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.upper-row, .lower-row {
+    width: 100%; /* Setze die Breite auf 100% für die Zeilen */
+}
+
+.team-member {
+    text-align: center;
+    flex-direction: column; /* Stellt sicher, dass die Elemente in Spalten angeordnet sind */
+    justify-content: center;
+    width: 505px;
+    margin: 30px;
+    box-sizing: border-box; /* Berücksichtigt Padding und Border in der Breite */
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0px 4px 8px #777; /* Adds a shadow to the member-frame */
+}
+
+.team-member-name{
+    text-shadow: 0px 4px 8px rgb(176, 176, 176);
+    font-size: 64px;
+    margin-bottom: 10px; /* Reduziert den Abstand zu .team-member-title*/
+}
+
+.team-member-title{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #808080;
+    text-shadow: 0px 4px 8px rgb(225, 225, 225);
+    margin-bottom: 20px; /* Erhöht den Abstand zu .quote */
+}
+
+.team-member-lieblingsauto{
+    display: flex;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #808080;
+}
+
+.Lieblingsauto-Bold{
+    display: flex;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    display: inline-block; /* Setze das Display auf inline-block, um es nebeneinander anzuordnen */
+}
+
+.Lieblingsauto-Text {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #808080;
+    display: inline-block; /* Setze das Display auf inline-block, um es nebeneinander anzuordnen */
+    text-align: right; /* Füge die rechte Ausrichtung hinzu */
+    flex-grow: 1; /* Nutze den verfügbaren Platz aus, um den Text nach rechts zu drücken */
+}
+
+
+.member-image {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle at bottom, #8b93a1, rgb(9, 9, 15));
+    margin: 0 auto 10px; /* Setze den oberen und unteren Rand auf 0 und den seitlichen Rand auf auto */
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+
+.quote {
+    font-style: italic;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size:24px;
+    margin-bottom: 5px; /* Füge einen kleinen Abstand zwischen Zitat und Kontakt hinzu */
+}
+
+.AboutUsContact {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 1em;
+    color: #777;
+    line-height: 1.4;
+}
+
+/* CSS About Us end */
+
 /* CSS-Code for News and Story start*/
 
 /*Page Banner start*/

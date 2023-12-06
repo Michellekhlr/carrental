@@ -29,6 +29,7 @@ session_start();
 </header>
 
 <body>
+
     <div class="FrameTitelUntertitel">
         <div class="FrameTitel">
             <div class="InnerframeTitel">
@@ -44,6 +45,7 @@ session_start();
 
     <div class="FrameContent">
         <div class="InnerFrameContent">
+            <br>
             <p class="TextContentHeader">1. Verantwortliche Stelle</p>
             <p class="TextContent"> Verantwortlich für die Datenverarbeitung auf dieser Website ist: <br>
                 Drive - Autovermietung GmbH, Willy-Brandt-Straße 75, 20459 Hamburg, Germany, E-Mail: info@drive-autovermietung.com</p>
@@ -89,15 +91,9 @@ session_start();
 
         </div>
     </div>
+
 </body>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br><br>
 
 <footer>
     <!--Include Footer-->
