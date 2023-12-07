@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (isset($_SESSION['loginStatus']) && $_SESSION['loginStatus']) {
+    $loginStatus = true;
+}
+else {
+    $loginStatus = false;
+}
 ?>
 <!DOCTYPE html>
 <head>
@@ -21,11 +27,14 @@ session_start();
 </head>
 <body>
     <div class= "background-banner">
+    <video autoplay muted loop class="hintergrundvideo">
+            <source src="Infitite_Loop.mp4" type="video/mp4">
+        </video>
         <div class= "firstName-banner">
             <!--Name firstname in banner --> 
             <?php
-            if ($_SESSION["loginStatus"] == true) {
-                        echo "Moin " . $_SESSION["firstname"] . "!";    
+            if (isset($loginStatus) && $loginStatus == true) {
+                        echo "Moin " . $_SESSION['firstname'] . "!";    
             }
             else {    
                 echo "Bitte logge dich ein";

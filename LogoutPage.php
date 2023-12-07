@@ -35,14 +35,14 @@ session_start();
 </div>
 <script>
      function goBack() {  //go back to page where logout was called from
-        var previousURL = '<?php echo $_SESSION['previousURL'];?>';
-    if (previousURL) {
+        var previousURL = sessionStorage.getItem('previousURL');
+        if (previousURL) {
+        // use saved URL
         window.location.href = previousURL;
-        //window.open(previousURL);
-    }
-    else {
-        window.open('Homepage.php');
-    }
+        } else {
+            // if no saved URL go back to Hompage
+            window.location.href = 'Homepage.php';
+        }
     }
 </script>
 </body>

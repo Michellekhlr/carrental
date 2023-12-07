@@ -305,12 +305,13 @@ h3{
 }
 /* order page */
 .background-banner {
-  background-image: url(bilder/Hintergrundvideo.jpg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 480px;
-  width: 1920px;
+  /* background-image: url(bilder/Hintergrundvideo.jpg); */
+    width: 1920px;
+    height:480px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .firstName-banner {
   font-size: 200px;
