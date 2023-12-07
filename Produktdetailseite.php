@@ -69,6 +69,7 @@ session_start();
 
             <div class="fahrzeugname">
                 <div>Mercedes-Amg S 63 Cabrio</div>
+                <div class="verfügbarefahrzeuge">Nur noch 5 verfügbar!</div>
             </div>
 
             <div class="produktdetails">

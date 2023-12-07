@@ -5,17 +5,20 @@ session_start();
 include_once 'dbConfig.php';
 
 // Check if the filter is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(isset($_POST["submit"])){ 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {  
+
+
+    if(!isset($_POST["clear"])){ 
         // Save filter selections to the session
-        $_SESSION['filter1'] = $_POST['filter1'];
-        $_SESSION['filter2'] = $_POST['filter2'];
-        $_SESSION['filter3'] = $_POST['filter3'];
-        $_SESSION['filter4'] = $_POST['filter4'];
-        $_SESSION['filter5'] = $_POST['filter5'];
-        $_SESSION['filter6'] = $_POST['filter6'];
-        $_SESSION['filter7'] = $_POST['filter7'];
-        $_SESSION['filter8'] = $_POST['filter8'];
+        $_SESSION['Stadt'] = $_POST['Stadt'] ?? "alle";
+        $_SESSION['Hersteller'] = $_POST['Hersteller'] ?? "alle";
+        $_SESSION['Sitzanzahl'] = $_POST['Sitzanzahl'] ?? "alle";
+        $_SESSION['Türenanzahl'] = $_POST['Türenanzahl'] ?? "alle";
+        $_SESSION['Getriebe'] = $_POST['Getriebe'] ?? "alle";
+        $_SESSION['Kategorie'] = $_POST['Kategorie'] ?? "alle";
+        $_SESSION['Antrieb'] = $_POST['Antrieb'] ?? "alle";
+        $_SESSION['Preis'] = $_POST['Preis'] ?? "alle";
+        $_SESSION['Mindestalter'] = $_POST['Mindestalter'] ?? "alle";
         $_SESSION['checkboxoverview1'] = isset($_POST['checkboxoverview1']) ? 1 : 0;
         $_SESSION['checkboxoverview2'] = isset($_POST['checkboxoverview2']) ? 1 : 0;
         $_SESSION['checkboxoverview3'] = isset($_POST['checkboxoverview3']) ? 1 : 0;
@@ -26,14 +29,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }  elseif (isset($_POST["clear"])) {
         // Clear filter selections from the session
-        $_SESSION['filter1'] = 'alle';
-        $_SESSION['filter2'] = 'alle';
-        $_SESSION['filter3'] = 'alle';
-        $_SESSION['filter4'] = 'alle';
-        $_SESSION['filter5'] = 'alle';
-        $_SESSION['filter6'] = 'alle';
-        $_SESSION['filter7'] = 'alle';
-        $_SESSION['filter8'] = 'alle';
+        $_SESSION['Stadt'] = 'alle';
+        $_SESSION['Hersteller'] = 'alle';
+        $_SESSION['Sitzanzahl'] = 'alle';
+        $_SESSION['Türenanzahl'] = 'alle';
+        $_SESSION['Getriebe'] = 'alle';
+        $_SESSION['Kategorie'] = 'alle';
+        $_SESSION['Antrieb'] = 'alle';
+        $_SESSION['Preis'] = 'alle';
+        $_SESSION['Mindestalter'] = 'alle';
         $_SESSION['checkboxoverview1'] = 0;
         $_SESSION['checkboxoverview2'] = 0;
         $_SESSION['checkboxoverview3'] = 0;
@@ -46,14 +50,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Set filter options
 $filterOptions = [
-    'filter1' => ['alle', 'BMW', 'Mercedes-Benz', 'Audi', 'Volkswagen', 'Ford', 'Range Rover', 'Jaguar', 'Mercedes-AMG', 'Maserati', 'Opel', 'Skoda'],
-    'filter2' => ['alle', '2', '4', '5', '7', '8', '9'],
-    'filter3' => ['alle', '2', '3', '4', '5'],
-    'filter4' => ['alle', 'manually', 'automatic'],
-    'filter5' => ['alle', 'Cabrio', 'SUV', 'Limousine', 'Combi', 'Mehrsitzer', 'Coupé'],
-    'filter6' => ['alle', 'Combuster', 'Electric'],
-    'filter7' => ['alle', '100 €', '200 €', '300 €', '400 €', '500 €', 'ab 500 €'],
-    'filter8' => ['alle', '18', '21', '25'],
+    'Stadt' => ['alle', 'Hamburg', 'Berlin', 'München', 'Bielefeld', 'Bochum', 'Dortmund', 'Bremen', 'Dresden', 'Freiburg', 'Köln', 'Leipzig', 'Nürnber','Paderborn','Rostock'],
+    'Hersteller' => ['alle', 'BMW', 'Mercedes-Benz', 'Audi', 'Volkswagen', 'Ford', 'Range Rover', 'Jaguar', 'Mercedes-AMG', 'Maserati', 'Opel', 'Skoda'],
+    'Sitzanzahl' => ['alle', '2', '4', '5', '7', '8', '9'],
+    'Türenanzahl' => ['alle', '2', '3', '4', '5'],
+    'Getriebe' => ['alle', 'manually', 'automatic'],
+    'Kategorie' => ['alle', 'Cabrio', 'SUV', 'Limousine', 'Combi', 'Mehrsitzer', 'Coupé'],
+    'Antrieb' => ['alle', 'Combuster', 'Electric'],
+    'Preis' => ['alle', '100 €', '200 €', '300 €', '400 €', '500 €', 'ab 500 €'],
+    'Mindestalter' => ['alle', '18', '21', '25'],
 ];
 
 //Initialize additional information variables 
@@ -94,7 +99,7 @@ $start = ($page - 1) * $limit;
 
 
 //Check if values are set in the filters
-if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION['filter3']) || isset($_SESSION['filter4']) || isset($_SESSION['filter5']) || isset($_SESSION['filter6']) || isset($_SESSION['filter7']) || isset($_SESSION['filter8']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
+if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_SESSION['Türenanzahl']) || isset($_SESSION['Getriebe']) || isset($_SESSION['Kategorie']) || isset($_SESSION['Antrieb']) || isset($_SESSION['Preis']) || isset($_SESSION['Mindestalter']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
     
     try{
         //Dynamic SQL query based on the filters selected
@@ -102,36 +107,39 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                 FROM vendor INNER JOIN cartype ON vendor.vendorID = cartype.vendorID WHERE 1 = 1"; 
                             
 
-        if ($_SESSION['filter1'] != 'alle') {
-            $sql .= " AND vendor.vendorName = :filter1";
+        if ($_SESSION['Stadt'] != 'alle') {
+            $sql .= " AND carlocation.locationID = :Stadt";
+        }
+        if ($_SESSION['Hersteller'] != 'alle') {
+            $sql .= " AND vendor.vendorName = :Hersteller";
         }
 
-        if ($_SESSION['filter2'] != 'alle') {
-            $sql .= " AND seats = :filter2";
+        if ($_SESSION['Sitzanzahl'] != 'alle') {
+            $sql .= " AND seats = :Sitzanzahl";
         }
 
-        if ($_SESSION['filter3'] != 'alle') {
-            $sql .= " AND doors = :filter3";
+        if ($_SESSION['Türenanzahl'] != 'alle') {
+            $sql .= " AND doors = :Türenanzahl";
         }
 
-        if ($_SESSION['filter4'] != 'alle') {
-            $sql .= " AND gear = :filter4";
+        if ($_SESSION['Getriebe'] != 'alle') {
+            $sql .= " AND gear = :Getriebe";
         }
 
-        if ($_SESSION['filter5'] != 'alle') {
-            $sql .= " AND cartype.type = :filter5";
+        if ($_SESSION['Kategorie'] != 'alle') {
+            $sql .= " AND cartype.type = :Kategorie";
         }
 
-        if ($_SESSION['filter6'] != 'alle') {
-            $sql .= " AND drive = :filter6";
+        if ($_SESSION['Antrieb'] != 'alle') {
+            $sql .= " AND drive = :Antrieb";
         }
 
-        if ($_SESSION['filter7'] != 'alle') {
-            $sql .= " AND price <= :filter7";
+        if ($_SESSION['Preis'] != 'alle') {
+            $sql .= " AND price <= :Preis";
         }
 
-        if ($_SESSION['filter8'] != 'alle') {
-            $sql .= " AND minAge = :filter8";
+        if ($_SESSION['Mindestalter'] != 'alle') {
+            $sql .= " AND minAge = :Mindestalter";
         }
 
         if ($_SESSION['checkboxoverview1'] == '1') {
@@ -153,36 +161,40 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
         $stmt = $conn->prepare($sql);
 
         // Bind parameters for the prepared statement
-        if ($_SESSION['filter1'] != 'alle') {
-            $stmt->bindParam(':filter1', $_SESSION['filter1']);
+        if ($_SESSION['Stadt'] != 'alle') {
+            $stmt->bindParam(':Stadt', $_SESSION['Stadt']);
         }
 
-        if ($_SESSION['filter2'] != 'alle') {
-            $stmt->bindParam(':filter2', $_SESSION['filter2']);
+        if ($_SESSION['Hersteller'] != 'alle') {
+            $stmt->bindParam(':Hersteller', $_SESSION['Hersteller']);
         }
 
-        if ($_SESSION['filter3'] != 'alle') {
-            $stmt->bindParam(':filter3', $_SESSION['filter3']);
+        if ($_SESSION['Sitzanzahl'] != 'alle') {
+            $stmt->bindParam(':Sitzanzahl', $_SESSION['Sitzanzahl']);
         }
 
-        if ($_SESSION['filter4'] != 'alle') {
-            $stmt->bindParam(':filter4', $_SESSION['filter4']);
+        if ($_SESSION['Türenanzahl'] != 'alle') {
+            $stmt->bindParam(':Türenanzahl', $_SESSION['Türenanzahl']);
         }
 
-        if ($_SESSION['filter5'] != 'alle') {
-            $stmt->bindParam(':filter5', $_SESSION['filter5']);
+        if ($_SESSION['Getriebe'] != 'alle') {
+            $stmt->bindParam(':Getriebe', $_SESSION['Getriebe']);
         }
 
-        if ($_SESSION['filter6'] != 'alle') {
-            $stmt->bindParam(':filter6', $_SESSION['filter6']);
+        if ($_SESSION['Kategorie'] != 'alle') {
+            $stmt->bindParam(':Kategorie', $_SESSION['Kategorie']);
         }
 
-        if ($_SESSION['filter7'] != 'alle') {
-            $stmt->bindParam(':filter7', $_SESSION['filter7']);
+        if ($_SESSION['Antrieb'] != 'alle') {
+            $stmt->bindParam(':Antrieb', $_SESSION['Antrieb']);
         }
 
-        if ($_SESSION['filter8'] != 'alle') {
-            $stmt->bindParam(':filter8', $_SESSION['filter8']);
+        if ($_SESSION['Preis'] != 'alle') {
+            $stmt->bindParam(':Preis', $_SESSION['Preis']);
+        }
+
+        if ($_SESSION['Mindestalter'] != 'alle') {
+            $stmt->bindParam(':Mindestalter', $_SESSION['Mindestalter']);
         }
 
         $stmt->execute();
@@ -311,9 +323,9 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                         document.getElementById('filterdropdown6').selectedIndex = 0;
                         document.getElementById('filterdropdown7').selectedIndex = 0;
                         document.getElementById('filterdropdown8').selectedIndex = 0;
-                        document.getElementById('checkboxfilter1').selectedIndex = 0;
-                        document.getElementById('checkboxfilter2').selectedIndex = 0;
-                        document.getElementById('checkboxfilter3').selectedIndex = 0;
+                        document.getElementById('checkboxHersteller').selectedIndex = 0;
+                        document.getElementById('checkboxSitzanzahl').selectedIndex = 0;
+                        document.getElementById('checkboxTürenanzahl').selectedIndex = 0;
                     }
                 </script>
                     
@@ -330,10 +342,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                     <br>
                     <!--manufacturerfilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter1" class="filterheader">Hersteller</label>
-                        <select name="filter1" id="filterdropdown1">
-                            <?php foreach ($filterOptions['filter1'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter1'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Hersteller" class="filterheader">Hersteller</label>
+                        <select name="Hersteller" id="filterdropdown1">
+                            <?php foreach ($filterOptions['Hersteller'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Hersteller'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -345,10 +357,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                     
                     <!--seatfilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter2" class="filterheader">Sitze</label>
-                        <select name="filter2" id="filterdropdown2">
-                            <?php foreach ($filterOptions['filter2'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter2'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Sitzanzahl" class="filterheader">Sitze</label>
+                        <select name="Sitzanzahl" id="filterdropdown2">
+                            <?php foreach ($filterOptions['Sitzanzahl'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Sitzanzahl'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -360,10 +372,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
 
                     <!--doorfilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter3" class="filterheader">Türen</label>
-                        <select name="filter3" id="filterdropdown3">
-                            <?php foreach ($filterOptions['filter3'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter3'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Türenanzahl" class="filterheader">Türen</label>
+                        <select name="Türenanzahl" id="filterdropdown3">
+                            <?php foreach ($filterOptions['Türenanzahl'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Türenanzahl'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -375,10 +387,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                     
                     <!--gearsfilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter4" class="filterheader">Getriebe</label>
-                        <select name="filter4" id="filterdropdown4">
-                            <?php foreach ($filterOptions['filter4'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter4'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Getriebe" class="filterheader">Getriebe</label>
+                        <select name="Getriebe" id="filterdropdown4">
+                            <?php foreach ($filterOptions['Getriebe'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Getriebe'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -390,10 +402,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                     
                     <!--typfilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter5" class="filterheader">Typ</label>
-                        <select name="filter5" id="filterdropdown5">
-                            <?php foreach ($filterOptions['filter5'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter5'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Kategorie" class="filterheader">Typ</label>
+                        <select name="Kategorie" id="filterdropdown5">
+                            <?php foreach ($filterOptions['Kategorie'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Kategorie'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -405,10 +417,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
 
                     <!--drivefilter-->  
                     <div style="margin-left: 20px;">
-                        <label for="filter6" class="filterheader">Antrieb</label>
-                        <select name="filter6" id="filterdropdown6">
-                            <?php foreach ($filterOptions['filter6'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter6'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Antrieb" class="filterheader">Antrieb</label>
+                        <select name="Antrieb" id="filterdropdown6">
+                            <?php foreach ($filterOptions['Antrieb'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Antrieb'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -420,10 +432,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                     
                     <!--pricefilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter7" class="filterheader">Preis bis:</label>
-                        <select name="filter7" id="filterdropdown7">
-                            <?php foreach ($filterOptions['filter7'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter7'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Preis" class="filterheader">Preis bis:</label>
+                        <select name="Preis" id="filterdropdown7">
+                            <?php foreach ($filterOptions['Preis'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Preis'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -435,10 +447,10 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                     
                     <!--minagefilter-->
                     <div style="margin-left: 20px;">
-                        <label for="filter8" class="filterheader">Mindestalter</label>
-                        <select name="filter8" id="filterdropdown8">
-                            <?php foreach ($filterOptions['filter8'] as $option): ?>
-                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['filter8'] == $option) ? 'selected' : ''; ?>>
+                        <label for="Mindestalter" class="filterheader">Mindestalter</label>
+                        <select name="Mindestalter" id="filterdropdown8">
+                            <?php foreach ($filterOptions['Mindestalter'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Mindestalter'] == $option) ? 'selected' : ''; ?>>
                                     <?php echo $option; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -450,7 +462,7 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
                             
                     <!--air conditioning-->
                     <div class="checkboxgeneral">
-                        <label for="checkboxoverview1" id="checkboxfilter1">KLimaanlage</label>
+                        <label for="checkboxoverview1" id="checkboxHersteller">KLimaanlage</label>
                         <input type="checkbox" id="checkboxoverview1" name="checkboxoverview1" class="checkmarkcolumn" 
                             <?php if (isset($_SESSION['checkboxoverview1']) && $_SESSION['checkboxoverview1'] == '1') echo 'checked'; ?>>
                     </div>
@@ -458,7 +470,7 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
 
                     <!--navigationssystem-->
                     <div class="checkboxgeneral">
-                        <label for="checkboxoverview2" id="checkboxfilter2">Navigationssystem</label>
+                        <label for="checkboxoverview2" id="checkboxSitzanzahl">Navigationssystem</label>
                         <input type="checkbox" id="checkboxoverview2" name="checkboxoverview2" class="checkmarkcolumn"
                             <?php if (isset($_SESSION['checkboxoverview2']) && $_SESSION['checkboxoverview2'] == '1') echo 'checked'; ?>>
                     </div>
@@ -466,7 +478,7 @@ if(isset($_SESSION['filter1']) || isset($_SESSION['filter2']) || isset($_SESSION
 
                     <!--offer-->
                     <div class="checkboxgeneral">
-                        <label for="checkboxoverview3" id="checkboxfilter3">Im Angebot</label>
+                        <label for="checkboxoverview3" id="checkboxTürenanzahl">Im Angebot</label>
                         <input type="checkbox" id="checkboxoverview3" name="checkboxoverview3" class="checkmarkcolumn"
                             <?php if (isset($_SESSION['checkboxoverview3']) && $_SESSION['checkboxoverview3'] == '1') echo 'checked'; ?>>
                     </div>

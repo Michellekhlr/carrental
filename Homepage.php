@@ -58,8 +58,6 @@ session_start();
             }
         });
     </script>
-
-
  
  
     <!--Styleimport von CSS Datei-->
@@ -70,6 +68,8 @@ session_start();
     <?php
      include('Header.php');
     ?>
+
+    
 </head>
  
 <body>
@@ -81,33 +81,33 @@ session_start();
         </video>
     
         <div class="schnellsuche">
+
+            <form action="Produktübersicht.php" method="POST">
+                <div class="schnellsuchetitel">
+                    <p>Schnellsuche</p>
+                </div>
     
-            <div class="schnellsuchetitel">
-                <p>Schnellsuche</p>
-            </div>
+                <div class="schnellsucheformular">
     
-            <div class="schnellsucheformular">
-    
-                <form>
                     <div class="schnellfilter">
                         <label for="standort">Standort</label><br>
                         <select id="standort" name="Stadt">
-                        <option value="" disabled selected hidden>Wähle einen Standort</option>
-                        <option value="beliebig">Beliebig</option>
-                        <option value="hamburg">Hamburg</option>
-                        <option value="berlin">Berlin</option>
-                        <option value="muenchen">München</option>
-                        <option value="bielefeld">Bielefeld</option>
-                        <option value="bochum">Bochum</option>
-                        <option value="bremen">Bremen</option>
-                        <option value="dortmund">Dortmund</option>
-                        <option value="dresden">Dresden</option>
-                        <option value="freiburg">Hamburg</option>
-                        <option value="köln">Köln</option>
-                        <option value="leipzig">Leipzig</option>
-                        <option value="nürnberg">Nürnberg</option>
-                        <option value="paderborn">Paderborn</option>
-                        <option value="rostock">Rostock</option>
+                        <option value="alle" disabled selected hidden>Wähle einen Standort</option>
+                        <option value="alle">Alle</option>
+                        <option value="Hamburg">Hamburg</option>
+                        <option value="Berlin">Berlin</option>
+                        <option value="Muenchen">München</option>
+                        <option value="Bielefeld">Bielefeld</option>
+                        <option value="Bochum">Bochum</option>
+                        <option value="Bremen">Bremen</option>
+                        <option value="Dortmund">Dortmund</option>
+                        <option value="Dresden">Dresden</option>
+                        <option value="Freiburg">Hamburg</option>
+                        <option value="Köln">Köln</option>
+                        <option value="Leipzig">Leipzig</option>
+                        <option value="Nürnberg">Nürnberg</option>
+                        <option value="Paderborn">Paderborn</option>
+                        <option value="Rostock">Rostock</option>
                         </select>
                     </div>
         
@@ -122,91 +122,90 @@ session_start();
                     <div class="schnellfilter">
                         <label for="kategorie">Kategorie</label><br>
                         <select id="kategorie" name="Kategorie">
-                        <option value="" disabled selected hidden>Beliebig</option>
-                        <option value="beliebig">Beliebig</option>
-                        <option value="cabrio">Cabrio</option>
-                        <option value="mehrsitzer">Mehrsitzer</option>
-                        <option value="kombi">Kombi</option>
-                        <option value="limousine">Limousine</option>
-                        <option value="suv">SUV</option>
-                        <option value="coupe">Coupé</option>
+                        <option value="alle" disabled selected hidden>Beliebig</option>
+                        <option value="alle">Alle</option>
+                        <option value="Cabrio">Cabrio</option>
+                        <option value="Mehrsitzer">Mehrsitzer</option>
+                        <option value="Combi">Combi</option>
+                        <option value="Limousine">Limousine</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Coupé">Coupé</option>
                         </select>
                     </div>
         
                     <div class="schnellfilter">
-                        <br><button>Finde deinen <span style="color: #ffbf00; font-style: italic;">Drive</span>!</button>
-                    </div>
-                </form>
-        </div>
-    
-    
-        <div class="mehrfilter">
-            <div>
-                <button class="filterButton" onclick="toggleMenu()">+ Mehr Filter</button>
-            </div>
-        </div>
-
-        <div class="zusatz" id="zusatz">
-            <div>
-                <form>
-                    <div class="zusaetzlichedetails">
-                        <label for="hersteller">Hersteller:</label><br>
-                        <select id="hersteller" name="Hersteller">
-                            <option value="" disabled selected hidden>Beliebig</option>
-                            <option value="beliebig">Beliebig</option>
-                            <option value="beliebig">Mercedes-Benz</option>
-                            <option value="coupe">Mercedes AMG</option>
-                            <option value="cabrio">Audi</option>
-                            <option value="mehrsitzer">BMW</option>
-                            <option value="kombi">Volkswagen</option>
-                            <option value="limousine">Ford</option>
-                            <option value="suv">Range Rover</option>
-                            <option value="coupe">Opel</option>
-                            <option value="coupe">Jaguar</option>
-                            <option value="coupe">Maserati</option>
-                            <option value="coupe">Skoda</option>
-                        </select>
+                        <br><button type="submit">Finde deinen <span style="color: #ffbf00; font-style: italic;">Drive</span>!</button>
                     </div>
                 
-                    <div class="zusaetzlichedetails">
-                        <label for="getriebe">Getriebe:</label><br>
-                        <select id="getriebe" name="Getriebe">
-                            <option value="" disabled selected hidden>Beliebig</option>
-                            <option value="beliebig">Beliebig</option>
-                            <option value="automatik">Automatik</option>
-                            <option value="manuell">Manuell</option>
-                        </select>
+                </div>
+    
+    
+                <div class="mehrfilter">
+                    <div>
+                        <button type="button" class="filterButton" onclick="toggleMenu()">+ Mehr Filter</button>
                     </div>
+                </div>
 
-                    <div class="zusaetzlichedetails">
-                        <label for="preisbis">Preis:</label><br>
-                        <select id="preisbis" name="Preis">
-                            <option value="" disabled selected hidden>Beliebig</option>
-                            <option value="beliebig">Beliebig</option>
-                            <option value="bis100">Bis 100€</option>
-                            <option value="bis200">Bis 200€</option>
-                            <option value="bis300">Bis 300€</option>
-                            <option value="bis400">Bis 400€</option>
-                            <option value="bis500">Bis 500€</option>
-                            <option value="ab500">Ab 500€</option>
-                        </select>
-                    </div>
+                <div class="zusatz" id="zusatz">
+                    <div>
+                
+                        <div class="zusaetzlichedetails">
+                            <label for="hersteller">Hersteller:</label><br>
+                            <select id="hersteller" name="Hersteller">
+                                <option value="alle" disabled selected hidden>Beliebig</option>
+                                <option value="alle">Alle</option>
+                                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                <option value="Mercedes-AMG">Mercedes AMG</option>
+                                <option value="Audi">Audi</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Range Rover">Range Rover</option>
+                                <option value="Opel">Opel</option>
+                                <option value="Jaguar">Jaguar</option>
+                                <option value="Maserati">Maserati</option>
+                                <option value="Skoda">Skoda</option>
+                            </select>
+                        </div>
+                    
+                        <div class="zusaetzlichedetails">
+                            <label for="getriebe">Getriebe:</label><br>
+                            <select id="getriebe" name="Getriebe">
+                                <option value="alle" disabled selected hidden>Beliebig</option>
+                                <option value="alle">Alle</option>
+                                <option value="automatic">Automatik</option>
+                                <option value="manually">Manuell</option>
+                            </select>
+                        </div>
 
-                    <div class="zusaetzlichedetails">
-                        <label for="antrieb">Antrieb:</label><br>
-                        <select id="antrieb" name="Antrieb">
-                            <option value="" disabled selected hidden>Beliebig</option>
-                            <option value="beliebig">Beliebig</option>
-                            <option value="diesel">Diesel</option>
-                            <option value="benzin">Benzin</option>
-                            <option value="elektrisch">Elektrisch</option>
-                        </select>
+                        <div class="zusaetzlichedetails">
+                            <label for="preisbis">Preis:</label><br>
+                            <select id="preisbis" name="Preis">
+                                <option value="alle" disabled selected hidden>Beliebig</option>
+                                <option value="alle">Alle</option>
+                                <option value="100 €">Bis 100€</option>
+                                <option value="200 €">Bis 200€</option>
+                                <option value="300 €">Bis 300€</option>
+                                <option value="400 €">Bis 400€</option>
+                                <option value="500 €">Bis 500€</option>
+                                <option value="ab 500 €">Ab 500€</option>
+                            </select>
+                        </div>
+
+                        <div class="zusaetzlichedetails">
+                            <label for="antrieb">Antrieb:</label><br>
+                            <select id="antrieb" name="Antrieb">
+                                <option value="alle" disabled selected hidden>Beliebig</option>
+                                <option value="alle">Alle</option>
+                                <option value="Combuster">Combuster</option>
+                                <option value="Electric">Electric</option>
+                            </select>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-    </div>
-
+    
         <script>
             function toggleMenu() {
                 var menu = document.getElementById("zusatz");
@@ -279,27 +278,39 @@ session_start();
             
         <div class="flotteunterschriften">
             <div>
-                Cabrio
+                <form>
+                    <button class="kategoriename" name="Kategorie" value="Cabrio" formmethod="POST" formaction="Produktübersicht.php">Cabrio</button>
+                </form>
             </div>
     
             <div>
-                Mehrsitzer
+                <form>
+                    <button class="kategoriename" name="Kategorie" value="Mehrsitzer" formmethod="POST" formaction="Produktübersicht.php">Mehrsitzer</button>
+                </form>
             </div>
     
             <div>
-                Kombi
+                <form>
+                    <button class="kategoriename" name="Kategorie" value="Combi" formmethod="POST" formaction="Produktübersicht.php">Kombi</button>
+                </form>
             </div>
     
             <div>
-                Limousine
+                <form>
+                    <button class="kategoriename" name="Kategorie" value="Limousine" formmethod="POST" formaction="Produktübersicht.php">Limousine</button>
+                </form>
             </div>
     
             <div>
-                SUV
+                <form>
+                    <button class="kategoriename" name="Kategorie" value="SUV" formmethod="POST" formaction="Produktübersicht.php">SUV</button>
+                </form>
             </div>
     
             <div>
-                Coupé
+                <form>
+                    <button class="kategoriename" name="Kategorie" value="Coupé" formmethod="POST" formaction="Produktübersicht.php">Coupé</button>
+                </form>
             </div>
         </div>
     
