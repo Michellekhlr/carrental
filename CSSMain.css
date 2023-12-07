@@ -907,6 +907,7 @@ h3{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 30px; /* Abstand zum Footer */
 }
 
 /*Frame to align Content-Text*/
@@ -1032,7 +1033,7 @@ h3{
 .member-image {
     width: 420px;
     height: 420px;
-    background: radial-gradient(circle at bottom, #8b93a1, rgb(9, 9, 15));
+    background: radial-gradient(circle at bottom, #8b93a1, rgb(9, 9, 15)); /* Ein Farbverlauf für einen einheitlichen Hintergrund der bilder */
     margin: 0 auto 10px; /* Setze den oberen und unteren Rand auf 0 und den seitlichen Rand auf auto */
     margin-bottom: 10px;
     border-radius: 50%;

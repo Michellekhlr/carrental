@@ -42,7 +42,7 @@ session_start();
 
             <!-- Teammitglied 1: Michelle -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder\Michelle3.png" alt="Michelle" class="member-image"></div>
+                <div class="member-image"><img src="bilder\Michelle2.png" alt="Michelle" class="member-image"></div>
                 <p class="team-member-name">Michelle</p>
                 <p class="team-member-title">Unser CEO</p>
                 <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit."</p>
@@ -70,7 +70,7 @@ session_start();
 
             <!-- Teammitglied 2: Arlind -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Arlind2.jpg" alt="Arlind" class="member-image"></div>
+                <div class="member-image"><img src="bilder/Arlind3.png" alt="Arlind" class="member-image"></div>
                 <p class="team-member-name">Arlind</p>
                 <p class="team-member-title">Unser COO</p>
                 <p class="quote">"Ich bin für Sie da, wenn es darum geht, Sie sicher an Ihr Ziel zu bringen."</p>
@@ -98,10 +98,10 @@ session_start();
 
             <!-- Teammitglied 3: Johannes -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Johannes2.jpg" alt="Johannes" class="member-image"></div>
+                <div class="member-image"><img src="bilder/Johannes3.png" alt="Johannes" class="member-image"></div>
                 <p class="team-member-name">Johannes</p>
                 <p class="team-member-title">Unser CTO</p>
-                <p class="quote">"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."</p>
+                <p class="quote">"Die Straße ist die Leinwand, das Auto der Pinselstrich des Reisenden."</p>
 
                 <!-- Im Team seit -->
                 <p class="team-member-lieblingsauto">
@@ -112,7 +112,7 @@ session_start();
                 <!-- Standort -->
                 <p class="team-member-lieblingsauto">
                     <span class="Lieblingsauto-Bold">Standort: </span>
-                    <span class="Lieblingsauto-Text">Leipzig</span>
+                    <span class="Lieblingsauto-Text">Freiburg</span>
                 </p>
 
                 <!-- Lieblingsauto -->
@@ -131,7 +131,7 @@ session_start();
 
             <!-- Teammitglied 4: Justus -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Justus.png" alt="" class="member-image"></div>
+                <div class="member-image"><img src="bilder/Justus2.png" alt="" class="member-image"></div>
                 <p class="team-member-name">Justus</p>
                 <p class="team-member-title">Unser CFO</p>
                 <p class="quote">"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."</p>
@@ -145,7 +145,7 @@ session_start();
                 <!-- Standort -->
                 <p class="team-member-lieblingsauto">
                     <span class="Lieblingsauto-Bold">Standort: </span>
-                    <span class="Lieblingsauto-Text">Neuruppin</span>
+                    <span class="Lieblingsauto-Text">Leipzig</span>
                 </p>
 
                 <!-- Lieblingsauto -->
@@ -159,7 +159,7 @@ session_start();
 
             <!-- Teammitglied 5: Kirian -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Kirian.png" alt="" class="memebr-image"></div>
+                <div class="member-image"><img src="bilder/Kirian.svg" alt="" class="member-image"></div>
                 <p class="team-member-name">Kirian</p>
                 <p class="team-member-title">Unser CDO</p>
                 <p class="quote">"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui deserunt."</p>

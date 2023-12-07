@@ -48,14 +48,14 @@ session_start();
             <p class="TextContent">Drive Autovermietung GmbH<br>
                 Willy-Brandt-Straße 75<br>
                 20459 Hamburg<br>
-                Geschäftsführer: Max Mustermann</p>
+                Geschäftsführung: Michelle Köhler</p>
 
             <p class="TextContentHeader">Kontakt:</p>
             <p class="TextContent">Telefon: +49 (0)123 456 789<br>
                 E-Mail: info@drive-autovermietung.de</p>
 
             <p class="TextContentHeader">Handelsregister:</p>
-            <p class="TextContent">Registergericht: Amtsgericht Musterstadt<br>
+            <p class="TextContent">Registergericht: Amtsgericht Hamburg<br>
                 Registernummer: HRB 12345</p>
 
             <p class="TextContent">Umsatzsteuer-Identifikationsnummer: DE123456789</p>
