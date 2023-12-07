@@ -30,22 +30,20 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   <script>
-  $( function() {
-    $( "#accordion" ).accordion({
-      collapsible: true, // panels collapse to take less space
-      active: false // No panel is active before clicking 
-    });
-  } );
-</script>
+    $( function() {
+        $( "#accordion" ).accordion({
+        collapsible: true, // panels collapse to take less space
+        active: false // No panel is active before clicking 
+        });
+    } );
+    </script>
 
-</head>
-
-<header>
     <!--Include Header-->
     <?php
-    include('Header.html');
+    include('Header.php');
     ?>
-</header>
+</head>
+
 
 <body>
 

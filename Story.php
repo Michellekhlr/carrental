@@ -36,15 +36,13 @@ session_start();
     });
   } );
 </script>
-
-</head>
-
-<header>
     <!--Include Header-->
     <?php
-    include('Header.html');
+    include('Header.php');
     ?>
-</header>
+</head>
+
+
 
 <body>
 

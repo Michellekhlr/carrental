@@ -17,14 +17,12 @@
     <!--Styleimport von CSS Datei-->
     <link rel="stylesheet" href="CSSMain.css">
 
-</head>
-
-<header>
-    <!--Include Header-->
-    <?php
+        <!--Include Header-->
+        <?php
     include('Header.php');
     ?>
-</header>
+
+</head>
 
 
 
