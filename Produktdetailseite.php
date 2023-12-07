@@ -1,6 +1,44 @@
-<?php
+<?php 
 session_start();
+
+//import of database
+include_once 'dbConfig.php';
+
+$carInfo = $_SESSION['carID'];
+
+//sets empty variables to be filled with the information from the query 
+$carVendor = "";
+$carName = "";
+$nameExtension = "";
+$imagePath = "";
+$carPricePerDay = "";
+$numberOfDoors = "";
+$numberOfSeats = "";
+$sortOfGear = "";
+$sortOfDrive = "";
+$airConditioning = "";
+$gps = "";
+$carType = "";
+
+
+//SQL query 
+try{
+    $stmt = $conn->query("SELECT vendorName, cartype.name, cartype.img, cartype.price, nameExtension, seats, doors, gear, airCondition, gps, cartype.type, drive
+                            FROM vendor 
+                            INNER JOIN cartype ON vendor.vendorID = cartype.vendorID
+                            INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
+                            WHERE carID = :carID");
+
+    $stmt->bindParam(':carID', $carInfo);
+
+    $stmt->execute();
+
+}   catch (PDOException $e){
+        echo "Error: " . $e->getMessage();
+    }
+
 ?>
+
 <!DOCTYPE html>
 <head>
     <!--Sprachenimport von Google Fonts-->
@@ -60,6 +98,30 @@ session_start();
         </table>
     </div><br><br><br>
 
+    <?php
+
+    //fetching the information from the database and connecting the with the empty variables from above
+    $resultOfCarID = $stmt->rowCount();
+
+    if ($resultOfCarID == 1) {
+
+        $row = $stmt->fetch();
+        $carVendor = $row['vendorName'];
+        $carName = $row['name'];
+        $nameExtension = $row['nameExtension'];
+        $imagePath = $row['img'];                
+        $carPricePerDay = $row['price'];
+        $numberOfDoors = $row['doors'];
+        $numberOfSeats = $row['seats'];
+        $sortOfGear = $row['gear'];
+        $sortOfDrive = $row['drive'];
+        $airConditioning = $row['airCondition'];
+        $gps = $row['gps'];  
+        $carType = $row['type'];
+    }
+
+    ?>
+
     <div class="produktdetailseite">
 
         <div class="technischedaten">
@@ -68,8 +130,7 @@ session_start();
             </div>
 
             <div class="fahrzeugname">
-                <div>Mercedes-Amg S 63 Cabrio</div>
-                <div class="verfügbarefahrzeuge">Nur noch 5 verfügbar!</div>
+                <div><?php echo $carVendor . " " . $carName . " " . $nameExtension?></div>
             </div>
 
             <div class="produktdetails">
@@ -78,44 +139,82 @@ session_start();
 
                         <tr>
                             <th>Fahrzeugtyp:</th>
-                            <td>Cabrio</td>
+                            <td><?php echo $carType?></td>
                         </tr>
 
                         <tr>
-                            <th>Kraftstoffart:</th>
-                            <td>Benzin</td>
+                            <th>Antrieb:</th>
+                            <td>
+                                <?php
+                                    if(!empty($sortOfDrive) && $sortOfDrive == "Combuster"){
+                                        echo "Verbrenner";
+                                    } else{
+                                        echo "Elektro";
+                                    }
+                                ?>
+                            </td>
                         </tr>
 
                         <tr>
                             <th>Sitzplätze:</th>
-                            <td>2+2</td>
+                            <td><?php echo $numberOfSeats?></td>
                         </tr>
 
                         <tr>
                             <th>Anzahl der Türen:</th>
-                            <td>3/4</td>
+                            <td><?php echo $numberOfDoors?></td>
                         </tr>
                     </table>
 
                     <table class="produktdetailstabelle2">
                     <tr>
                         <th>Getriebe:</th>
-                        <td>Automatik</td>
+                        <td>
+                            <?php 
+                                //FRage für morgen: passt das so?
+                                if(!empty($sortOfGear) && $sortOfGear == "manually"){
+                                        echo "Schaltung";
+                                        } else{
+                                            echo "Automatik";
+                                        }
+                            ?>
+                        </td>
                     </tr>
 
                     <tr>
                         <th>Baujahr:</th>
-                        <td>2020</td>
+                        <td>
+                            <?php 
+                                $yearOfProduction = $rand(2012, 2022);
+                                echo $yearOfProduction;
+                            ?>
+                        </td>
                     </tr>
                 
                     <tr>       
                         <th>Klima:</th>
-                        <td>4-Zonen</td>
+                        <td>
+                            <?php 
+                                if(!empty($airConditioning) && $airConditioning == 1){
+                                    echo "Verfügbar";
+                                }else{
+                                    echo "Nicht vorhanden";
+                                }
+                            ?>
+                        </td>
                     </tr>
 
                     <tr>
                         <th>GPS:</th>
-                        <td>Inklusive</td>
+                        <td>
+                            <?php 
+                                if(!empty($gps) && $gps == 1){
+                                    echo "Verfügbar";
+                                }else{
+                                    echo "Nicht vorhanden";
+                                }
+                            ?>
+                        </td>
                     </tr>
 
                     </table>
@@ -179,7 +278,9 @@ session_start();
             </div>    
 
             <div class="gesamtpreis">
-                <p>Gesamt:</p>
+                <p>Gesamt:
+                    <?php echo "$carPricePerDay"?>
+                </p>
             </div>  
 
             <div class="buchungsende">

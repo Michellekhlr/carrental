@@ -68,6 +68,7 @@ $nameExtension = "";
 $imagePath = "";
 $carAvailability = "";
 $carPricePerDay = "";
+$carInfo = "";
 
 //sets the order method for the price (ASC/DESC)
 // $ordermethod = "ASC";
@@ -103,9 +104,12 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
     
     try{
         //Dynamic SQL query based on the filters selected
-        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, cartype.trunk, nameExtension 
-                FROM vendor INNER JOIN cartype ON vendor.vendorID = cartype.vendorID WHERE 1 = 1"; 
-                            
+        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, nameExtension, carID 
+                FROM vendor 
+                INNER JOIN cartype ON vendor.vendorID = cartype.vendorID 
+                INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
+                WHERE 1 = 1"; 
+                            // INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
 
         if ($_SESSION['Stadt'] != 'alle') {
             $sql .= " AND carlocation.locationID = :Stadt";
@@ -139,7 +143,7 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
         }
 
         if ($_SESSION['Mindestalter'] != 'alle') {
-            $sql .= " AND minAge = :Mindestalter";
+            $sql .= " AND minAge <= :Mindestalter";
         }
 
         if ($_SESSION['checkboxoverview1'] == '1') {
@@ -199,7 +203,6 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
 
         $stmt->execute();
 
-
         //echo $sql;
 
     } catch (PDOException $e){
@@ -242,20 +245,83 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
             $("#progress3").fadeTo("slow", 0.2);            
             });    
         </script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 </head>
 
 <body>
 
+<script>
+        $(function() {
+            var dateFormat = "dd MM yy",
+            from = $("#fromprogress").datepicker({
+                altField: "#datepicker_input",
+                dateFormat: dateFormat,
+                regional: "de",
+                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                numberOfMonths: 1,
+                minDate: 0,
+                onSelect: function(selectedDate) {
+                to.datepicker("option", "minDate", selectedDate);
+                }
+            }),
+            to = $("#toprogress").datepicker({
+                dateFormat: dateFormat,
+                regional: "de",
+                numberOfMonths: 1,
+                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                minDate: 0,
+                onSelect: function(selectedDate) {
+                from.datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
+            function getDate(element) {
+            var date;
+            try {
+                date = $.datepicker.parseDate(dateFormat, element.value);
+            } catch (error) {
+                date = null;
+            }
+
+            return date;
+            }
+        });
+</script>
 
 <!--Overview of booking process-->
 <div class="progress">
     <table style="background-color: #e9e9e9;">
         <tr>
             <td id="progress1">
-                <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
+                <a href="#"><!--Platzhalterlink für Homepagefilter-->
                     <ul>
-                        <li class="p2" style="font-size: 20px; color: black;"><span class="nospacing">Standort wählen <!--Leerzeichen--><i class="fas fa-edit" style="font-size: 15px; color:black"></i></span></li>
-                        <li class="p2" style="font-size: 15px;"><span class="nospacing">Anfang | Ende <!--Hier muss ein dynamisches Element rein, was abfragt, welcher Zeitraum ausgewählt ist--><!--Leerzeichen--><i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></span></li> 
+                        <li class="p2" style="font-size: 20px; color: black;">
+                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                                    <label for="filter0" class="nospacing" style="display: inline-block; margin-right: 10px;">Standort<i class="fas fa-edit" style="font-size: 15px; color:black"></i></label>
+                                    <select name="filter0" id="filterdropdown">
+                                        <?php foreach ($filterOptions['Stadt'] as $option): ?>
+                                            <option value="<?php echo $option;?>" <?php echo ($_SESSION['Stadt'] == $option) ? 'selected' : ''; ?>>
+                                                <?php echo $option; ?>
+                                            </option>
+                                        <?php endforeach; ?>    
+                                    </select>
+                                </form>
+                        </li>
+                        <li class="p2" style="font-size: 15px; display: inline-block;">
+                            <div class="date-picker-container" style="margin-top: 5px;">
+                                <label for="zeitraum" style="margin-top: 2px; margin-right: 10px;">Zeitraum</label><br>
+                                <input type="text" id="fromprogress" name="from" required placeholder="Abholung">|
+                                <input type="text" id="toprogress" name="toprogress" required placeholder="Rückgabe">
+                                <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>
+                            </div>
+                            <!-- <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>  -->
                         <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>1.</b></i></li>
                     </ul>
                 </a>   
@@ -500,16 +566,49 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
 
         <td style="display: flex; flex-wrap: wrap;">
             <?php
+
+            //$selectedlocation = $_SESSION['filter0'];
+
             echo '<div class="car-container">';
             // If there's a matching record, fetch and set additional information
             if ($stmt->rowCount() > 0) {
+
                 while($row = $stmt->fetch()){
                 $carVendor = $row['vendorName'];
                 $carName = $row['name'];
                 $nameExtension = $row['nameExtension'];
-                $imagePath = $row['img'];
-                $carAvailability = $row['trunk'];
+                $imagePath = $row['img'];                
                 $carPricePerDay = $row['price'];
+                
+                // //safes the carID in a Session variable to refer to the fitting car on the detailpage when clicked on
+                // $carInfo = $row['carID'];
+
+                // //safes the fetched infos for each car in a Session variable for detailpage
+                // $_SESSION['carID'] = $carInfo;
+                // $_SESSION['vendorName'] = $carVendor;
+                // $_SESSION['name'] = $carName;
+                // $_SESSION['nameExtension'] = $nameExtension;
+                // $_SESSION['img'] = $imagePath;
+                // $_SESSION['price'] = $carPricePerDay;
+
+                // try{
+                //     $stmt = $conn->prepare("SELECT COUNT(typeID) 
+                //     FROM carlocation 
+                //     INNER JOIN location ON carlocation.locationID = location.locationID 
+                //     WHERE location.locationName =:selectedlocation AND carlocation.available = 1");
+                //     $stmt->bindParam(':selectedlocation', $selectedlocation);
+
+                //     $stmt->execute();
+
+                //     $numberavailable = $stmt->rowCount();
+
+                // }catch (PDOException $e){
+                //     echo "Error: " . $e->getMessage();
+                // }
+
+                // $carAvailability = $numberavailable;
+
+
                     
                 echo '<div class="car-container">';
                     //Html Output for each row
@@ -524,7 +623,7 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
                         endif; 
 
                         
-                        if (!empty($carAvailability) && !empty($carPricePerDay)):
+                        if (!empty($carAvailability) || !empty($carPricePerDay)):
                             echo '<div class="zellenfooter">';
                                 echo '<div class="zellenfooter1">' . "Verfügbar: " . $carAvailability . '</div>';
                                 echo '<div class="zellenfooter2">' . $carPricePerDay . " € pro Tag" . '</div>';
@@ -535,7 +634,7 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_S
                 }  
 
                 }else{
-                    echo '<div style="font-size: 40px;">';
+                    echo '<div id="notavailable" style="font-size: 40px; line-height: 1.5;">';
                     echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
                     echo '</div>';
                 } 
