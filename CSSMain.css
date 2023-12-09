@@ -1056,6 +1056,107 @@ h3{
 
 /* CSS About Us end */
 
+/* CSS-Code for FAQ start */
+
+/*Outer Frame for Info*/
+.FrameInfoFAQ{
+    width: 1920px;
+    height: 650px;
+    padding-top: 60px;
+    margin-bottom: 60px;
+    display: flex;
+    align-content: top;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Inner Frame for Info*/
+.FrameContentInfoFAQ{
+    width: 1475px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: column; 
+    align-items: top; 
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*Frame for Title and Subtitle inside .FrameContentInfoFAQ*/
+.FrameTitleSubtitleFAQ{
+    width: 1475px;
+    height: 150px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/*Frame for Subtitle inside .FrameTitleSubtitleFAQ*/
+.FrameSubtitleFAQ{
+    width: 1275px;
+    height: 60px;
+    display: flex;
+    align-items: flex-start; 
+    justify-content: flex-start;
+    flex-direction: row; 
+}
+
+/* Font Style for Subtitle FAQ*/
+.SubtitleFAQ{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: grey;
+
+}
+
+/*Frame for Title inside .FrameTitleSubtitleFAQ*/
+.FrameTitleFAQ{
+    width: 1275px;
+    height: 90px;
+    display: flex;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+/*Font Style for FAQ Title */
+.TitleFAQ{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    font-weight: 400;
+}
+
+/*Frame for Info Text*/
+.FrameTextInfoFAQ{
+    width: 100%; 
+    height: calc(100% - 150px); 
+    padding: 0;
+}
+
+/*Text inside FrameTextInfoFAQ*/
+.InnerFrameTextInfoFAQ{
+    width: 1275px; 
+    height: 100%; 
+    margin: auto; 
+}
+
+/*Font Style for Text Info Text*/
+.TextInfoFAQ{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 30px;
+    font-weight: 300;
+    text-align: justify;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+
+}
+
+/* CSS-Code for FAQ end */
+
 /* CSS-Code for News and Story start*/
 
 /*Page Banner start*/
