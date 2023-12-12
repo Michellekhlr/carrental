@@ -1,10 +1,7 @@
 <?php
-// Enable error reporting for debugging; disabled now
- // ini_set('display_errors', 1);
- // error_reporting(E_ALL);
-
-//starting the session
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Include the database configuration file
 include_once "dbConfig.php";

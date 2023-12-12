@@ -99,10 +99,6 @@ p{
     height: 90px; 
 }
 
-
-
-
-
 h3{
     font-family: 'Bebas Neue', sans-serif;  
 }
@@ -810,6 +806,15 @@ h3{
 
 
 /*Buchungsabschlussseite*/
+.buchungsabschluss-table {
+    border: none; 
+    width: 1145px; 
+    height: 358px; 
+    border-collapse: collapse;
+}
+.buchungsabschluss-table p {
+    padding-left: 5px;
+}
 #rent{
     display: flex; 
     align-items: center; 
@@ -2567,9 +2572,8 @@ footer {
 /*Anzeige des Gesamtpreises*/
 .gesamtpreis {
     width: 350px;
-    height: 60px;
+    height: 90px;
     background-color: #ffbf00;
-    font-size: 40px;
     margin-top: 15px;
     margin-bottom: 15px;
     white-space: nowrap;
@@ -2578,9 +2582,16 @@ footer {
     align-items: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-.gesamtpreis p{
+.gesamtpreis p {
     padding-left: 20px;
+    color: white;
+}
+
+#price {
+    font-size: 20px;
+}
+#finalPrice {
+    font-size: 40px;
 }
 
 
@@ -2631,7 +2642,7 @@ footer {
 /*Kasten um das Buchungsende*/
 .buchungsende{
     width: 350px;
-    height: 180px;
+    height: 145px;
     background-color: white;
     display: flex;
     flex-direction: column;

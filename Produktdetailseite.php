@@ -1,41 +1,22 @@
 <?php 
 session_start();
 
-//import of database
-include_once 'dbConfig.php';
-
-$carInfo = $_SESSION['carID'];
-
-//sets empty variables to be filled with the information from the query 
-$carVendor = "";
-$carName = "";
-$nameExtension = "";
-$imagePath = "";
-$carPricePerDay = "";
-$numberOfDoors = "";
-$numberOfSeats = "";
-$sortOfGear = "";
-$sortOfDrive = "";
-$airConditioning = "";
-$gps = "";
-$carType = "";
-
-
-//SQL query 
-try{
-    $stmt = $conn->query("SELECT vendorName, cartype.name, cartype.img, cartype.price, nameExtension, seats, doors, gear, airCondition, gps, cartype.type, drive
-                            FROM vendor 
-                            INNER JOIN cartype ON vendor.vendorID = cartype.vendorID
-                            INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
-                            WHERE carID = :carID");
-
-    $stmt->bindParam(':carID', $carInfo);
-
-    $stmt->execute();
-
-}   catch (PDOException $e){
-        echo "Error: " . $e->getMessage();
+if (isset($_SESSION['loginStatus']))
+    {
+      $loginStatus = true;
     }
+  else 
+    {
+      $loginStatus = false;
+    }
+
+    //Variable berechnet aus Buchungsprozessleiste
+    $date1=date_create("2023-12-08");
+    $date2=date_create("2023-12-11");
+     $diff = $date1->diff($date2);
+     $_SESSION['dateDiff'] = intval($diff->format("%a"));
+
+    $_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
 
 ?>
 
@@ -53,6 +34,9 @@ try{
 
     <!--Styleimport von CSS Datei-->
     <link rel="stylesheet" href = "CSSMain.css">
+
+    <!-- Skriptimport Ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <!--Include Header-->
     <!-- <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div>  -->
@@ -62,76 +46,70 @@ try{
 </head>
 
 <body> 
-
     <!--Overview of booking process-->
-    <div class="progress">
-        <table style="background-color: white;">
-            <tr>
-                <td id="progress1">
-                    <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
-                        <ul>
-                            <li class="p2" style="font-size: 20px;"><span class="nospacing">Standort wählen <!--Leerzeichen--><i class="fas fa-edit" style="font-size: 15px; color:black"></i></span></li>
-                            <li class="p2" style="font-size: 15px;"><span class="nospacing">Anfang | Ende <!--Hier muss ein dynamisches Element rein, was abfragt, welcher Zeitraum ausgewählt ist--><!--Leerzeichen--><i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></span></li>
-                            <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>1.</b></i></li>
-                        </ul>
-                    </a>  
-                </td>
-                <td id="progress2">
-                    <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
-                        <ul>
-                            <li class="p2" style="font-size: 20px;"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
-                            <li class="p2" style="font-size: 15px;"><span class="nospacing">230 Autos | 64 Modelle | 14 Standorte | 100% Fahrspaß</span></li>
-                            <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>2.</b></i></li>            
-                        </ul>
-                    </a>
-                </td>
-                <td id="progress3">
-                    <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
-                        <ul>
-                            <li class="p2" style="font-size: 20px;"><span class="nospacing">Buchung abschließen</span></li>
-                            <li class="p2" style="font-size: 15px;"><span class="nospacing">Rund-um-Schutz, Kindersitz oder Dachbox gefällig?</span></li>
-                            <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>3.</b></i></li>
-                        </ul>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div><br><br><br>
-
-    <?php
-
-    //fetching the information from the database and connecting the with the empty variables from above
-    $resultOfCarID = $stmt->rowCount();
-
-    if ($resultOfCarID == 1) {
-
-        $row = $stmt->fetch();
-        $carVendor = $row['vendorName'];
-        $carName = $row['name'];
-        $nameExtension = $row['nameExtension'];
-        $imagePath = $row['img'];                
-        $carPricePerDay = $row['price'];
-        $numberOfDoors = $row['doors'];
-        $numberOfSeats = $row['seats'];
-        $sortOfGear = $row['gear'];
-        $sortOfDrive = $row['drive'];
-        $airConditioning = $row['airCondition'];
-        $gps = $row['gps'];  
-        $carType = $row['type'];
-    }
-
-    ?>
+<div class="progress">
+    <table style="background-color: #e9e9e9;">
+        <tr>
+            <td id="progress1">
+                <a href="#"><!--Platzhalterlink für Homepagefilter-->
+                    <ul>
+                        <li class="p2" style="font-size: 20px; color: black;">
+                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                                    <label for="filter0" class="nospacing" style="display: inline-block; margin-right: 10px;">Standort<i class="fas fa-edit" style="font-size: 15px; color:black"></i></label>
+                                    <select name="filter0" id="filterdropdown">
+                                        <?php foreach ($filterOptions['Stadt'] as $option): ?>
+                                            <option value="<?php echo $option;?>" <?php echo ($_SESSION['Stadt'] == $option) ? 'selected' : ''; ?>>
+                                                <?php echo $option; ?>
+                                            </option>
+                                        <?php endforeach; ?>    
+                                    </select>
+                                </form>
+                        </li>
+                        <li class="p2" style="font-size: 15px; display: inline-block;">
+                            <div class="date-picker-container" style="margin-top: 5px;">
+                                <label for="zeitraum" style="margin-top: 2px; margin-right: 10px;">Zeitraum</label><br>
+                                <input type="text" id="fromprogress" name="from" required placeholder="Abholung">|
+                                <input type="text" id="toprogress" name="toprogress" required placeholder="Rückgabe">
+                                <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>
+                            </div>
+                            <!-- <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>  -->
+                        <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>1.</b></i></li>
+                    </ul>
+                </a>   
+            </td>
+            <td id="progress2">
+                <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
+                    <ul>
+                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
+                        <li class="p2" style="font-size: 15px;"><span class="nospacing">230 Autos | 64 Modelle | 14 Standorte | 100% Fahrspaß</span></li>
+                        <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>2.</b></i></li>             
+                    </ul>
+                </a>
+            </td>
+            <td id="progress3">
+                <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
+                    <ul>
+                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Buchung abschließen</span></li>
+                        <li class="p2" style="font-size: 15px;"><span class="nospacing">Rund-um-Schutz, Kindersitz oder Dachbox gefällig?</span></li>
+                        <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>3.</b></i></li>
+                    </ul>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div><br>
 
     <div class="produktdetailseite">
 
         <!--Linker Teil der Seite, auf dem alle technischen Daten des Fahrzeuges gezeigt werden.-->
         <div class="technischedaten">
-            <div><!--Bild des Fahrezeuges-->
-                <img class="detailseitebild" src="bilder/Mercedes-AMG S63 Cabriolet.jpeg">
-            </div>
+            <?php
+            echo '<div class="detailseitebild"><img src="data:image/jpg;charset=utf8;base64,' . base64_encode($_SESSION["img"]) . '" ></div>';
+            ?>
 
-            <div class="fahrzeugname">  <!--Bezeichnung des Fahrzeuges-->
-                <div><?php echo $carVendor . " " . $carName . " " . $nameExtension?></div>
+            <div class="fahrzeugname">
+                <div><?php echo $_SESSION["vendor"] . " " . $_SESSION["name"]?></div>
+                <div class="pds_verfügbarkeit">Verfügbar: <?php echo $_SESSION["availability"]?></div>
             </div>
 
             <div class="produktdetails">
@@ -140,30 +118,31 @@ try{
 
                         <tr>
                             <th>Fahrzeugtyp:</th>
-                            <td><?php echo $carType?></td>
+                            <td><?php echo $_SESSION["type"]?></td>
                         </tr>
 
                         <tr>
                             <th>Antrieb:</th>
                             <td>
                                 <?php
-                                    if(!empty($sortOfDrive) && $sortOfDrive == "Combuster"){
-                                        echo "Verbrenner";
-                                    } else{
-                                        echo "Elektro";
-                                    }
+                                if($_SESSION["drive"] == "Combuster") {
+                                    echo "Verbrenner";
+                                }
+                                else {
+                                    echo "Elektro";
+                                }
                                 ?>
                             </td>
                         </tr>
 
                         <tr>
                             <th>Sitzplätze:</th>
-                            <td><?php echo $numberOfSeats?></td>
+                            <td><?php echo $_SESSION["seats"]?></td>
                         </tr>
 
                         <tr>
                             <th>Anzahl der Türen:</th>
-                            <td><?php echo $numberOfDoors?></td>
+                            <td><?php echo $_SESSION["doors"]?></td>
                         </tr>
                     </table>
 
@@ -172,23 +151,20 @@ try{
                         <th>Getriebe:</th>
                         <td>
                             <?php 
-                                //FRage für morgen: passt das so?
-                                if(!empty($sortOfGear) && $sortOfGear == "manually"){
-                                        echo "Schaltung";
-                                        } else{
-                                            echo "Automatik";
-                                        }
+                            if ($_SESSION["gear"] == "manually") {
+                                echo "Schaltung";
+                            }
+                            else {
+                                echo "Automatik";
+                            }
                             ?>
                         </td>
                     </tr>
 
                     <tr>
-                        <th>Baujahr:</th>
+                        <th>Mindestalter:</th>
                         <td>
-                            <?php 
-                                $yearOfProduction = $rand(2012, 2022);
-                                echo $yearOfProduction;
-                            ?>
+                            <?php echo $_SESSION["minAge"];?>
                         </td>
                     </tr>
                 
@@ -196,9 +172,9 @@ try{
                         <th>Klima:</th>
                         <td>
                             <?php 
-                                if(!empty($airConditioning) && $airConditioning == 1){
+                                if($_SESSION["airCondition"] == 1){
                                     echo "Verfügbar";
-                                }else{
+                                } else{
                                     echo "Nicht vorhanden";
                                 }
                             ?>
@@ -209,7 +185,7 @@ try{
                         <th>GPS:</th>
                         <td>
                             <?php 
-                                if(!empty($gps) && $gps == 1){
+                                if($_SESSION["gps"] == 1){
                                     echo "Verfügbar";
                                 }else{
                                     echo "Nicht vorhanden";
@@ -238,19 +214,17 @@ try{
                         </div>
                     </div>
 
-                    <form>
+                    <form id="insuranceForm">
                         <label id="checkboxfilter1vz"><p>All-Inclusive</p>
-                            <input type="radio" name="versicherung" class="checkmarkcolumnvz"><!--Verwendung von Radioboxen, da nur eine Versicherung ausgewählt werden kann.-->
+                            <input type="checkbox" name="versicherung" class="checkmarkcolumnvz" id="option1" onchange="handleCheckboxChange(this)">
                         </label><br>
-        
-                        
+
                         <label id="checkboxfilter2vz"><p>Teilkasko</p>
-                            <input type="radio" name="versicherung" class="checkmarkcolumnvz">
+                            <input type="checkbox" name="versicherung" class="checkmarkcolumnvz" id="option2" onchange="handleCheckboxChange(this)">
                         </label><br>
-        
-                    
+
                         <label id="checkboxfilter3vz"><p>Basic</p>
-                            <input type="radio" name="versicherung" class="checkmarkcolumnvz">
+                            <input type="checkbox" name="versicherung" class="checkmarkcolumnvz" id="option3" onchange="handleCheckboxChange(this)">
                         </label><br>
                     </form>
 
@@ -264,17 +238,17 @@ try{
                         </div>
                     </div>
                 
-                    <form>
-                        <label id="checkboxfilter1vz"><p>Kindersitz</p>
-                        <input type="checkbox" class="checkmarkcolumnvz">
+                    <form id="extrasForm">
+                        <label id="checkboxfilter1vz"><p>Dachbox</p>
+                        <input type="checkbox" class="checkmarkcolumnvz" id="option4" onchange="calculatePrice()">
                         </label><br>
         
                         <label id="checkboxfilter2vz"><p>Fahrradträger</p>
-                            <input type="checkbox" class="checkmarkcolumnvz">
+                            <input type="checkbox" class="checkmarkcolumnvz" id="option5" onchange="calculatePrice()">
                         </label><br>
         
-                        <label id="checkboxfilter3vz"><p>Dachbox</p>
-                        <input type="checkbox" class="checkmarkcolumnvz">
+                        <label id="checkboxfilter3vz"><p>Kindersitz</p>
+                        <input type="checkbox" class="checkmarkcolumnvz" id="option6" onchange="calculatePrice()">
                         </label><br>
                     </form>
                 </div>
@@ -282,22 +256,131 @@ try{
 
             <!--Anzeige des Gesamtpreises-->
             <div class="gesamtpreis">
-                <p>Gesamt:
-                    <?php echo "$carPricePerDay"?>
-                </p>
+                <p> <span id = "price"> Originalpreis pro Tag: <?php echo $_SESSION['price']?> € </span><br>
+                    <span id = "finalPrice"> Gesamt: <?php echo $_SESSION['finalPrice']?> € </span></p> 
             </div>  
 
             <!--An dieser Stelle kann die Buchung abgeschlossen werden.-->
             <div class="buchungsende">
-                <button class="reglog" onclick="openLoginPage()">Registrieren/Login</button><!--Registrierung/Anmeldung falls noch keine stattgefunden hat-->
-                <button class="buchungsabschluss" onclick="openLoginPage()">Buchung abschließen</button><!--Buchung des Autos und Übermittlung in die Buchungsübersicht-->
+                <!-- if user is logged in show logout button -->
+                <?php if (isset($loginStatus) && $loginStatus == true) : ?>
+                <button class="buchungsabschluss" onclick="completeOrder()">Buchung abschließen</button>
+                <?php else : ?>
+                <!-- if user is not logged in show login/register button -->
+                <button class="reglog" onclick="openLoginPage()">Login / Registrieren</button>
+                <?php endif; ?>
             </div>
-            
-
         </div>
 
     </div>
+<script>
+    function openLoginPage() {
+        sessionStorage.setItem('previousURL', window.location.href); //safe url from page where logout is called from
+        window.location.href = 'LoginPage.php';
+      }
+    function completeOrder() {
+        sessionStorage.setItem('previousURL', window.location.href); //safe url from page where logout is called from
+        //collect data from forms and send to InsertInOrderComplition.php
+        var insuranceCheckboxes = document.querySelectorAll('#insuranceForm input[name="versicherung"]:checked'); //returns all elements from insurance checkboxes
+        var extrasCheckboxes = document.querySelectorAll('#extrasForm input[name="zubehoer"]:checked'); //returns all elements from extras checkboxes
 
+        var insuranceValues = [];
+        var extrasValues = [];
+
+        insuranceCheckboxes.forEach(function(checkbox) { 
+            insuranceValues.push(checkbox.value);
+        });
+
+        extrasCheckboxes.forEach(function(checkbox) {
+            extrasValues.push(checkbox.value);
+        });
+
+        // send data to saveCheckboxValuesSession.php
+        fetch('saveCheckboxValuesSession.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ insurance: insuranceValues, extras: extrasValues })
+        })
+        .then(response => {
+            console.log('Daten wurden erfolgreich gespeichert.');
+        })
+        .catch(error => {
+            console.error('Es gab ein Problem beim Speichern der Daten:', error);
+        });
+        window.location.href = 'Buchungsabschluss.php';
+    }
+
+      // Checks if only one checkbox is active at a time for insurance
+    function handleCheckboxChange(checkbox) {
+        var checkboxes = document.querySelectorAll('input[name="' + checkbox.name + '"]');
+        checkboxes.forEach(function(currentCheckbox) {
+            if (currentCheckbox !== checkbox) {
+                currentCheckbox.checked = false;
+            }
+        });
+        calculatePrice(); // call function for price calculation
+    }
+
+      function calculatePrice() {
+            var origPrice = parseInt("<?php echo isset($_SESSION['price']) ? $_SESSION['price'] : 0; ?>");
+            var option1 = document.getElementById('option1').checked;
+            var option2 = document.getElementById('option2').checked;
+            var option3 = document.getElementById('option3').checked;
+            var option4 = document.getElementById('option4').checked;
+            var option5 = document.getElementById('option5').checked;
+            var option6 = document.getElementById('option6').checked;
+            
+            var dateDiff = "<?php echo $_SESSION['dateDiff']; ?>";
+            
+            var prefixText = 'Gesamt: ';
+            var suffixText = '€';
+
+            var costs1 = 20; // costs for option 1,4
+            var costs2 = 10; // costs for option 2,5
+            var costs3 = 5; //costs for option 3,6
+
+            // calculate finalPriceDaily in JS
+            var finalPriceDaily = origPrice;
+            if (option1) {
+                finalPriceDaily += costs1;
+            }
+            if (option2) {
+                finalPriceDaily += costs2;
+            }
+            if (option3) {
+                finalPriceDaily += costs3;
+            }
+            if (option4) {
+                finalPriceDaily += costs1;
+            }
+            if (option5) {
+                finalPriceDaily += costs2;
+            }
+            if (option6) {
+                finalPriceDaily += costs3;
+            }
+
+            finalPrice = finalPriceDaily * dateDiff;
+            // Update final price in HTML
+            document.getElementById('finalPrice').innerText = prefixText + finalPrice + ' ' + suffixText;
+
+
+            // Update final price in session via AJAX request to server
+            $.ajax({
+                type: 'POST',
+                url: 'updatePriceSession.php',
+                data: { finalPrice: finalPrice }, // sends new final price to PHP
+                success: function(response) {
+                    console.log('final price has been updated sucessfully.');
+                },
+                error: function(xhr, status, error) {
+                    console.error('error. No updating of final price possible');
+                }
+            });
+        }
+</script>
 
 </body>
 

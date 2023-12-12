@@ -110,6 +110,8 @@ if (isset($_POST['register'])) {
     $_SESSION['personID'] = $personID;
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
+    $_SESSION['age'] = $age;
+    $_SESSION['email'] = $email;
     $_SESSION['loginStatus'] = true;
 
     header("Location: Welcome.php"); // Redirect after successful insertion

@@ -7,6 +7,8 @@ $enteredPassword = "";
 $hashedPassword = "";
 $firstname = "";
 $lastname = "";
+$email = "";
+$age = "";
 
 include_once "dbConfig.php";
 
@@ -26,6 +28,8 @@ if (isset($_POST['login'])) {
     if ($count == 0) {
         $error = 'Dieser Benutzername existiert nicht';
         $_SESSION['error'] = $error;
+        header("Location:LoginPage.php");
+        exit();
     }
 
     //check if passwort is correct
@@ -49,11 +53,15 @@ if (isset($_POST['login'])) {
         $personID = $row["personID"];
         $firstname = $row["firstName"];
         $lastname = $row["lastName"];
+        $email = $row["email"];
+        $age = $row["age"];
         
         //insert in session
         $_SESSION['personID'] = $personID;
         $_SESSION['firstname'] = $firstname;
         $_SESSION['lastname'] = $lastname;
+        $_SESSION['age'] = $age;
+        $_SESSION['email'] = $email;
         $_SESSION['loginStatus'] = true;
         }
 
@@ -64,6 +72,8 @@ if (isset($_POST['login'])) {
     else {
         $error = 'Eingegebenes Passwort ist nicht korrekt';
         $_SESSION['error'] = $error;
+        header("Location:LoginPage.php");
+        exit();
     }
 }
 
