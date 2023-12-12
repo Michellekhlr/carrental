@@ -124,18 +124,19 @@ try{
 
     <div class="produktdetailseite">
 
+        <!--Linker Teil der Seite, auf dem alle technischen Daten des Fahrzeuges gezeigt werden.-->
         <div class="technischedaten">
-            <div>
+            <div><!--Bild des Fahrezeuges-->
                 <img class="detailseitebild" src="bilder/Mercedes-AMG S63 Cabriolet.jpeg">
             </div>
 
-            <div class="fahrzeugname">
+            <div class="fahrzeugname">  <!--Bezeichnung des Fahrzeuges-->
                 <div><?php echo $carVendor . " " . $carName . " " . $nameExtension?></div>
             </div>
 
             <div class="produktdetails">
                 <div>
-                    <table class="produktdetailstabelle">
+                    <table class="produktdetailstabelle"><!--Linken Tabelle mit technischen Daten-->
 
                         <tr>
                             <th>Fahrzeugtyp:</th>
@@ -166,7 +167,7 @@ try{
                         </tr>
                     </table>
 
-                    <table class="produktdetailstabelle2">
+                    <table class="produktdetailstabelle2"><!--.Rechte Tabelle mit technischen Daten-->
                     <tr>
                         <th>Getriebe:</th>
                         <td>
@@ -222,14 +223,15 @@ try{
             </div>
         </div>
 
+        <!--Rechter Teil der Produktdetailseite: Extras und Zahlung-->
         <div class="extras">
             <div class="extrasüberschrift">
                 <p>Extras</p>
             </div>
 
             <div class="extrabuchung">
+                <!--Auswahl der Versicherung-->
                 <div class="versicherung">
-
                     <div class="versicherungueberschrift">
                         <div>
                             Versicherung:
@@ -238,7 +240,7 @@ try{
 
                     <form>
                         <label id="checkboxfilter1vz"><p>All-Inclusive</p>
-                            <input type="radio" name="versicherung" class="checkmarkcolumnvz">
+                            <input type="radio" name="versicherung" class="checkmarkcolumnvz"><!--Verwendung von Radioboxen, da nur eine Versicherung ausgewählt werden kann.-->
                         </label><br>
         
                         
@@ -254,6 +256,7 @@ try{
 
                 </div>
 
+                <!--Auswahl von Extras-->
                 <div class="zubehoer">
                     <div class="zubehoerueberschrift">
                         <div>
@@ -277,15 +280,17 @@ try{
                 </div>
             </div>    
 
+            <!--Anzeige des Gesamtpreises-->
             <div class="gesamtpreis">
                 <p>Gesamt:
                     <?php echo "$carPricePerDay"?>
                 </p>
             </div>  
 
+            <!--An dieser Stelle kann die Buchung abgeschlossen werden.-->
             <div class="buchungsende">
-                <button class="reglog" onclick="openLoginPage()">Registrieren/Login</button>
-                <button class="buchungsabschluss" onclick="openLoginPage()">Buchung abschließen</button>
+                <button class="reglog" onclick="openLoginPage()">Registrieren/Login</button><!--Registrierung/Anmeldung falls noch keine stattgefunden hat-->
+                <button class="buchungsabschluss" onclick="openLoginPage()">Buchung abschließen</button><!--Buchung des Autos und Übermittlung in die Buchungsübersicht-->
             </div>
             
 

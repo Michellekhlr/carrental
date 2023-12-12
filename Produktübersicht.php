@@ -135,19 +135,20 @@ $start = ($page - 1) * $limit;
 
 
 //Check if values are set in the filters
-if (isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_SESSION['Türenanzahl']) || isset($_SESSION['Getriebe']) || isset($_SESSION['Kategorie']) || isset($_SESSION['Antrieb']) || isset($_SESSION['Preis']) || isset($_SESSION['Mindestalter']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
-
-    try {
+if(isset($_SESSION['Hersteller']) || isset($_SESSION['Stadt']) || isset($_SESSION['Sitzanzahl']) || isset($_SESSION['Türenanzahl']) || isset($_SESSION['Getriebe']) || isset($_SESSION['Kategorie']) || isset($_SESSION['Antrieb']) || isset($_SESSION['Preis']) || isset($_SESSION['Mindestalter']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
+    
+    try{
         //Dynamic SQL query based on the filters selected
-        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, nameExtension, carID 
+        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, nameExtension, carID
                 FROM vendor 
                 INNER JOIN cartype ON vendor.vendorID = cartype.vendorID 
-                INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
-                WHERE 1 = 1";
-        // INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
+                INNER JOIN carlocation ON carlocation.typeID = cartype.typeID 
+                INNER JOIN location ON carlocation.locationID = location.locationID 
+                WHERE 1 = 1"; 
+                            // INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
 
         if ($_SESSION['Stadt'] != 'alle') {
-            $sql .= " AND carlocation.locationID = :Stadt";
+            $sql .= " AND location.locationName = :Stadt"; //todo: nach locationID
         }
         if ($_SESSION['Hersteller'] != 'alle') {
             $sql .= " AND vendor.vendorName = :Hersteller";
@@ -520,92 +521,74 @@ if (isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_
                             </div>
                             <br>
 
-                            <!--drivefilter-->
-                            <div style="margin-left: 20px;">
-                                <label for="Antrieb" class="filterheader">Antrieb</label>
-                                <select name="Antrieb" id="filterdropdown6">
-                                    <?php foreach ($filterOptions['Antrieb'] as $option) : ?>
-                                        <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Antrieb'] == $option) ? 'selected' : ''; ?>>
-                                            <?php echo $option; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                    <!--drivefilter-->  
+                    <div style="margin-left: 20px;">
+                        <label for="Antrieb" class="filterheader">Antrieb</label>
+                        <select name="Antrieb" id="filterdropdown6">
+                            <?php foreach ($filterOptions['Antrieb'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Antrieb'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
+                        <button onclick="document.getElementById('filterdropdown6').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
+                    </div>
+                    <br>
+                    
+                    <!--pricefilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="Preis" class="filterheader">Preis bis:</label>
+                        <select name="Preis" id="filterdropdown7">
+                            <?php foreach ($filterOptions['Preis'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Preis'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
+                        <button onclick="document.getElementById('filterdropdown7').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
+                    </div>
+                    <br>
+                    
+                    <!--minagefilter-->
+                    <div style="margin-left: 20px;">
+                        <label for="Mindestalter" class="filterheader">Mindestalter</label>
+                        <select name="Mindestalter" id="filterdropdown8">
+                            <?php foreach ($filterOptions['Mindestalter'] as $option): ?>
+                                <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Mindestalter'] == $option) ? 'selected' : ''; ?>>
+                                    <?php echo $option; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
+                        <button onclick="document.getElementById('filterdropdown8').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
+                    </div>
+                    <br><br>              
+                            
+                    <!--air conditioning-->
+                    <div class="checkboxgeneral">
+                        <label for="checkboxoverview1" id="checkboxHersteller"><p>KLimaanlage</p></label>
+                        <input type="checkbox" id="checkboxoverview1" name="checkboxoverview1" class="checkmarkcolumn" 
+                            <?php if (isset($_SESSION['checkboxoverview1']) && $_SESSION['checkboxoverview1'] == '1') echo 'checked'; ?>>
+                    </div>
+                    <br>
 
-                                <button onclick="document.getElementById('filterdropdown6').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                            </div>
-                            <br>
+                    <!--navigationssystem-->
+                    <div class="checkboxgeneral">
+                        <label for="checkboxoverview2" id="checkboxSitzanzahl"><p>Navigationssystem</p></label>
+                        <input type="checkbox" id="checkboxoverview2" name="checkboxoverview2" class="checkmarkcolumn"
+                            <?php if (isset($_SESSION['checkboxoverview2']) && $_SESSION['checkboxoverview2'] == '1') echo 'checked'; ?>>
+                    </div>
+                    <br>
 
-                            <!--pricefilter-->
-                            <div style="margin-left: 20px;">
-                                <label for="Preis" class="filterheader">Preis bis:</label>
-                                <select name="Preis" id="filterdropdown7">
-                                    <?php foreach ($filterOptions['Preis'] as $option) : ?>
-                                        <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Preis'] == $option) ? 'selected' : ''; ?>>
-                                            <?php echo $option; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-
-                                <button onclick="document.getElementById('filterdropdown7').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                            </div>
-                            <br>
-
-                            <!--minagefilter-->
-                            <div style="margin-left: 20px;">
-                                <label for="Mindestalter" class="filterheader">Mindestalter</label>
-                                <select name="Mindestalter" id="filterdropdown8">
-                                    <?php foreach ($filterOptions['Mindestalter'] as $option) : ?>
-                                        <option value="<?php echo $option; ?>" <?php echo ($_SESSION['Mindestalter'] == $option) ? 'selected' : ''; ?>>
-                                            <?php echo $option; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-
-                                <button onclick="document.getElementById('filterdropdown8').selectedIndex = 0" class="resetFilter">Filter zurücksetzen</button>
-                            </div>
-                            <br><br>
-
-                            <!--air conditioning-->
-                            <div class="checkboxgeneral">
-                                <label for="checkboxoverview1" id="checkboxHersteller">KLimaanlage</label>
-                                <input type="checkbox" id="checkboxoverview1" name="checkboxoverview1" class="checkmarkcolumn" <?php if (isset($_SESSION['checkboxoverview1']) && $_SESSION['checkboxoverview1'] == '1') echo 'checked'; ?>>
-                            </div>
-                            <br>
-
-                            <!--navigationssystem-->
-                            <div class="checkboxgeneral">
-                                <label for="checkboxoverview2" id="checkboxSitzanzahl">Navigationssystem</label>
-                                <input type="checkbox" id="checkboxoverview2" name="checkboxoverview2" class="checkmarkcolumn" <?php if (isset($_SESSION['checkboxoverview2']) && $_SESSION['checkboxoverview2'] == '1') echo 'checked'; ?>>
-                            </div>
-                            <br>
-
-
-
-                            <?php //the following php code is needed to activate the offer checkbox by klicking "Unsere Angebote" and by activating "Im Angebot" and klicking "Anwenden"
-                            // test, if Query-Parameter 'offer' is set
-                            if (isset($_GET['angebot']) && $_GET['angebot'] == 'ja') {
-                                $_SESSION['checkboxoverview3'] = '1';
-                            }
-
-                            // test, if checkbox got klicked and save status to session
-                            if (isset($_POST['checkboxoverview3'])) {
-                                $_SESSION['checkboxoverview3'] = $_POST['checkboxoverview3'] ? '1' : '0';
-                            }
-
-                            // get session checkbox status
-                            $checkboxChecked = isset($_SESSION['checkboxoverview3']) && $_SESSION['checkboxoverview3'] == '1' ? 'checked' : '';
-
-                            ?>
-
-                            <!--offer-->
-                            <form method="post">
-                                <div class="checkboxgeneral">
-                                    <label for="checkboxoverview3" id="checkboxTürenanzahl">Im Angebot</label>
-                                    <input type="checkbox" id="checkboxoverview3" name="checkboxoverview3" class="checkmarkcolumn" <?php /*if (isset($_SESSION['checkboxoverview3']) && $_SESSION['checkboxoverview3'] == '1') echo 'checked'; */ echo $checkboxChecked; ?>>
-                                </div>
-                            </form>
-
-                            <br>
+                    <!--offer-->
+                    <div class="checkboxgeneral">
+                        <label for="checkboxoverview3" id="checkboxTürenanzahl"><p>Im Angebot</p></label>
+                        <input type="checkbox" id="checkboxoverview3" name="checkboxoverview3" class="checkmarkcolumn"
+                            <?php if (isset($_SESSION['checkboxoverview3']) && $_SESSION['checkboxoverview3'] == '1') echo 'checked'; ?>>
+                    </div>
+                    <br>
 
                         </form>
 
@@ -684,19 +667,23 @@ if (isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_
                                 echo '<div class="zellenfooter">';
                                 echo '<div class="zellenfooter1">' . "Verfügbar: " . $carAvailability . '</div>';
                                 echo '<div class="zellenfooter2">' . $carPricePerDay . " € pro Tag" . '</div>';
-                                echo '</div>';
-                            endif;
                             echo '</div>';
-                            echo '</div>';
-                        }
-                    } else {
-                        echo '<div id="notavailable" style="font-size: 40px; line-height: 1.5;">';
-                        echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
-                        echo '</div>';
-                    }
+                        endif; 
                     echo '</div>';
-                    ?>
-                </td>
+                echo '</div>';        
+                }  
+                
+
+                }else{
+                    echo '<div id="notavailable" style="font-size: 40px; line-height: 1.5;">';
+                    echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
+                    echo '</div>';
+                } 
+                echo '</div>';   
+                
+                echo $_SESSION['Stadt'] . "<br>" .$sql;
+            ?>
+        </td>
 
             </tr>
 

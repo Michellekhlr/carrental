@@ -640,12 +640,6 @@ h3{
 .checkboxgeneral{
     align-items: center;
     display: flex;
-    
-}
-
-#checkboxfilter1,
-#checkboxfilter2,
-#checkboxfilter3{
     font-size: 25px;
     margin-left: 20px;
     color: black;
@@ -653,20 +647,27 @@ h3{
     box-shadow: 0px 0px 5px #888888;
     border-radius: 5px;
     border: solid 2px #ffbf00;
-    cursor: pointer;
     width: 300px;
-    height: 50px;   
+    height: 50px;     
 }
 
-#checkboxfilter1:active{
+.checkboxgeneral p{
+    padding-left: 10px;
+}
+
+#checkboxoverview3:active{
     background-color: #ffbf00;
 }
 
-#checkboxfilter2:active{
+#checkboxgeneral:active{
     background-color: #ffbf00;
 }
 
-#checkboxfilter3:active{
+#checkboxgeneral2:active{
+    background-color: #ffbf00;
+}
+
+#checkboxgeneral3:active{
     background-color: #ffbf00;
 }
 
@@ -676,6 +677,8 @@ h3{
     width: 20px;
     background-color: #eee;
     margin-left: auto;
+    margin-right: 15px;
+    cursor: pointer;
 }
 
 .checkmarkcolumn:active{
@@ -1512,6 +1515,9 @@ footer {
     color: #ffbf00;
 }
 
+/*Homepage*/
+
+/*Schnellfilter*/
 .hintergrundschnellsuche{
     width: 1920px;
     height:480px;
@@ -1527,12 +1533,12 @@ footer {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: -1;
+    z-index: -1;/*Damit das Video im Hintergrund läuft*/
 }
 
 .schnellsuche{
     margin: auto;
-    z-index: 1;
+    z-index: 1;/*Damit die Fiter im Vordergrund stehen*/
     height: 240px;
 }
 
@@ -1611,7 +1617,7 @@ footer {
     cursor: pointer;
 }
 
-
+/*Kalenderdesign*/
 .date-picker-container {
     display: flex;
   }
@@ -1651,6 +1657,7 @@ footer {
     border-right: 2px solid #ffbf00;
 }
 
+/*Filterbutton*/
 .schnellfilter button{
     width: 300px;
     height: 60px;
@@ -1671,6 +1678,7 @@ footer {
     align-items: center; /* Zentriere den Inhalt vertikal */
 }
 
+/*Button zum Ausklappen der zusätzlichen Filter*/
 .mehrfilter div button{
     width:170px;
     height:40px;
@@ -1838,101 +1846,356 @@ footer {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/*Formatierung des Gesamtrahmens um die vorgestellten Autos.*/
-
-.flotte{
-    width: 1920px;
-    height: 250px;
-    margin-bottom: 60px;
-}
-
-.flottenkategorien{
-    width:1920px;
-    height:191px;
+/*Formatierung des Gesamtrahmens um die vorgestellten Autos (Karussell).*/
+.cslider {
+    background-color: #ffffff;
+    padding: 40px 0px;
     position: relative;
-}
-
- 
-/*Formatierung der einzelnen Bilder "Unsere Drives"*/
-.flotteimg {
-    width:320px; /*selbst ausprobiert*/
-    float:left;
-}
-
-.flotteunterschriften{
-    width: 1920px;
-    height:60px;
-    background-color: #FFFFFF;
-    display: flex; /* Verwende Flexbox für vertikale Ausrichtung */
-    align-items: center; /* Zentriere den Inhalt vertikal */
+    height: 225px;
+    width: 100%;
+    margin-top: 60px;
+    margin-bottom: 60px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .kategoriename{
-    width: 320px;
-    float: left;
-    font-size: 36px;
-    text-align: center;
-    transition: color 0.3s;
-    cursor: pointer;
-    background-color: #FFFFFF;
-    border: none;
-    font-family: 'Bebas Neue', sans-serif;
-
-}
-
-.kategoriename:hover{
+    color: #000000;
+    font-size: 24px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: bold;
     color: #ffbf00;
-}
- 
-/*Formatierung des Rahmens der nur die Bilder der Flotte umschließt*/
-.bilder{
-    position:absolute; /*Befehl, damit die Bilder vor dem Balken erscheinen*/
-}
- 
-/*Formatierung des gefärbten Balkens hinter den Bildern der Drives*/
-.balken{
-    width: 1920px;
-    height: 90px;
-    background-color: #ffbf00;
-    position:absolute; /*Befehl, damit der Balken hinter den Bildern erscheinte*/
-    margin-top: 50px;
+    border: none;
+    background-color: #FFFFFF;
+    cursor: pointer;
 }
 
-/*Formatierung des Rahmens der die kompletten Infos und die Karte umschließt*/
+.cslider-carousel {
+    align-items: center;
+    display: flex;
+    height: 150px;
+    margin: 0 auto;
+    max-width: 1400px;
+    position: relative;
+    z-index: 1;
+}
+
+.cslider-item {
+    left: 20%;
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    transform: translate(-50%, 0);
+    transition: opacity 150ms ease-in-out, width 300ms ease-in-out, transform 300ms ease-in-out, left 300ms ease-in-out;
+    width: 10%;
+    z-index: 0;
+}
+@media (min-width: 1200px) {
+    .cslider-item {
+        left: 5%;
+    }
+}
+.cslider-item img {
+    height: auto;
+    max-width: 100%;
+    width: auto;
+}
+
+.cslider-item-selected {
+    opacity: 1;
+    left: 50%;
+    transform: translate(-50%, 0);
+    transition: all 300ms ease-in-out, transform 300ms cubic-bezier(0.25, 0.75, 1, 1);
+    z-index: 2;
+}
+@media (min-width: 768px) {
+    .cslider-item-selected {
+        transition: all 300ms ease-in-out;
+    }
+}
+@media (max-width: 575px) {
+    .cslider-item-selected {
+        width: 50%;
+    }
+}
+@media (min-width: 576px) {
+    .cslider-item-selected {
+        width: 40%;
+    }
+}
+
+.cslider-item-previous,
+.cslider-item-next {
+    opacity: 1;
+    transition: all 300ms ease-in-out;
+    width: 20%;
+    z-index: 1;
+}
+
+.cslider-item-first,
+.cslider-item-last {
+    opacity: 1;
+    transition: opacity 150ms ease-in-out 300ms, width 300ms ease-in-out, transform 300ms ease-in-out, left 300ms ease-in-out;
+    width: 10%;
+}
+
+@media (max-width: 575px) {
+    .cslider-item-previous,
+.cslider-item-next {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 1519px) {
+    .cslider-item-first,
+    .cslider-item-last {
+        opacity: 0;
+    }
+}
+
+.cslider-item-previous {
+    left: 20%;
+}
+
+.cslider-item-next {
+    left: 80%;
+}
+
+.cslider-item-first {
+    left: 20%;
+}
+@media (min-width: 1520px) {
+    .cslider-item-first {
+        left: 5%;
+    }
+}
+
+.cslider-item-last {
+    left: 80%;
+}
+@media (min-width: 1520px) {
+    .cslider-item-last {
+        left: 95%;
+    }
+}
+
+.cslider-text {
+    height: 0;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    transition: height 0ms ease-in-out 300ms, opacity 225ms ease-in-out;
+    right: 0;
+}
+
+.cslider-text p{
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 20px;
+    font-style:italic;
+}
+
+
+.cslider-item-selected .cslider-text {
+    height: 210px;
+    opacity: 1;
+    transition: height 0ms, opacity 300ms ease-in-out 300ms;
+}
+
+/*Formatierung der Vor-/Zurückpfeile*/
+.cslider-prev,
+.cslider-next {
+    border-color: #ffbf00;
+    border-style: solid;
+    border-width: 0 4px 4px 0;
+    cursor: pointer;
+    display: block;
+    font-size: 0;
+    height: 28px;
+    margin-top: -14px;
+    position: absolute;
+    top: 50%;
+    transform: rotate(-45deg);
+    width: 28px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+.cslider-prev {
+    transform: rotate(135deg);
+    left: 20px;
+}
+
+.cslider-next {
+    right: 20px;
+}
+
+/*Formatierung der Infos und der Deutschlandkarte*/
 .karte{
-    width:1700px;
-    height: 640px;
-    background-color: #FFFFFF;   
-    margin:auto;
+    margin: auto;
+    height: 780px;
+    width: 1400px;
+    background-color: #FFFFFF;
     margin-bottom: 60px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/*Formatierung der Informationen neben der Karte*/
+/*Formatierung der Infos neben der Karte*/
 .infos{
     width:400px;
     height: 480px;
-    font-size: 80px;
-    font-family: 'Source Sans 3', sans-serif;
+    padding-top: 210px;
+    font-size: 60px;
+    background-color: #FFFFFF;
     padding-left: 10px;
     line-height: 0px;
     float:left;
     display: flex; /* Verwende Flexbox für vertikale Ausrichtung */
     align-items: center; /* Zentriere den Inhalt vertikal */
     flex-direction: column;
-    padding-top: 80px;
-    padding-bottom: 80px;
 }
 
-
-
-
-/*Zusätzliches Div Element um die Google Maps Karte für Veränderungen und damit sie neben den Infos platziert werden kann*/
-.googlemapscard{
-    height: 640px;
+.infos p{
+    color: #ffbf00;
+    font-family: 'Source Sans 3', sans-serif;
 }
 
+/*Deutschlandkarte und Standorte*/
+.ger-map {
+    text-align:center;
+    position: relative;
+    margin: 0 auto;
+    max-width: 570px;
+}
+
+.ger-map img {
+    display: inline-block;
+    width: 570px;
+    height: 780px;
+}
+
+.map-container {
+    width: 100%;
+    padding-bottom: 40px;
+}
+
+.pin {
+    background-color: #ffbf00;
+    position: absolute;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+}
+
+.standort:hover {
+    cursor: pointer;
+}
+
+.pin::before {
+    content: '';
+    background-color: #ffbf00;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: pulse 1.3s ease-in-out infinite;
+}
+
+.standort{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+    left: 1.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border-radius: 3em;
+    padding: 0.3em 0.6em;
+    font-size: 13px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 500;
+}
+
+@keyframes pulse {
+    100% {
+        opacity: 0;
+        transform:
+            translate(-50%, -50%)
+            scale(2.5);
+    }       
+}
+
+.map-heading {
+    padding: 20px 0;
+}
+
+.hamburg {
+    top: 20.5%;
+    left: 44%;
+}
+
+.berlin {
+    top: 34%;
+    left: 80%;
+}
+
+.paderborn {
+    top: 44%;
+    left: 31.5%;
+}
+
+.rostock {
+    top: 13.5%;
+    left: 67%;
+}
+
+.bielefeld {
+    top: 40.5%;
+    left: 28%;
+}
+
+.bochum {
+    top: 47.5%;
+    left: 13.5%;
+}
+
+.dortmund {
+    top: 44.5%;
+    left: 14%; 
+}
+.nuernberg {
+    top: 70%;
+    left: 54%; 
+}
+.muenchen {
+    top: 88%;
+    left: 62%;    
+}
+.leipzig {
+    top: 48%;
+    left: 70%;
+}
+.koeln {
+    top: 52%;
+    left: 15%; 
+}
+.freiburg {
+    top: 92%;
+    left: 21%;
+}
+.dresden {
+    top: 53%;
+    left: 87%;
+}
+.bremen {
+    top: 26%;
+    left: 32%;
+}
+
+/*Formatierung des Newsletters*/
 .newsletter{
     background-image: url("bilder/Background Newsletter.png");
     width:1920px;
@@ -1979,6 +2242,7 @@ footer {
     cursor: pointer;
 }
 
+/*Formatierung des Kontaktformulares*/
 .contact{
     width: 1920px;
     height: 600px;
@@ -2064,7 +2328,7 @@ footer {
     padding-left: 30px;
 }
 
-
+/*Formatierung des gesamten Contents der Produktdetailseite*/
 .produktdetailseite{
     display: flex;
     width: 1470px;
@@ -2072,20 +2336,23 @@ footer {
     margin-bottom: 100px;
 }
 
+/*Formatierung des linken Teils der Produktdetailseite*/
 .technischedaten{
     width:1100px;
     height: 1080px;
     flex-direction: row;
-    margin-right: 20px;
+    margin-right: 20px;/*Abstand zu den Extrabuchungen*/
     box-sizing: border-box;
 }
 
+/*Bild des ausgewählten Fahrzeuges*/
 .detailseitebild{
     width:1100px;
     height: 660px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/*Name des Fahrzeuges*/
 .fahrzeugname{
     width: 1100px;
     height: 90px;
@@ -2101,7 +2368,7 @@ footer {
 
 .fahrzeugname :last-child{
     margin-right: 0px;
-    padding: 5px;
+    padding: 5px; /*Damit der Verfügbarkeitskasten keinen Abstand nach rechts hat.*/
 }
 
 .fahrzeugname div{
@@ -2109,11 +2376,13 @@ footer {
     margin-right: 550px;
 }
 
+/*Anzeige der verfügbarkeit*/
 .verfügbarefahrzeuge{
     font-size: 22px;
     border: solid #ffbf00;
 }
 
+/*Box umd die Tabellen, die alle Details enthalten*/
 .produktdetails{
     width: 1100px;
     height: 300px;
@@ -2128,6 +2397,7 @@ footer {
     margin: auto;
 }
 
+/*Linke Tabelle der Produktdetails*/
 .produktdetailstabelle{
     width:430px;
     height: 214px;
@@ -2138,6 +2408,7 @@ footer {
     margin-right: 80px;
 }
 
+/*Rechte Seite der Produktdetails*/
 .produktdetailstabelle2{
     width:430px;
     height: 214px;
@@ -2159,6 +2430,7 @@ footer {
     text-align: left;
 }
 
+/*Rechter Teil der Produktdetailseite*/
 .extras{
     width:350px;
     height: 1080px;
@@ -2182,7 +2454,7 @@ footer {
 
 .extrasüberschrift p::after {
     content: "+";
-    margin-left: 200px; /* Hier können Sie den Abstand anpassen */
+    margin-left: 200px; /*Damit zwischen dem Pluszeichen und dem Text ein Abstand besteht*/
     font-size: 50px;
 }
 
@@ -2196,6 +2468,7 @@ footer {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/*Kasten um die Versicherungsoptionen*/
 .versicherung{
     width: 300px;
     height: 330px;
@@ -2219,7 +2492,7 @@ footer {
 }
 
 
-/*Checkboxfilter*/
+/*Checkboxfilter der Versicherungen und Zubehör*/
 #checkboxfilter1vz,
 #checkboxfilter2vz,
 #checkboxfilter3vz{
@@ -2245,39 +2518,8 @@ footer {
     padding-left: 10px;
     font-family: 'Source Sans 3', sans-serif;
 }
- 
-/*Auswahlkästchen*/
-.checkmarkcolumnvz{
-    height: 20px;
-    width: 20px;
-    background-color: #eee;
-    margin-left: auto;
-    margin-right: 15px;
-    cursor: pointer;
-}
 
-
-.zubehoer{
-    width: 300px;
-    height: 330px;
-    margin: auto;
-}
-
-.zubehoerueberschrift{
-    width: 296px;
-    height: 60px;
-    font-size: 40px;
-    border: 4px solid black; /* Schwarze Umrandung */
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.zubehoerueberschrift div{
-    margin: auto;
-}
-
+/*Orangene Farbe bei Auswahl*/
 #checkboxfilter1vz:active{
     background-color: #ffbf00;
 }
@@ -2289,7 +2531,40 @@ footer {
 #checkboxfilter3vz:active{
     background-color: #ffbf00;
 }
+ 
+/*Auswahlkästchen*/
+.checkmarkcolumnvz{
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    margin-left: auto;
+    margin-right: 15px;
+    cursor: pointer;
+}
 
+/*Kasten um das Zubehör, welches gebucht werden kann*/
+.zubehoer{
+    width: 300px;
+    height: 330px;
+    margin: auto;
+}
+
+.zubehoerueberschrift{
+    width: 296px;
+    height: 60px;
+    font-size: 40px;
+    border: 4px solid black; 
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.zubehoerueberschrift div{
+    margin: auto;
+}
+
+/*Anzeige des Gesamtpreises*/
 .gesamtpreis {
     width: 350px;
     height: 60px;
@@ -2353,6 +2628,7 @@ footer {
     align-items: right;
 }
 
+/*Kasten um das Buchungsende*/
 .buchungsende{
     width: 350px;
     height: 180px;
@@ -2365,6 +2641,7 @@ footer {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/*Anmeldung-/Registrierungsbutton*/
 .reglog{
     background-color: #FFFFFF;
     font-family: 'Bebas Neue', sans-serif;
@@ -2379,7 +2656,11 @@ footer {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/*Anmeldebutton*/
+.reglog:hover{
+    color: #ffbf00;
+}
+
+/*Button zum Abschluss der Buchung*/
 .buchungsabschluss{
     background-color: #ffbf00;
     font-family: 'Bebas Neue', sans-serif;
