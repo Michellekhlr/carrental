@@ -104,17 +104,17 @@ if (isset($_SESSION['loginStatus']))
         <!--Linker Teil der Seite, auf dem alle technischen Daten des Fahrzeuges gezeigt werden.-->
         <div class="technischedaten">
             <?php
-            echo '<div class="detailseitebild"><img src="data:image/jpg;charset=utf8;base64,' . base64_encode($_SESSION["img"]) . '" ></div>';
-            ?>
+            echo '<div class="detailseitebild"><img src="data:image/jpg;charset=utf8;base64,' . base64_encode($_SESSION["img"]) . '" ></div>'; 
+            ?> <!--Fahrzeug Bild-->
 
-            <div class="fahrzeugname">
+            <div class="fahrzeugname"> <!--Bezeichnugn des Fahrzeugs-->
                 <div><?php echo $_SESSION["vendor"] . " " . $_SESSION["name"]?></div>
                 <div class="pds_verfügbarkeit">Verfügbar: <?php echo $_SESSION["availability"]?></div>
             </div>
 
             <div class="produktdetails">
                 <div>
-                    <table class="produktdetailstabelle"><!--Linken Tabelle mit technischen Daten-->
+                    <table class="produktdetailstabelle"><!--Linke Tabelle mit technischen Daten-->
 
                         <tr>
                             <th>Fahrzeugtyp:</th>
