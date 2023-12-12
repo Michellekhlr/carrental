@@ -107,7 +107,7 @@ $_SESSION['enddate'] = '2023-12-11';
 </body>
 <script>
     function goBack() {
-     window.location.href = previousURL;
+        window.history.back();
     }
 </script>
 <footer>

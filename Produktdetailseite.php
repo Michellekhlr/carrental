@@ -279,7 +279,6 @@ if (isset($_SESSION['loginStatus']))
         window.location.href = 'LoginPage.php';
       }
     function completeOrder() {
-        sessionStorage.setItem('previousURL', window.location.href); //safe url from page where logout is called from
         //collect data from forms and send to InsertInOrderComplition.php
         var insuranceCheckboxes = document.querySelectorAll('#insuranceForm input[name="versicherung"]:checked'); //returns all elements from insurance checkboxes
         var extrasCheckboxes = document.querySelectorAll('#extrasForm input[name="zubehoer"]:checked'); //returns all elements from extras checkboxes
