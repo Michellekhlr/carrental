@@ -24,7 +24,7 @@ $_SESSION['enddate'] = '2023-12-11';
     <link rel="stylesheet" href = "CSSMain.css">
 
     <!--Include Header-->
-    <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div> 
+    <!-- <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div> -->
     <?php
     include('Header.php');
     ?><br><br><br>

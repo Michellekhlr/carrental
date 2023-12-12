@@ -1,4 +1,6 @@
 <?php
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 // Start the session to access session variables
 session_start();
 // Include the database configuration file
@@ -32,6 +34,73 @@ else {
     include('Header.php');
     ?>
 </head>
+
+<?php
+
+ $currentPage = 1; // default page
+ if (isset($_GET['page']) && is_numeric($_GET['page'])) {
+    if ($_GET['page'] > 0) {
+        $currentPage = $_GET['page']; // current page
+    } else {
+        header("Location: ordersPage.php?page=1"); // redirect to the first page if the current page is less than 1
+        exit();
+    }
+}
+
+// Überprüfen Sie, ob eine personID in der Session vorhanden ist
+if (isset($_SESSION['personID'])) {
+    $personID = $_SESSION['personID'];
+
+    // Bereiten Sie eine SQL-Abfrage vor, um die userID zu erhalten
+    $stmt = $conn->prepare("SELECT userID FROM user WHERE personID = :personID");
+    $stmt->bindParam(':personID', $personID);
+    $stmt->execute();
+
+    // Fetch the result
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Speichern Sie die userID in der Session
+        $_SESSION['userID'] = $row['userID'];
+    } 
+} 
+
+
+ // definition of variables
+ $userID = $_SESSION["userID"]; // retrieving the user ID from the session
+ $queryUserBookings = "SELECT COUNT(orderID) AS count FROM `order` WHERE userID = :userID"; // SQL query to determine the number of bookings made by the user
+ $stmt2 = $conn->prepare($queryUserBookings); // preparing the SQL query
+ $stmt2->bindParam(':userID', $userID); // binding the user IDs parameter
+ $stmt2->execute(); // execute the prepared query
+ $result2 = $stmt2->fetchAll(); // Retrieving results
+
+ $userBookings = $result2[0]['count']; // number of bookings made by the user
+
+ $recordsPerPage = 5; // number of records per page
+
+ $offset = ($currentPage - 1) * $recordsPerPage; // calculation of the offset - where to start the query
+
+ // SQL query to retrieve booking data based on user ID and page size
+ $queryOfRecords = "SELECT orderID, startDate, endDate, vendorNameAbbr, name, extras, locationName,  overallPrice FROM `order`
+ LEFT JOIN carlocation ON carlocation.carID = `order`.carID
+ LEFT JOIN cartype ON cartype.TypeID = carlocation.typeID
+ LEFT JOIN vendor ON vendor.vendorID = cartype.vendorID
+ LEFT JOIN `location` ON `location`.locationID = carlocation.locationID
+ WHERE userID = :userID ORDER BY endDate DESC LIMIT $offset, $recordsPerPage";
+
+ $stmt = $conn->prepare($queryOfRecords);
+ $stmt->bindParam(':userID', $userID);
+ $stmt->execute();
+
+ $result = $stmt->fetchAll();
+
+ $maxPage = max(ceil($userBookings / $recordsPerPage), 1);
+ // $maxPage = ceil($userBookings / $recordsPerPage); // calculation of the maximum number of pages
+ if ($currentPage > $maxPage) {
+     header("Location: ordersPage.php?page=1"); // redirect to the last page if the current page is greater than the maximum page
+     exit();
+ }
+ ?>
+
+
 <body>
     <div class= "background-banner">
     <!-- Background video for the banner -->
@@ -58,7 +127,8 @@ else {
     <!-- Section for displaying user's bookings -->
     <div class = "orders">
         <div class="orderDiv">
-            <h1 style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; text-align: center; margin:0; font-size:50px;">Deine Buchungen</h1>
+            <h1 class="ordersTitle">Deine Buchungen</h1>
+            <div class="ordersSpacer"></div>
 
             <!-- Table headers for booking details -->
             <table class="orderTable"> 
@@ -71,22 +141,30 @@ else {
                     <td>Auto</td>
                     <td>Extras</td>
                     <td>Standort</td>
+                    <td>Preis</td>
                 </tr>
-                <tr class="orderTabletr">
-                    <td class="orderTabletd">a</td>
-                    <td class="orderTabletd">b</td>
-                    <td class="orderTabletd">c</td>
-                    <td class="orderTabletd">d</td>
-                    <td class="orderTabletd">e</td>
-                    <td class="orderTabletd">f</td>
+                <?php
+                    $rowIndex = 1;
+                    foreach ($result as $row) {
+                     $startDateDisplay = date("d.m.Y", strtotime($row['startDate'])); // format the start date
+                     $endDateDisplay = date("d.m.Y", strtotime($row['endDate'])); // format the end date
+                        ?>
+                <tr class="orderTabletr" <?php echo $rowIndex; ?>>
+                    <td class="orderTabletd"><?php echo $row['orderID']; ?></td>
+                    <td class="orderTabletd"><?php echo $startDateDisplay; ?></td>
+                    <td class="orderTabletd"><?php echo $endDateDisplay; ?></td>
+                    <td class="orderTabletd"><?php echo $row['vendorNameAbbr']; ?> <?php echo $row['name']; ?></td>
+                    <td class="orderTabletd"><?php echo $row['extras']; ?></td>
+                    <td class="orderTabletd"><?php echo $row['locationName']; ?></td>
+                    <td class="orderTabletd"><?php echo $row['overallPrice']; ?></td>
                 </tr>
+                <?php $rowIndex++;
+                    }
+                ?>
                 <tr class="orderTabletr">
-                    <td class="orderTabletd">a</td>
-                    <td class="orderTabletd">b</td>
-                    <td class="orderTabletd">c</td>
-                    <td class="orderTabletd">d</td>
-                    <td class="orderTabletd">e</td>
-                    <td class="orderTabletd">f</td>
+                <td class="orderTabletd"><?php if ($currentPage > 1) { ?><a class="orderText" href="?page=<?php echo ($currentPage - 1); ?>">Vorherige Seite</a><?php } ?> </td>
+                    <td class="orderTabletd" colspan="5"> Seite <?php echo $currentPage; ?> - Buchung <?php echo ($offset + 1); ?> bis <?php echo ($offset + count($result)); ?> <span class="orderTextLight">(von <?php echo $userBookings; ?>)</span>  </td>
+                    <td class="orderTabletd"><?php if ($currentPage < $maxPage) { ?><a class="orderText" href="?page=<?php echo ($currentPage + 1) ?>">Nächste Seite</a><?php } ?> </td>
                 </tr>
                 <!-- hier mit PHP füllen -->
             </table>
@@ -96,7 +174,8 @@ else {
     <!-- User data section -->        
     <div class="data">
         <div class="YourDataDiv">
-            <h1 style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; text-align: center; margin:0; font-size:50px; background-color:white;">Deine Daten</h1>
+            <h1 class="yourDataDivTitle">Deine Daten</h1>
+            <div class="ordersSpacer"></div>
             <!-- Form for updating user data -->
             <form action="orders.php" style="justify-content: center" method="POST">
              
@@ -142,6 +221,7 @@ else {
             </table>
             
             </form>
+            <div class="ordersSpacer"></div>
             
         </div>
     </div>

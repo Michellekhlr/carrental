@@ -358,6 +358,15 @@ h3{
   justify-content: center;
   margin-top: 100px;
 }
+
+.orderText{
+    color: #000000;
+}
+
+.orderTextLight{
+    color: rgb(199, 199, 199);
+}
+
 .orderDiv {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -367,6 +376,29 @@ h3{
   align-items: center;
   background-color: white;
 }
+
+.ordersTitle { 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    width: 100%; 
+    text-align: center; 
+    margin:0; 
+    font-size:50px;
+    background-color: white;
+}
+
+.yourDataDivTitle{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    width: 100%; 
+    text-align: center; 
+    margin:0; font-size:50px; 
+    background-color: white;
+}
+
+.ordersSpacer {
+    width: 100%;
+    height: 20px;
+}
+
 .orderTable {
   width: 100%;
   column-gap: 8px;
@@ -379,8 +411,21 @@ h3{
   font-size: 30px;
   font-weight: bold;
   background-color: white;
-  box-shadow:0 0 10px rgba(0, 0, 0, 0.2);
 }
+
+.orderTabletr{
+    width: 14.2857143%;
+    height: 50px;
+    margin: auto;
+}
+
+.orderTabletd{
+    width: 14.2857143%;
+    color: #000000;
+    height: 50px;
+    margin: auto;
+}
+
 .orderTabletr:nth-child(even){
   background-color: #e9e9e9;
 }
@@ -843,6 +888,16 @@ h3{
     margin-left: 20px;
 }
 
+#book:hover{
+    background-color: white;
+    border-radius: 10px;
+}
+
+#book:active{
+        background-color: #ffbf00;
+        transform:translateX(4px);
+}
+
 /*Buchung abbrechen*/
 #resetbook{
     width: 300px;
@@ -855,6 +910,16 @@ h3{
     border: solid 4px #ffbf00;
     transition-duration: 0.2s;
     cursor: pointer;
+}
+
+#resetbook:hover{
+    background-color: #ffbf00;
+    border-radius: 10px;
+}
+
+#resetbook:active{
+        background-color: white;
+        transform:translateX(4px);
 }
 
 /* CSS-Code for AGB, Datenschutz and Impressum start*/
@@ -2637,6 +2702,9 @@ footer {
     transition-duration: 0.2s;
     cursor: pointer;
     align-items: right;
+}
+#book:hover{
+
 }
 
 /*Kasten um das Buchungsende*/

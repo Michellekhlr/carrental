@@ -43,10 +43,7 @@ if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $_SESSION['username'] = $username;
     $_SESSION['age'] = $age;
     $_SESSION['phoneNumber'] = $phoneNumber;
-} else {
-    // Display an error message if no user is found with the given ID
-    echo "Kein Benutzer mit der ID gefunden.";
-}
+} 
 
 // Check if the saveChanges button was pressed on the form
 if (isset($_POST['saveChanges'])) {
