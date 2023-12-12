@@ -47,30 +47,35 @@ session_start();
 
 <body>
 
-<!--Building the page banner-->
+<!-- Building the page banner with a main picture -->
 <div class="FramePageBanner">
   <div class="MainPictureNews">
   </div>
 </div>
 
-<!--using the company slogan-->
+<!-- Displaying the company slogan in a dedicated section -->
 <div class="SloganNewsAndStory">
     Einfach.Flexibel.
 </div>
 
-<!--Building the Main Article-->
+<!-- Building the Main Article section of the page -->
 <div class="FrameMainArticleNews">
   <div class="FrameContentMainArticleNews">
+        <!-- Frame for the title and subtitle of the main article -->
         <div class="FrameTitleSubtitleContentMainArticle">
             <div class="FrameSubtitleContentMainArticle">
+                <!-- Subtitle of the main article -->
                 <p class="SubtitleMainArticle">News der Woche</p>
             </div>
+            <!-- Title of the main article -->
             <div class="FrameTitleContentMainArticle">
                 <p class="TitleMainArticle">Neu im Sortiment: BMW M4 CS</p>
             </div>
         </div>
+        <!-- Frame for the main text content of the article -->
         <div class="FrameTextContentMainArticle">
             <div class="TextContentMainArticle">
+             <!-- Main article paragraphs with some words in bold for emphasis -->
                     <br>
                     <p class="TextMainArticle">Ab dem <span class="boldText">1. November</span> lässt sich die Track-Legende buchen, aber Vorsicht: <span class="boldText">Nur für Profis!</span></p>
                     <br>
@@ -86,6 +91,7 @@ session_start();
   </div>
 </div>
 
+<!-- Section for the title of additional articles related to the main topic -->
 <div class="FrameTitleMoreArticles">
     <div class="InnerFrameTitleMoreArticles">
         <p class="TitleMoreArticles">
@@ -96,12 +102,16 @@ session_start();
 
 </div>
 
-
+<!-- Section for showcasing more articles, with an accordion-style layout for each article -->
 <div class="FrameMoreArticles">
     <div class="InnerFrameMoreArticles">
+        <!-- Accordion element containing multiple collapsible items for different articles -->
         <div id="accordion">
-            <h3 class="TitelMoreArticles"> Neu im Sortiment: Audi A7 Coupé</h3>
+        <!-- Each h3 and div pair represents a collapsible section with a title and content -->    
+        <h3 class="TitelMoreArticles"> Neu im Sortiment: Audi A7 Coupé</h3>
+        <!-- Content for the Audi A7 article, describing a news article -->
             <div>
+                <!-- Paragraphs describing the features, performance, and experience of driving the Audi A7 Coupe -->
                 <br>
                 <p class="TextMoreArticles">
                 Ab dem 25. Oktober können Sie das neue Audi A7 Coupé buchen, aber Achtung: Dieses Auto ist ein wahres Kraftpaket.
@@ -120,6 +130,7 @@ session_start();
                 </p>
                 <br>
             </div>
+<!-- Similar structure repeated for each additional article-->
             <h3 class="TitelMoreArticles"> ++ Pressemeldung: Drive. eröffnet neuen Standort in Bielefeld ++</h3>
             <div>
                 <p class="TextMoreArticles">
@@ -254,9 +265,9 @@ session_start();
         </div>
     </div>
 </div>
-
- 
-
+<br>
+<br>
+<br>
 </body>
 
 <footer>

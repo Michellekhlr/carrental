@@ -46,31 +46,36 @@ session_start();
 
 <body>
 
-<!--Building the page banner-->
+<!-- Building the page banner with a main picture -->
 <div class="FramePageBanner">
   <div class="MainPictureStory">
     <img src="bilder/MainPictureStory.png"> 
   </div>
 </div>
 
-<!--using the company slogan-->
+<!-- Displaying the company slogan in a dedicated section -->
 <div class="SloganNewsAndStory">
     Einfach.Flexibel.
 </div>
 
-<!--building the Main Article-->
+<!-- Building the Main Article section of the page -->
 <div class="FrameMainArticleStory">
   <div class="FrameContentMainArticleStory">
+        <!-- Frame for the title and subtitle of the main article -->
         <div class="FrameTitleSubtitleContentMainArticle">
             <div class="FrameSubtitleContentMainArticle">
+                <!-- Subtitle of the main article -->
                 <p class="SubtitleMainArticle">MyDrive Test</p>
             </div>
+            <!-- Title of the main article -->
             <div class="FrameTitleContentMainArticle">
                 <p class="TitleMainArticle">Mit der G-Klasse durch die Wüste</p>
             </div>
         </div>
+        <!-- Frame for the main text content of the article -->
         <div class="FrameTextContentMainArticle">
             <div class="TextContentMainArticle">
+            <!-- Main article paragraphs with some words in bold for emphasis -->
                     <br>
                     <p class="TextMainArticle">Wir haben Mercedes <span class="boldText">Offroad-König</span> getestet, in <span class="boldText">extremer Hitze</span> und bei <span class="boldText">starkem Wind</span>. Das ging gut <span class="boldText">bis...</span>
                     </p>
@@ -95,7 +100,7 @@ session_start();
   </div>
 </div>
 
-<!--building the title for more articles-->
+<!-- Section for the title of additional articles related to the main topic -->
 <div class="FrameTitleMoreArticles">
     <div class="InnerFrameTitleMoreArticles">
         <p class="TitleMoreArticles">
@@ -104,12 +109,16 @@ session_start();
     </div>
 </div>
 
-<!--building more articles-->
+<!-- Section for showcasing more articles, with an accordion-style layout for each article -->
 <div class="FrameMoreArticles">
     <div class="InnerFrameMoreArticles">
+        <!-- Accordion element containing multiple collapsible items for different articles -->
         <div id="accordion">
+            <!-- Each h3 and div pair represents a collapsible section with a title and content -->
             <h3 class="TitelMoreArticles"> Mit dem Audi A5 am Meer</h3>
+            <!-- Content for the Audi A5 article, describing a test drive near the sea -->
             <div>
+                <!-- Paragraphs describing the features, performance, and experience of driving the Audi A5 -->
                 <br>
                 <p class="TextMoreArticles">
                 Der exklusive MyDrive Test - Wir testen unsere Flotte, für euch! Dieses Mal nehmen wir den eleganten Audi A5 mit an die Küste, um seine Qualitäten in der malerischen Umgebung des Meeres zu testen.
@@ -131,6 +140,7 @@ session_start();
                 Insgesamt überzeugte der Audi A5 in unserem Test am Meer auf ganzer Linie. Er verbindet Eleganz, Komfort und Leistung in perfekter Harmonie und macht jede Fahrt zu einem Genuss.
                 </p>
             </div>
+<!-- Similar structure repeated for each additional article (BMW X4, Maserati Levante, etc.) -->
             <h3 class="TitelMoreArticles"> Mit dem BMW X4 auf der Landstraße</h3>
             <div>
                 <p class="TextMoreArticles">
@@ -286,6 +296,9 @@ session_start();
         </div>
     </div>
 </div>
+<br>
+<br>
+<br>
 
 </body>
 

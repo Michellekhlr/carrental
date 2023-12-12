@@ -1,124 +1,93 @@
 <?php
+// Enable error reporting for debugging; disabled now
+ // ini_set('display_errors', 1);
+ // error_reporting(E_ALL);
+
+//starting the session
 session_start();
-if (isset($_SESSION['loginStatus']) && $_SESSION['loginStatus']) {
-    $loginStatus = true;
+
+// Include the database configuration file
+include_once "dbConfig.php";
+
+// Retrieve the current user's person ID from the session
+$person_id = $_SESSION['personID'];
+
+// Prepare an SQL statement to fetch user details from the database
+$stmt = $conn->prepare("SELECT 
+    person.firstName, 
+    person.lastName, 
+    person.age, 
+    person.phoneNumber, 
+    user.email, 
+    user.userName
+FROM 
+    user
+INNER JOIN 
+    person ON user.personID = person.personID
+WHERE
+    user.personID = :personID");
+
+// Bind the personID parameter to the prepared statement
+$stmt->bindParam(':personID', $person_id);
+// Execute the SQL query
+$stmt->execute();
+
+// Fetch the results and store them in session variables
+if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $firstname = $row['firstName'];
+    $lastname = $row['lastName'];
+    $email = $row['email'];
+    $username = $row['userName'];
+    $age = $row['age'];
+    $phoneNumber = $row['phoneNumber'];
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+    $_SESSION['email'] = $email;
+    $_SESSION['username'] = $username;
+    $_SESSION['age'] = $age;
+    $_SESSION['phoneNumber'] = $phoneNumber;
+} else {
+    // Display an error message if no user is found with the given ID
+    echo "Kein Benutzer mit der ID gefunden.";
 }
-else {
-    $loginStatus = false;
+
+// Check if the saveChanges button was pressed on the form
+if (isset($_POST['saveChanges'])) {
+    // Retrieve the updated data from the form
+    $person_id = $_SESSION['personID'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $age = $_POST['age'];
+    $phoneNumber = $_POST['phone'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+
+    // Update the person's details in the database
+    $stmt = $conn->prepare("UPDATE person SET firstName=:firstname, lastName=:lastname, age=:age, phoneNumber=:phone WHERE personID = :personID");
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':lastname', $lastname);
+    $stmt->bindParam(':age', $age);
+    $stmt->bindParam(':phone', $phoneNumber);
+    $stmt->bindParam(':personID', $person_id);
+    $stmt->execute();
+
+    // Update the user's details in the database
+    $stmt = $conn->prepare("UPDATE user SET email=:email, userName=:username WHERE personID = :personID");
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':personID', $person_id);
+    $stmt->execute();
+
+    // Update the session variables with the new data
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+    $_SESSION['email'] = $email;
+    $_SESSION['username'] = $username;
+    $_SESSION['age'] = $age;
+    $_SESSION['phoneNumber'] = $phoneNumber;
+
+    // Redirect to OrdersPage.php to prevent form resubmission
+    header("Location: OrdersPage.php");
+    exit();
 }
 ?>
-<!DOCTYPE html>
-<head>
-    <!--Sprachenimport von Google Fonts-->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
-    </style>
-
-    <!--Iconimport von Google-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <!--Styleimport von CSS Datei-->
-    <link rel="stylesheet" href = "CSSMain.css">
-
-    <!--Include Header--> 
-    <?php
-    include('Header.php');
-    ?>
-</head>
-<body>
-    <div class= "background-banner">
-    <video autoplay muted loop class="hintergrundvideo">
-            <source src="Infitite_Loop.mp4" type="video/mp4">
-        </video>
-        <div class= "firstName-banner">
-            <!--Name firstname in banner --> 
-            <?php
-            if (isset($loginStatus) && $loginStatus == true) {
-                        echo "Moin " . $_SESSION['firstname'] . "!";    
-            }
-            else {    
-                echo "Bitte logge dich ein";
-            }
-            ?>
-        </div>
-    </div>
-    <div class="SloganOrders">
-            Einfach.Flexibel.
-    </div>
-    <div class = "orders">
-        <div class="orderDiv">
-            <h1 style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; text-align:left; margin:0; font-size:50px;">Deine Buchungen</h1>
-            <table class="orderTable"> <!-- hier mit PHP füllen -->
-                <tr class="orderTableHeader">
-                    <td >Buchungs-ID</td>
-                    <td>Von</td>
-                    <td>Bis</td>
-                    <td>Auto</td>
-                    <td>Extras</td>
-                    <td>Standort</td>
-                </tr>
-                <tr class="orderTabletr">
-                    <td class="orderTabletd">a</td>
-                    <td class="orderTabletd">b</td>
-                    <td class="orderTabletd">c</td>
-                    <td class="orderTabletd">d</td>
-                    <td class="orderTabletd">e</td>
-                    <td class="orderTabletd">f</td>
-                </tr>
-                <tr class="orderTabletr">
-                    <td class="orderTabletd">a</td>
-                    <td class="orderTabletd">b</td>
-                    <td class="orderTabletd">c</td>
-                    <td class="orderTabletd">d</td>
-                    <td class="orderTabletd">e</td>
-                    <td class="orderTabletd">f</td>
-                </tr>
-                <!-- hier mit PHP füllen -->
-            </table>
-        </div>
-    </div>
-    <div class="data">
-        <div class="YourDataDiv">
-            <h1 style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; text-align:left; margin:0; font-size:50px; background-color:white">Deine Daten</h1>
-            <form action="#" method="post"></form>
-            <!--hier vorbelegen-->
-            <table class="YourDataTable">
-                <tr>
-                    <td><label for="firstName">Vorname:</label> <br>
-                        <div class="input-container"> <input type="text" name="firstName" class="myDataInput">
-                        <i class="fas">&#xf303;</i>
-                    </div></td>
-                    <td><label for="lastName">Nachname:</label> <br>
-                        <div class="input-container"> <input type="text" name="LastName" class="myDataInput">
-                        <i class="fas">&#xf303;</i>    
-                    </div></td>    
-                    <td><label for="age">Alter:</label> <br>
-                        <div class="input-container"> <input type="number" name="age" class="myDataInput">
-                        <i class="fas">&#xf303;</i>    
-                    </div></td>    
-                </tr>
-                <tr>
-                    <td><label for="email">Email:</label> <br>
-                        <div class="input-container"> <input type="email" name="email" class="myDataInput">
-                        <i class="fas">&#xf303;</i>    
-                    </div></td>
-                    <td><label for="userName">Benutzername:</label> <br>
-                        <div class="input-container"> <input type="text" name="userName" class="myDataInput">
-                        <i class="fas">&#xf303;</i>    
-                    </div></td>
-                    <td><label for="phone">Mobilnummer:</label> <br>
-                    <div class="input-container"><input type="tel" name="phone" class="myDataInput"><i class="fas">&#xf303;</i>    
-                    </div></td>
-                </tr>
-            </table>
-            <button type="submit" class="myDataButton">Speichern</button>
-        </div>
-    </div>
-</body>
-<footer>
-    <!--Include Footer-->
-<?php
-    include('Footer.html');
-    ?>
-</footer>
-</html>

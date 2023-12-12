@@ -36,7 +36,7 @@ if (isset($_SESSION['loginStatus'])) {
         <a href="Produktübersicht.php?angebot=ja"> <!-- Activating checkbox " offer" (id="checkboxoverview3" ) by klicking "Unsere Angebote" via query-selector-->
           <h2 class="navigator">Unsere Angebote</h2>
         </a>
-        <a href="orders.php">
+        <a href="ordersPage.php">
           <h2 class="navigator">Buchungen verwalten</h2>
         </a>
         <a href="AboutUs.php">

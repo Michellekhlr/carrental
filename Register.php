@@ -115,5 +115,4 @@ if (isset($_POST['register'])) {
     header("Location: Welcome.php"); // Redirect after successful insertion
     exit();
     $_SESSION['error'] = "";
-    $conn->close();
 ?>
