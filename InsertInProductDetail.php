@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
 //initializing variables
 $carID = "";
@@ -48,7 +50,7 @@ if($carID) {
     $stmt = $conn->prepare("SELECT COUNT(*) FROM `order` 
     INNER JOIN carlocation ON `order`.carID = carlocation.carID 
     WHERE carlocation.typeID = :typeID 
-    AND `order`.locationID = :locationID 
+    AND carlocation.locationID = :locationID 
     AND `order`.startDate <= :endDate 
     AND `order`.endDate >= :startDate");
     $stmt->bindParam(':typeID', $typeID);
