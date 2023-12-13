@@ -132,11 +132,10 @@ if (isset($_SESSION['personID'])) {
         <div class="orderDiv">
             <h1 class="ordersTitle">Deine Buchungen</h1>
             <div class="ordersSpacer"></div>
+            <?php if ($userBookings > 0) { ?>
 
-            <!-- Table headers for booking details -->
             <table class="orderTable"> 
                 
-            <!-- hier mit PHP füllen -->
                 <tr class="orderTableHeader">
                     <td >Buchungs-ID</td>
                     <td>Von</td>
@@ -171,6 +170,11 @@ if (isset($_SESSION['personID'])) {
                 </tr>
                 <!-- hier mit PHP füllen -->
             </table>
+            <?php
+            } else {
+                echo '<p class="noBookingsText">Es liegen keine Buchungen vor.</p>';
+            }
+            ?>
         </div>
     </div>
     
