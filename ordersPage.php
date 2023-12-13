@@ -132,6 +132,7 @@ if (isset($_SESSION['personID'])) {
         <div class="orderDiv">
             <h1 class="ordersTitle">Deine Buchungen</h1>
             <div class="ordersSpacer"></div>
+            <?php if (isset($loginStatus) && $loginStatus == true) { ?>
             <?php if ($userBookings > 0) { ?>
 
             <table class="orderTable"> 
@@ -175,6 +176,11 @@ if (isset($_SESSION['personID'])) {
                 echo '<p class="noBookingsText">Es liegen keine Buchungen vor.</p>';
             }
             ?>
+                        <?php
+            } else {
+                echo '<p class="noBookingsText">Bitte melde dich an, um deine Buchen zu sehen</p>';
+            }
+            ?>
         </div>
     </div>
     
@@ -187,6 +193,7 @@ if (isset($_SESSION['personID'])) {
             <form action="orders.php" style="justify-content: center" method="POST">
              
              <!-- Input fields pre-populated with user data from session variables -->
+             <?php if (isset($loginStatus) && $loginStatus == true) { ?>
              <table class="YourDataTable">
                 <tr>
                     <td><label for="firstname">Vorname:</label><br>
@@ -228,6 +235,11 @@ if (isset($_SESSION['personID'])) {
             </table>
             
             </form>
+            <?php
+            } else {
+                echo '<p class="noBookingsText">Bitte melde dich an, um Daten zu ändern</p>';
+            }
+            ?>
             <div class="ordersSpacer"></div>
             
         </div>
