@@ -1,6 +1,8 @@
 <?php
+// debug info:
 // ini_set('display_errors', 1);
 // error_reporting(E_ALL);
+
 // Start the session to access session variables
 session_start();
 // Include the database configuration file
@@ -162,7 +164,7 @@ if (isset($_SESSION['personID'])) {
                 <?php $rowIndex++;
                     }
                 ?>
-                <tr class="orderTabletr">
+                <tr class="orderTableLastRow">
                 <td class="orderTabletd"><?php if ($currentPage > 1) { ?><a class="orderText" href="?page=<?php echo ($currentPage - 1); ?>">Vorherige Seite</a><?php } ?> </td>
                     <td class="orderTabletd" colspan="5"> Seite <?php echo $currentPage; ?> - Buchung <?php echo ($offset + 1); ?> bis <?php echo ($offset + count($result)); ?> <span class="orderTextLight">(von <?php echo $userBookings; ?>)</span>  </td>
                     <td class="orderTabletd"><?php if ($currentPage < $maxPage) { ?><a class="orderText" href="?page=<?php echo ($currentPage + 1) ?>">Nächste Seite</a><?php } ?> </td>

@@ -421,14 +421,25 @@ h3{
 
 .orderTabletd{
     width: 14.2857143%;
-    color: #000000;
     height: 50px;
     margin: auto;
 }
 
+.orderTableLastRow{
+    width: 14.2857143%;
+    height: 50px;
+    margin: auto;
+    background-color: white;
+}
+
 .orderTabletr:nth-child(even){
   background-color: #e9e9e9;
+  color: black
 }
+.orderTabletr:nth-child(odd){
+    background-color: #b9b9b9;
+    color: white;
+  }
 .data {
   display: flex;
   align-content: center;
