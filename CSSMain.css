@@ -894,6 +894,14 @@ h3{
 }
 
 /*Buchungsbutton*/
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
 #book{
     width: 300px;
     font-size: 32px;
@@ -905,8 +913,7 @@ h3{
     border: solid 4px #ffbf00;
     transition-duration: 0.2s;
     cursor: pointer;
-    float: right;
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 #book:hover{

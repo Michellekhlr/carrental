@@ -1,13 +1,39 @@
 <?php
+
+// Include the database configuration file
+include_once "dbConfig.php";
+
+// debug info:
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+
+// starting the session
 session_start();
 
-if ($_SESSION["age"] < $_SESSION["minAgeError"]) {
+if (isset($_SESSION["minAgeError"]) && $_SESSION["age"] < $_SESSION["minAgeError"]) {
     $_SESSION['minAgeError'] = 'Du bist zu jung, um dieses Auto zu buchen.';
 }
 //hier session variablen durhc buchungsvorgangprozess
 $_SESSION['locationName'] = 'Hamburg';
 $_SESSION['startdate'] = '2023-12-08';
 $_SESSION['enddate'] = '2023-12-11';
+
+// Überprüfen Sie, ob eine personID in der Session vorhanden ist
+if (isset($_SESSION['personID'])) {
+    $personID = $_SESSION['personID'];
+
+    // Bereiten Sie eine SQL-Abfrage vor, um die userID zu erhalten
+    $stmt = $conn->prepare("SELECT userID FROM user WHERE personID = :personID");
+    $stmt->bindParam(':personID', $personID);
+    $stmt->execute();
+
+    // Fetch the result
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Speichern Sie die userID in der Session
+        $_SESSION['userID'] = $row['userID'];
+    } 
+} 
+
 ?>
 <!DOCTYPE html>
 
@@ -93,19 +119,23 @@ $_SESSION['enddate'] = '2023-12-11';
             </tr>
         </table><br>
 
-        <div style="padding-left: 570px; padding-top: 30px">
-
-        <?php if ($_SESSION['minAgeError']) : ?> <!--error when user is to young to drive car -->
-                        <p class="minAgeError"><?php echo $_SESSION["minAgeError"]; ?> </p>
-        <?php else : ?>
-          <!-- if user is allowed to drive in show book button -->
-          <button id="book" onclick="#">Kostenpflichtig buchen</button>
-        <?php endif; ?>
-        <button id="resetbook" onclick="goBack()" >Abbrechen</button>
+        
+        <div class="buttonContainer">
+    <?php if ($_SESSION['minAgeError']) : ?> <!--error when user is too young to drive car -->
+        <p class="minAgeError"><?php echo $_SESSION["minAgeError"]; ?></p>
+    <?php else : ?>
+        <!-- if user is allowed to drive then show book button -->
+        <form method="post" action="Buchung.php">
+            <button id="resetbook" onclick="goBack()">Abbrechen</button>
+            <button id="book" type="submit" name="book">Kostenpflichtig buchen</button>
+        </form>
+    <?php endif; ?>
+</div>
         </div>
     </div>
     </div><br><br><br>
 </body>
+
 <script>
     function goBack() {
         window.history.back();

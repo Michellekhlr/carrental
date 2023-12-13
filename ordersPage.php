@@ -87,7 +87,7 @@ if (isset($_SESSION['personID'])) {
  LEFT JOIN cartype ON cartype.TypeID = carlocation.typeID
  LEFT JOIN vendor ON vendor.vendorID = cartype.vendorID
  LEFT JOIN `location` ON `location`.locationID = carlocation.locationID
- WHERE userID = :userID ORDER BY endDate DESC LIMIT $offset, $recordsPerPage";
+ WHERE userID = :userID ORDER BY endDate DESC, orderID DESC LIMIT $offset, $recordsPerPage";
 
  $stmt = $conn->prepare($queryOfRecords);
  $stmt->bindParam(':userID', $userID);
@@ -96,7 +96,6 @@ if (isset($_SESSION['personID'])) {
  $result = $stmt->fetchAll();
 
  $maxPage = max(ceil($userBookings / $recordsPerPage), 1);
- // $maxPage = ceil($userBookings / $recordsPerPage); // calculation of the maximum number of pages
  if ($currentPage > $maxPage) {
      header("Location: ordersPage.php?page=1"); // redirect to the last page if the current page is greater than the maximum page
      exit();
@@ -117,7 +116,7 @@ if (isset($_SESSION['personID'])) {
                         echo "Moin " . $_SESSION['firstname'] . "!";    
             }
             else {    
-                echo "Bitte logge dich ein";
+                echo "Bitte melde dich an";
             }
             ?>
         </div>

@@ -1,6 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// debug info:
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+
+// starting the session
 session_start();
 //initializing variables
 $carID = "";
@@ -108,6 +111,7 @@ if($carID) {
     $_SESSION['airCondition']=$airCondition;
     $_SESSION['gps']=$gps;
     $_SESSION['price']=$price;
+    $_SESSION['carID']=$carID;
 
     header("Location: Produktdetailseite.php"); //direct after sucessful insertion
     exit();
