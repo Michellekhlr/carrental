@@ -251,6 +251,7 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Stadt']) || isset($_SESSIO
 <!DOCTYPE html>
 
 <head>
+    <title>Produktübersicht - Drive.</title><link rel="icon" type="image/png" href="bilder/Drive.png">
     <!--Sprachenimport von Google Fonts-->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
@@ -265,7 +266,6 @@ if(isset($_SESSION['Hersteller']) || isset($_SESSION['Stadt']) || isset($_SESSIO
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
 
-    <title>Produktübersicht</title>
 
     <!--Include Header-->
     <div class="band" style="text-align: left; background-color:  black; color: white; margin-top: 0px;">

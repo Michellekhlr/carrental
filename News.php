@@ -4,6 +4,7 @@ session_start();
 <!DOCTYPE html>
 
 <head>
+    <title>News - Drive.</title><link rel="icon" type="image/png" href="bilder/Drive.png">
     <!--Sprachenimport von Google Fonts-->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
@@ -25,7 +26,6 @@ session_start();
     <!--Import von jquery-->
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Drive. - News</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>

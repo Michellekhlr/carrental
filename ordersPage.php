@@ -18,6 +18,7 @@ else {
 ?>
 <!DOCTYPE html>
 <head>
+    <title>Buchung verwalten - Drive.</title><link rel="icon" type="image/png" href="bilder/Drive.png">
     <!-- Import Google Fonts for specific font styles -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');

@@ -3,6 +3,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <head>
+    <title>Willkommen! - Drive.</title><link rel="icon" type="image/png" href="bilder/Drive.png">
     <!--Sprachenimport von Google Fonts-->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
