@@ -14,10 +14,8 @@ session_start();
     <script src="https://kit.fontawesome.com/9740fceffb.js" crossorigin="anonymous"></script>
  
     <!--Kalendarimport jQuery für Datum-/Zeitraumauswahl-->
-    <title>jQuery UI Datepicker - Default functionality</title> 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <title>jQuery UI Datepicker - Select a Date Range</title>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
