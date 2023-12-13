@@ -33,8 +33,8 @@ session_start();
 <body>
 
     <!-- Weißer Banner mit Slogan -->
-    <div class="WirSindDrive">
-        <h1>Wir sind Drive.</h1>
+    <div class="SloganAboutUs">
+    Wir sind Drive.
     </div>
 
     <!-- Teammitglieder - Obere Zeile -->
@@ -163,7 +163,7 @@ session_start();
                 <div class="member-image"><img src="bilder/Kirian.svg" alt="" class="member-image"></div>
                 <p class="team-member-name">Kirian</p>
                 <p class="team-member-title">Unser CDO</p>
-                <p class="quote">"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui deserunt."</p>
+                <p class="quote">"Eine Autovermietung ist wie eine Schachtel Pralinen - man weiß nie was man kriegt."</p>
 
                 <!-- Im Team seit -->
                 <p class="team-member-lieblingsauto">
@@ -187,6 +187,10 @@ session_start();
             </div>
 
         </section>
+
+        <div class="SloganAboutUs">
+         Schnell & Sicher ans Ziel
+        </div>
 
     </div>
 

@@ -1061,17 +1061,18 @@ h3{
 /* CSS AboutUs start */
 
 /* Stil für den weißen Banner mit Slogan */
-.WirSindDrive {
-    width: 1920px;
-    background-color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 30px;
-    box-shadow: 0px 4px 8px #a9a9a9; /* Adds a shadow to the Banner-frame */
-}
 
-.WirSindDrive h1 {
-    margin: 0;
+.SloganAboutUs { 
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    width: 1920px;
+    height:70px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #ffbf00;
+    margin-left: 0px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Stil für die Teammitglieder */
@@ -1939,9 +1940,10 @@ footer {
     text-align: center;
     padding-top: 6px;
     padding-bottom: 6px;
-    background-color: #FFFFFF;
+    background-color: #ffbf00;
     margin-top: 0px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    line-height: 64px;
 }
 
 /*Formatierung des Gesamtrahmens um die vorgestellten Autos (Karussell).*/
@@ -1949,16 +1951,15 @@ footer {
     background-color: #ffffff;
     padding: 40px 0px;
     position: relative;
-    height: 225px;
-    width: 100%;
-    margin-top: 60px;
+    height: 270px;
+    width: 1920px;
     margin-bottom: 60px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .kategoriename{
     color: #000000;
-    font-size: 24px;
+    font-size: 30px;
     font-family: 'Source Sans 3', sans-serif;
     font-weight: bold;
     color: #ffbf00;
@@ -2155,7 +2156,7 @@ footer {
 
 .infos p{
     color: #ffbf00;
-    font-family: 'Source Sans 3', sans-serif;
+    font-family: 'Bebas Neue', sans-serif;
 }
 
 /*Deutschlandkarte und Standorte*/
@@ -2715,24 +2716,6 @@ footer {
 .progress1:hover{
     text-transform: 0.5s;
     box-shadow: 5px 5px 20px #888888;
-}
-
- 
-/*Buchungsbutton*/
-#book{
-    font-size: 32px;
-    color: black;
-    background-color: #ffbf00;
-    box-shadow: 0px 0px 5px #888888;
-    font-family: 'Bebas Neue', sans-serif;
-    border-radius: 5px;
-    border: solid 4px #ffbf00;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    align-items: right;
-}
-#book:hover{
-
 }
 
 /*Kasten um das Buchungsende*/
