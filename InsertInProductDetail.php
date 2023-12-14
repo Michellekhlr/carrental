@@ -24,10 +24,10 @@ $airCondition = "";
 $gps = "";
 $price = "";
 
-//$carID = $_SESSION['carID'];
-//$locationID = $_SESSION['locationID'];
-//$startDate = $_SESSION['startDate];
-//$endDate = $_SESSION['endDate];
+// $carID = $_SESSION['carID'];
+// $locationID = $_SESSION['locationID'];
+// $startDate = $_SESSION['startDate'];
+// $endDate = $_SESSION['endDate'];
 $carID = 5;
 $locationID = 3;
 $startDate = '2023-12-20';

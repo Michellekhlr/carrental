@@ -523,7 +523,7 @@ h3{
 
 /*Filterelement*/
 .filtercolumn{
-    height: 1500px; 
+    height: 1320px; 
     width: 350px; 
     background-color: white; 
     box-shadow: 3px 5px 10px #888888; 
@@ -697,11 +697,35 @@ h3{
     cursor: pointer;
     font-family: 'Bebas Neue', sans-serif;
 }
- 
+
+
 /*Checkboxfilter*/
 .checkboxgeneral{
     align-items: center;
     display: flex;
+    font-size: 25px;
+    margin-left: 20px;
+    color: black;
+    background-color: white;
+    box-shadow: 0px 0px 5px #888888;
+    border-radius: 5px;
+    border: solid 2px #ffbf00;
+    width: 300px;
+    height: 50px;    
+}
+ 
+.checkboxgeneral p{
+    padding-left: 10px;
+}
+
+.current-page{
+    border-radius: 10px;
+    background-color: #ffbf00;
+}
+
+#checkboxfilter1,
+#checkboxfilter2,
+#checkboxfilter3{
     font-size: 25px;
     margin-left: 20px;
     color: black;
@@ -812,7 +836,7 @@ h3{
     width: 100%;
     height: 90px;
     text-align: center;
-    box-sizing: border-box;
+    
 }
 
 .zellenfooter1{
