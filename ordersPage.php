@@ -177,7 +177,7 @@ if (isset($_SESSION['personID'])) {
             ?>
                         <?php
             } else {
-                echo '<p class="noBookingsText">Bitte melde dich an, um deine Buchen zu sehen</p>';
+                echo '<p class="noBookingsText">Bitte melde dich an, um deine Buchungen zu sehen</p>';
             }
             ?>
         </div>
@@ -236,7 +236,7 @@ if (isset($_SESSION['personID'])) {
             </form>
             <?php
             } else {
-                echo '<p class="noBookingsText">Bitte melde dich an, um Daten zu ändern</p>';
+                echo '<p class="noBookingsText">Bitte melde dich an, um deine Daten zu ändern</p>';
             }
             ?>
             <div class="ordersSpacer"></div>
