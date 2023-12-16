@@ -29,24 +29,41 @@
                 <td width="20%" style="vertical-align: top;">
                     <ul class="flexcontainer">
                         <h1>Quick Links</h1>
-                        <li class="p1">Buchen</li><br>
-                        <li class="p1">Angebote</li><br>
+                    <a href="Produktübersicht.php?buchen=ja"> 
+                        <li class="p1">Buchen</li><br> <!--The query-parameter makes sure, that checkbox " offer" (id="checkboxoverview3") is deactivated when klicking "Buchen"-->
+                    </a>
+                    <a href="Produktübersicht.php?angebot=ja">
+                        <li class="p1">Angebote</li><br> <!-- Activating checkbox " offer" (id="checkboxoverview3" ) by klicking "Unsere Angebote" via query-selector-->
+                    </a>
+                    <a href="AboutUs.php">
                         <li class="p1">Über uns</li><br>
+                    </a>
+                    <a href="Homepage.php#Standorte">
                         <li class="p1">Standorte</li><br>
+                    </a>
                     </ul>
                 </td>
                 <td width="20%" style="vertical-align: top;">
                     <ul class="flexcontainer">
                         <h1><i>MyDrive.</i></h1>
+                    <a href="News.php">
                         <li class="p1">NEWS</li><br>
-                        <li class="p1">Anmelden / Registrieren</li><br>
+                    </a>
+                    <a href="LoginPage.php" class="p1">
+                        <li class="p1">Anmelden </a>/ <a href="RegisterPage.php" class="p1"> Registrieren </a></li> <br>
+                    <a href="orders.php">
                         <li class="p1">Meine Buchungen</li><br>
-                        <li class="p1"><a href="FAQ.php">FAQ´s</a></li>
+                    </a>
+                    <a href="FAQ.php">
+                        <li class="p1">FAQ</li>
+                    </a>
                     </ul>
                 </td>
                 <td width="25%" style="vertical-align: top;">
                     <ul class="flexcontainer">
-                        <h1>Kontakt</h1>
+                    <a href="Homepage.php#Kontakt">
+                        <h1 class="Kontankt">Kontakt</h1>
+                    </a>
                         <li>Willy-Brandt-Straße 75</li>
                         <li>20459 Hamburg</li><br>
                         <li>040 822160900</li>
@@ -91,9 +108,15 @@
 
         <div style="background-color: black;"><br>
             <div style="display: flex; justify-content: center; align-items: center; background-color: black; color: white;">
-                <p class="legal">Impressum</p>
-                <p class="legal">AGB</p>
-                <p class="legal">Datenschutz</p>
+                <a href="Impressum.php">
+                    <p class="legal">Impressum</p>
+                </a>
+                <a href="AGB.php">
+                    <p class="legal">AGB</p>
+                </a>
+                <a href="Datenschutz.php">
+                    <p class="legal">Datenschutz</p>
+                </a>
             </div>
             <br>
             <div style="text-align: center;">                

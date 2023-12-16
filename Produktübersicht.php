@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // check and handle 'buchen' Query-Parameter, deactivate all filters and checkboxes
 if (isset($_GET['buchen'])) {
-    $_SESSION['checkboxoverview3'] = '0'; // Deaktivate Checkbox (offer)
+    $_SESSION['checkboxoverview3'] = '0'; // Deactivate Checkbox (offer)
     $_SESSION['Stadt'] = 'alle';
     $_SESSION['Hersteller'] = 'alle';
     $_SESSION['Sitzanzahl'] = 'alle';
@@ -68,7 +68,7 @@ if (isset($_GET['buchen'])) {
 
 // // check and handle 'angebot' Query-Parameter, deactivate all filters and checkboxes despite "Im Angebot"
 if (isset($_GET['angebot'])) {
-    $_SESSION['checkboxoverview3'] = '1'; // Aktivate Checkbox (offer)
+    $_SESSION['checkboxoverview3'] = '1'; // Activate Checkbox (offer)
     $_SESSION['Stadt'] = 'alle';
     $_SESSION['Hersteller'] = 'alle';
     $_SESSION['Sitzanzahl'] = 'alle';

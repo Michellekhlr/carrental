@@ -21,8 +21,8 @@ session_start();
     <!--Styleimport von CSS Datei-->
     <link rel="stylesheet" href="CSSMain.css">
 
-        <!--Include Header-->
-        <?php
+    <!--Include Header-->
+    <?php
     include('Header.php');
     ?>
 
