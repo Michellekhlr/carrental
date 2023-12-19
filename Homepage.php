@@ -1,6 +1,7 @@
 <?php
 session_start();
 ?>
+
 <!DOCTYPE html>
 
 <head>
@@ -166,7 +167,7 @@ session_start();
                 <div class="schnellsucheformular">
 
                     <div class="schnellfilter">
-                        <label for="standort">Standort</label><br><!--Auswahl der Standorte-->
+                        <label for="standort">Standort</label><br> <!--Auswahl der Standorte-->
                         <select id="standort" name="Stadt">
                             <option value="alle" disabled selected hidden>Wähle einen Standort</option>
                             <option value="alle">Alle</option>

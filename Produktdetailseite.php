@@ -11,10 +11,7 @@ if (isset($_SESSION['loginStatus']))
       $loginStatus = false;
     }
 
-    //Variable berechnet aus Buchungsprozessleiste
-    $date1=date_create("2023-12-08");
-    $date2=date_create("2023-12-11");
-     $diff = $date1->diff($date2);
+     $diff = $_SESSION['startDate']->diff($_SESSION['endDate']);
      $_SESSION['dateDiff'] = intval($diff->format("%a"));
 
     $_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
@@ -45,61 +42,24 @@ if (isset($_SESSION['loginStatus']))
     <?php
      include('Header.php');
     ?>
+
+     <!--Processbar dynamic settings-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+            $("#progress1").fadeTo("slow", 0.3);
+            $("#progress2").fadeTo("slow", 0.4);
+            $("#progress3").fadeTo(0.2);
+        });
+    </script>
+
 </head>
 
 <body> 
-    <!--Overview of booking process-->
-<div class="progress">
-    <table style="background-color: #e9e9e9;">
-        <tr>
-            <td id="progress1">
-                <a href="#"><!--Platzhalterlink für Homepagefilter-->
-                    <ul>
-                        <li class="p2" style="font-size: 20px; color: black;">
-                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                    <label for="filter0" class="nospacing" style="display: inline-block; margin-right: 10px;">Standort<i class="fas fa-edit" style="font-size: 15px; color:black"></i></label>
-                                    <select name="filter0" id="filterdropdown">
-                                        <?php foreach ($filterOptions['Stadt'] as $option): ?>
-                                            <option value="<?php echo $option;?>" <?php echo ($_SESSION['Stadt'] == $option) ? 'selected' : ''; ?>>
-                                                <?php echo $option; ?>
-                                            </option>
-                                        <?php endforeach; ?>    
-                                    </select>
-                                </form>
-                        </li>
-                        <li class="p2" style="font-size: 15px; display: inline-block;">
-                            <div class="date-picker-container" style="margin-top: 5px;">
-                                <label for="zeitraum" style="margin-top: 2px; margin-right: 10px;">Zeitraum</label><br>
-                                <input type="text" id="fromprogress" name="from" required placeholder="Abholung">|
-                                <input type="text" id="toprogress" name="toprogress" required placeholder="Rückgabe">
-                                <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>
-                            </div>
-                            <!-- <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>  -->
-                        <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>1.</b></i></li>
-                    </ul>
-                </a>   
-            </td>
-            <td id="progress2">
-                <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
-                    <ul>
-                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
-                        <li class="p2" style="font-size: 15px;"><span class="nospacing">230 Autos | 64 Modelle | 14 Standorte | 100% Fahrspaß</span></li>
-                        <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>2.</b></i></li>             
-                    </ul>
-                </a>
-            </td>
-            <td id="progress3">
-                <a href="https://www.google.com/?hl=de"><!--Platzhalterlink für Homepagefilter-->
-                    <ul>
-                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Buchung abschließen</span></li>
-                        <li class="p2" style="font-size: 15px;"><span class="nospacing">Rund-um-Schutz, Kindersitz oder Dachbox gefällig?</span></li>
-                        <li class="p2" style="float: right; margin-right: 10px; font-size: 20px"><i><b>3.</b></i></li>
-                    </ul>
-                </a>
-            </td>
-        </tr>
-    </table>
-</div><br>
+
+<?php
+    include('progressbar.php');
+?>
 
     <div class="produktdetailseite">
 

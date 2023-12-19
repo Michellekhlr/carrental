@@ -1,7 +1,4 @@
 <?php
-// debug info:
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
 
 // starting the session
 session_start();
@@ -24,14 +21,10 @@ $airCondition = "";
 $gps = "";
 $price = "";
 
-// $carID = $_SESSION['carID'];
-// $locationID = $_SESSION['locationID'];
-// $startDate = $_SESSION['startDate'];
-// $endDate = $_SESSION['endDate'];
-$carID = 5;
-$locationID = 3;
-$startDate = '2023-12-20';
-$endDate = '2023-12-30';
+$carID = $_SESSION['carID'];
+$location = $_SESSION['location'];
+$startDate = $_SESSION['startDate'];
+$endDate = $_SESSION['endDate'];
 
 include_once "dbConfig.php";
 
@@ -43,21 +36,24 @@ if($carID) {
     $typeID = $stmt->fetchColumn();
 
     //filter all cars of location without date parameter
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM carlocation WHERE typeID=:typeID AND locationID=:locationID");
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM carlocation INNER JOIN location ON location.locationID = carlocation.locationID WHERE typeID=:typeID AND location.locationName=:location");
     $stmt->bindParam(':typeID',$typeID);
-    $stmt->bindParam(':locationID',$locationID);
+    $stmt->bindParam(':location',$location);
     $stmt->execute();
     $availabilityWODate = $stmt->fetchColumn();
 
     //filter cars in orders
+
+    //in der carlocation auf typ und standort filtern, dann diese ids in der oders mit start und ende datum filtern
     $stmt = $conn->prepare("SELECT COUNT(*) FROM `order` 
     INNER JOIN carlocation ON `order`.carID = carlocation.carID 
+    INNER JOIN location ON `order`.locationID = location.locationID
     WHERE carlocation.typeID = :typeID 
-    AND carlocation.locationID = :locationID 
+    AND location.locationName = :location
     AND `order`.startDate <= :endDate 
     AND `order`.endDate >= :startDate");
     $stmt->bindParam(':typeID', $typeID);
-    $stmt->bindParam(':locationID', $locationID);
+    $stmt->bindParam(':location', $location);
     $stmt->bindParam(':startDate', $startDate);
     $stmt->bindParam(':endDate', $endDate);
     $stmt->execute();

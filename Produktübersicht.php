@@ -11,7 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_POST["clear"])) {
         // Save filter selections to the session
         $_SESSION['OrderByPrice'] = $_POST['OrderByPrice'] ?? "Preis Aufsteigend";
-        $_SESSION['Stadt'] = $_POST['Stadt'] ?? "alle";
+        $_SESSION['location'] = $_POST['Stadt'] ?? "alle";
+        $_SESSION['startDate'] = $_POST['from'] ?? date('Y-m-d');
+        $_SESSION['endDate'] = $_POST['to'] ?? date('Y-m-d', strtotime('+1 day'));
         $_SESSION['Hersteller'] = $_POST['Hersteller'] ?? "alle";
         $_SESSION['Sitzanzahl'] = $_POST['Sitzanzahl'] ?? "alle";
         $_SESSION['Türenanzahl'] = $_POST['Türenanzahl'] ?? "alle";
@@ -23,16 +25,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['checkboxoverview1'] = isset($_POST['checkboxoverview1']) ? 1 : 0;
         $_SESSION['checkboxoverview2'] = isset($_POST['checkboxoverview2']) ? 1 : 0;
         $_SESSION['checkboxoverview3'] = isset($_POST['checkboxoverview3']) ? 1 : 0;
-        $_SESSION['from'] = $_POST['from'] ?? date('Y-m-d');
-        $_SESSION['to'] = $_POST['to'] ?? date('Y-m-d', strtotime('+1 day'));
+        // $_SESSION['from'] = $_POST['from'] ?? date('Y-m-d');
+        // $_SESSION['to'] = $_POST['to'] ?? date('Y-m-d', strtotime('+1 day'));
 
 
         // Redirect to prevent form resubmission on page refresh
         header("Location: {$_SERVER['PHP_SELF']}");
         exit;
+
     } elseif (isset($_POST["clear"])) {
         // Clear filter selections from the session
-        $_SESSION['Stadt'] = 'alle';
         $_SESSION['Hersteller'] = 'alle';
         $_SESSION['Sitzanzahl'] = 'alle';
         $_SESSION['Türenanzahl'] = 'alle';
@@ -54,8 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // check and handle 'buchen' Query-Parameter, deactivate all filters and checkboxes
 if (isset($_GET['buchen'])) {
-    $_SESSION['checkboxoverview3'] = '0'; // Deactivate Checkbox (offer)
-    $_SESSION['Stadt'] = 'alle';
+    $_SESSION['checkboxoverview3'] = '0'; // Deaktivate Checkbox (offer)
+    $_SESSION['location'] = 'alle';
+    $_SESSION['startDate'] = date('Y-m-d');
+    $_SESSION['endDate'] = date('Y-m-d', strtotime('+1 day'));
     $_SESSION['Hersteller'] = 'alle';
     $_SESSION['Sitzanzahl'] = 'alle';
     $_SESSION['Türenanzahl'] = 'alle';
@@ -69,10 +73,12 @@ if (isset($_GET['buchen'])) {
 }
 
 
-// // check and handle 'angebot' Query-Parameter, deactivate all filters and checkboxes despite "Im Angebot"
+// // // check and handle 'angebot' Query-Parameter, deactivate all filters and checkboxes despite "Im Angebot"
 if (isset($_GET['angebot'])) {
-    $_SESSION['checkboxoverview3'] = '1'; // Activate Checkbox (offer)
-    $_SESSION['Stadt'] = 'alle';
+    $_SESSION['checkboxoverview3'] = '1'; // Aktivate Checkbox (offer)
+    $_SESSION['location'] = 'alle';
+    $_SESSION['startDate'] = date('Y-m-d');
+    $_SESSION['endDate'] = date('Y-m-d', strtotime('+1 day'));
     $_SESSION['Hersteller'] = 'alle';
     $_SESSION['Sitzanzahl'] = 'alle';
     $_SESSION['Türenanzahl'] = 'alle';
@@ -86,7 +92,7 @@ if (isset($_GET['angebot'])) {
 }
 
 
-// Set filter options
+// Initialize filter options
 $filterOptions = [
     'Stadt' => ['alle', 'Hamburg', 'Berlin', 'München', 'Bielefeld', 'Bochum', 'Dortmund', 'Bremen', 'Dresden', 'Freiburg', 'Köln', 'Leipzig', 'Nürnberg', 'Paderborn', 'Rostock'],
     'Hersteller' => ['alle', 'BMW', 'Mercedes-Benz', 'Audi', 'Volkswagen', 'Ford', 'Range Rover', 'Jaguar', 'Mercedes-AMG', 'Maserati', 'Opel', 'Skoda'],
@@ -110,24 +116,21 @@ $typeID = "";
 $carInfo = "";
 $carAvailability = "";
 
-$startDateRent = '2023-08-19';
-$endDateRent = '2023-09-19';
-
 //Check if values are set in the filters
-if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_SESSION['Türenanzahl']) || isset($_SESSION['Getriebe']) || isset($_SESSION['Kategorie']) || isset($_SESSION['Antrieb']) || isset($_SESSION['Preis']) || isset($_SESSION['Mindestalter']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
-
-    try {
-        //Dynamic SQL query based on the filters selected
-        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, nameExtension, carID, cartype.typeID
+if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_SESSION['Hersteller']) || isset($_SESSION['Sitzanzahl']) || isset($_SESSION['Türenanzahl']) || isset($_SESSION['Getriebe']) || isset($_SESSION['Kategorie']) || isset($_SESSION['Antrieb']) || isset($_SESSION['Preis']) || isset($_SESSION['Mindestalter']) || isset($_SESSION['checkboxoverview1']) || isset($_SESSION['checkboxoverview2']) || isset($_SESSION['checkboxoverview3'])) {
+    
+    try{
+        //SQL-query based on the filter selections
+        $sql = "SELECT vendor.vendorName, cartype.name, cartype.img, cartype.price, nameExtension, carlocation.carID, cartype.typeID
                 FROM vendor 
                 INNER JOIN cartype ON vendor.vendorID = cartype.vendorID 
                 INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
                 INNER JOIN location ON location.locationID = carlocation.locationID
-                WHERE 1 = 1"; //Todos: auf 1 umstellen, Hier availability prüfen, 
+                WHERE carlocation.carID NOT IN (SELECT `order`.carID FROM `order` WHERE `order`.startDate <= :endDate AND `order`.endDate >= :startDate)";     //Todos: auf 1 umstellen, Hier availability prüfen, 
 
-
-        if ($_SESSION['Stadt'] != 'alle') {
-            $sql .= " AND location.locationName = :Stadt"; //todo: nach locationID
+        //every filter must contain an other option selected than 'alle' to be checked in the query 
+        if ($_SESSION['location'] != 'alle') {
+            $sql .= " AND location.locationName = :Stadt";
         }
 
         if ($_SESSION['Hersteller'] != 'alle') {
@@ -183,8 +186,16 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
         $stmt = $conn->prepare($sql);
 
         // Bind parameters for the prepared statement
-        if ($_SESSION['Stadt'] != 'alle') {
-            $stmt->bindParam(':Stadt', $_SESSION['Stadt']);
+        if (isset($_SESSION['startDate'])){
+            $stmt->bindParam(':startDate', $_SESSION['startDate']);
+        }
+
+        if (isset($_SESSION['endDate'])){
+            $stmt->bindParam(':endDate', $_SESSION['endDate']);
+        }
+        
+        if ($_SESSION['location'] != 'alle') {
+            $stmt->bindParam(':Stadt', $_SESSION['location']);
         }
 
         if ($_SESSION['Hersteller'] != 'alle') {
@@ -223,6 +234,9 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
         // echo $sql;
 
+        // echo $_SESSION['startDate'];
+        // echo $_SESSION['endDate'];
+        
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -233,9 +247,8 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 <!DOCTYPE html>
 
 <head>
-    <title>Produktübersicht - Drive.</title>
-    <link rel="icon" type="image/png" href="bilder/Drive.png">
-    <!--Sprachenimport von Google Fonts-->
+    <title>Produktübersicht - Drive.</title><link rel="icon" type="image/png" href="bilder/Drive.png">
+    <!--language style import from google fonts-->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
     </style>
@@ -253,14 +266,13 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
 
     <!--Include Header-->
-    <!-- <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div>  -->
     <?php
     include('Header.php');
     ?>
 
     <br>
 
-    <!--Processbar dynmaic settings-->
+    <!--Processbar dynamic settings-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -273,10 +285,13 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 </head>
 
 <body>
+<!-- starts the big form with every filter included-->
+<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
-    <?php
-    include('progressbar.php');
-    ?>
+  <?php
+  //includes the yellow bar that shows the progress of the booking process 
+  include('progressbar.php');
+  ?>
 
     <div class="progress">
         <table border="0" width="1500px" height="1500px">
@@ -285,8 +300,8 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
                 <td width="350px">
 
-                    <!--Filter column-->
-                    <div class="filtercolumn">
+                <!--Filterbox-->
+                <div class="filtercolumn">
 
                         <!--Filterslogan-->
                         <div class="filtertitel">
@@ -302,10 +317,8 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
                         <br>
 
 
-                        <!--Filtercolumn-->
-                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-
-                            <div style="display: flex; justify-content: center;">
+                        <!--Filtercolumn-->                   
+                        <div style="display: flex; justify-content: center;">
 
                                 <select id="sortby" name="OrderByPrice">
 
@@ -330,9 +343,10 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
                             </div>
 
-                            <br>
-                            <!--manufacturerfilter-->
-                            <div style="margin-left: 20px;">
+                        <br>
+
+                        <!--manufacturerfilter-->
+                        <div style="margin-left: 20px;">
 
                                 <label for="Hersteller" class="filterheader">Hersteller</label>
 
@@ -534,19 +548,18 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
                 <td style="display: flex; flex-wrap: wrap;">
 
-                    <?php
-
-                    //$selectedlocation = $_SESSION['Stadt'];
+                <?php
 
                     echo '<div class="car-container">';
 
-                    // If there's a matching record, fetch and set additional information
+                    // If there's a matching record from the query above, the information are fetched
                     if ($stmt->rowCount() > 0) {
 
                         $counter = 1;
                         $resultArray = array();
 
-                        while ($row = $stmt->fetch()) {
+                        //loops through all results and fetch the information needed
+                        while($row = $stmt->fetch()){
 
                             $carVendor = $row['vendorName'];
                             $carName = $row['name'];
@@ -555,41 +568,52 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
                             $carPricePerDay = $row['price'];
                             $typeID = $row['typeID'];
 
-                            if (key_exists($typeID, $resultArray)) {
+                                //checks if the typeID is already existent 
+                                if(key_exists($typeID, $resultArray)){
 
-                                $resultArray[$typeID]["counter"] = $resultArray[$typeID]["counter"] + 1;
-                            } else {
-                                $resultArray[$typeID] = array(
-                                    "typeID" => $typeID, "counter" => $counter, "carVendor" => $carVendor,
-                                    "carName" => $carName, "nameExtension" => $nameExtension,
-                                    "imagePath" => $imagePath, "carPricePerDay" => $carPricePerDay
-                                );
-                            }
-                        }
+                                    //if yes, the counter which is the carAvailability later gets lifted about 1 car 
+                                    $resultArray[$typeID]["counter"] = $resultArray[$typeID]["counter"] + 1;                        
 
-                        // Pagination
-                        $carsPerPage = 12;
-                        $countCars = count($resultArray);
-                        $totalPages = ceil($countCars / $carsPerPage);
-                        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                                  //if not, the cartype is saved in an array with all the fetched information  
+                                } else{
+                                    $resultArray[$typeID] = array("typeID"=>$typeID, "counter"=>$counter, "carVendor"=>$carVendor, 
+                                                                "carName"=>$carName, "nameExtension"=>$nameExtension, 
+                                                                "imagePath"=>$imagePath, "carPricePerDay"=>$carPricePerDay);
+                                }                
+                        
+                    }
 
-                        // Bestimmen auf welcher Seite sich der Benutzer befindet
-                        if (!isset($_GET['page'])) {
-                            $currentPage = 1;
-                        } else {
-                            $currentPage = $_GET['page'];
-                        }
+                    // Initializes the Pagination
+                    //sets a maximum number of loaded cars per page 
+                    $carsPerPage = 12; 
+                    
+                    //counts the entries from the array
+                    $countCars = count($resultArray);
 
-                        // Berechnen des Offsets für die aktuelle Seite
-                        $offset = ($currentPage - 1) * $carsPerPage;
+                    //gets the number of total pages in addition to the number of results found
+                    $totalPages = ceil($countCars / $carsPerPage);
 
-                        // Schleife, um nur die Autos für die aktuelle Seite anzuzeigen
+                    //sets the first page to 1
+                    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+                    // checks on which pages the user is currently on 
+                    if (!isset($_GET['page'])) {
+                        $currentPage = 1;
+                    } else {
+                        $currentPage = $_GET['page'];
+                    }
+
+                    // calculates the index where the for-loop should start fetching information from the array
+                    $offset = ($currentPage - 1) * $carsPerPage;
+
+                        // Initializes the car cell that you can see on the website 
                         echo '<td style="display: flex; flex-wrap: wrap;">';
                         echo '<div class="car-container">';
 
-                        $resultArray = array_values($resultArray);
+                        //resets the index in the array from typeID to the normal index starting from zero
+                        $resultArray = array_values($resultArray);  
 
-                        // foreach($resultArray as $carDetails){
+                        // loops through the results in the array as long as all results are viewed on the website 
                         for ($i = $offset; $i < min($offset + $carsPerPage, $countCars); $i++) {
                             $carDetails = $resultArray[$i];
 
@@ -602,29 +626,30 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
                             $typeID = $carDetails['typeID'];
 
                             $_SESSION['typeID'] = $typeID;
-
-
+                            
+                            //actuall car cell design in html
                             echo '<div class="car-container">';
-                            echo '<div class="autozelle" onclick="loadgetCarIDphp()">';
-                            // echo'<a href="getCarID.php" style="text-decoration: none;">';
-                            if (!empty($carVendor) && !empty($carName) || !empty($nameExtension)) :
-                                echo '<div class="autozellenheader">' . $carVendor . " " . $carName . " " . $nameExtension . '</div>';
-                            endif;
+                                echo '<div class="autozelle" onclick="loadgetCarIDphp()">';
+
+                                //checks if the information needed are given and then view them in the html construct
+                                if (!empty($carVendor) && !empty($carName) || !empty($nameExtension)):
+                                    echo '<div class="autozellenheader">' . $carVendor . " " . $carName . " " . $nameExtension . '</div>';
+                                endif;
 
                             if (!empty($imagePath)) :
                                 echo '<div class="zellenimage1"><img src="data:image/jpg;charset=utf8;base64,' . base64_encode($imagePath) . '" alt="Car Image" class="zellenimage"></div>';
                             endif;
 
-                            if (!empty($carAvailability) || !empty($carPricePerDay)) :
-                                echo '<div class="zellenfooter">';
-                                echo '<div class="zellenfooter1">' . "Verfügbar: " . $carAvailability . '</div>';
-                                echo '<div class="zellenfooter2">' . $carPricePerDay . " € pro Tag" . '</div>';
+                                if (!empty($carAvailability) || !empty($carPricePerDay)):
+                                    echo '<div class="zellenfooter">';
+                                    echo '<div class="zellenfooter1">' . "Verfügbar: " . $carAvailability . '</div>';
+                                    echo '<div class="zellenfooter2">' . $carPricePerDay . " € pro Tag" . '</div>';
+                                    echo '</div>';
+                                endif; 
                                 echo '</div>';
-                            endif;
-                            // echo'</a>';
-                            echo '</div>';
                             echo '</div>';
 
+                            //head to the page getCarID.php prepare the information needed for the Produktdetailseite    
                             echo '<script>
                                     function loadgetCarIDphp() {
                                         //Lade die externe Datei mit AJAX (jQuery)
@@ -640,17 +665,18 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
                                     }
                                 </script>';
                         }
-                    } else {
-                        echo '<div id="notavailable" style="font-size: 40px; line-height: 1.5;">';
-                        echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
+                        
+                      //if no matching car is found by the query, the following message is viewed   
+                    } else{
+                            echo '<div id="notavailable" style="font-size: 40px; line-height: 1.5;">';
+                            echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
+                            echo '</div>';
+                        } 
+                    
                         echo '</div>';
-                    }
+                        echo '</td>'   
 
-                    echo '</div>';
-                    echo '</td>'
-
-                    // echo $_SESSION['Stadt'] . "<br>" .$sql;
-                    ?>
+                    ?>            
 
             </tr>
 
@@ -662,26 +688,27 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
     <?php
 
-    if ($totalPages > 1) {
+//Loads the Pagination
+if($totalPages > 1){
 
-        // Pagination-Links anzeigen
-        echo '<div class="pagination">';
-        if ($currentPage > 1) {
-            echo '<a href="?page=' . ($currentPage - 1) . '">&laquo;</a> ';
-        }
+    // Shows Pagination links
+    //head to page before
+    echo '<div class="pagination">';
+    if ($currentPage > 1) {
+        echo '<a href="?page=' . ($currentPage - 1) . '">&laquo;</a> ';
+    }
 
         for ($i = 1; $i <= $totalPages; $i++) {
 
             $selectedPage = ($i == $currentPage) ? 'current-page' : '';
 
-            echo '<a href="?page=' . $i . '" class="' . $selectedPage . '">' . $i . '</a> ';
-            // echo '<a href="?page=' . $i . '">' . $currentPage . '</a> ';
-        }
+        echo '<a href="?page=' . $i . '" class="' . $selectedPage . '">' . $i . '</a> ';
+    }
 
-        // Nächster Pfeil
-        if ($currentPage < $totalPages) {
-            echo '<a href="?page=' . ($currentPage + 1) . '">&raquo;</a>';
-        }
+    // head to page after
+    if ($currentPage < $totalPages) {
+        echo '<a href="?page=' . ($currentPage + 1) . '">&raquo;</a>';
+    }
 
         echo '</div>';
     }
