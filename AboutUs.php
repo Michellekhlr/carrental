@@ -4,7 +4,8 @@ session_start();
 <!DOCTYPE html>
 
 <head>
-    <title>Über uns - Drive.</title><link rel="icon" type="image/png" href="bilder/Drive.png">
+    <title>Über uns - Drive.</title>
+    <link rel="icon" type="image/png" href="bilder/Drive.png">
     <!--Sprachenimport von Google Fonts-->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
@@ -34,7 +35,7 @@ session_start();
 
     <!-- Weißer Banner mit Slogan -->
     <div class="SloganAboutUs">
-    Wir sind Drive.
+        Wir sind Drive.
     </div>
 
     <!-- Teammitglieder - Obere Zeile -->
@@ -135,7 +136,7 @@ session_start();
                 <div class="member-image"><img src="bilder/Justus2.png" alt="" class="member-image"></div>
                 <p class="team-member-name">Justus</p>
                 <p class="team-member-title">Unser CFO</p>
-                <p class="quote">"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore."</p>
+                <p class="quote">"Lenkrad in der Hand, Odyssee im Blick. Mit Ihnen am Steuer wird jede Fahrt zum Abenteuer "</p>
 
                 <!-- Im Team seit -->
                 <p class="team-member-lieblingsauto">
@@ -189,7 +190,7 @@ session_start();
         </section>
 
         <div class="SloganAboutUs">
-         Schnell & Sicher ans Ziel
+            Schnell & Sicher ans Ziel
         </div>
 
     </div>
