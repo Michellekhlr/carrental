@@ -19,6 +19,9 @@ if (isset($_SESSION['loginStatus'])) {
   <!--Styleimport von CSS Datei-->
   <link rel="stylesheet" href="CSSMain.css">
 
+  <!-- Include Normalize.css from a CDN to reset and normalize browser styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+
   <!--Header-->
   <div class="headerBackground">
     <div class="header">

@@ -425,7 +425,7 @@ session_start();
             <p>14 Standorte.</p>
         </div>
 
-        <div class="map-container"><!--Deutschlandkarte, auf der alle Standorte gepinnt sind-->
+        <div class="map-container" id="Standorte"><!--Deutschlandkarte, auf der alle Standorte gepinnt sind / id is needed for anker link(footer)-->
             <div class="ger-map">
                 <img src="bilder/karte.png" alt="map"><!--Bild der Deutschlandkarte-->
 
