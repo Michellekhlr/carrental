@@ -741,21 +741,10 @@ h3{
     padding-left: 10px;
 }
 
-#checkboxoverview3:active{
+.checkboxgeneral:active {
     background-color: #ffbf00;
 }
 
-#checkboxgeneral:active{
-    background-color: #ffbf00;
-}
-
-#checkboxgeneral2:active{
-    background-color: #ffbf00;
-}
-
-#checkboxgeneral3:active{
-    background-color: #ffbf00;
-}
 
 /*Auswahlkästchen*/
 .checkmarkcolumn{
@@ -1882,9 +1871,8 @@ footer {
     background-color: #FFFFFF;
     width: 1475px;
     height: 110px;
-    opacity: 0;
     background-color: #ffbf00;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
 }

@@ -26,28 +26,32 @@ session_start();
     <!--Setting of the time period selection-->
     <script>
         $(function() {
-            var dateFormat = "dd MM yy",
-                from = $("#from").datepicker({
-                    altField: "#datepicker_input",
-                    dateFormat: dateFormat,
-                    regional: "de",
-                    monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                    numberOfMonths: 2,
-                    minDate: 0, //Prevents a date from the past from being selected.
-                    onSelect: function(selectedDate) {
-                        to.datepicker("option", "minDate", selectedDate); //Prevents a return date from being selected that is earlier than the pick-up date.
-                    }
-                }),
-                to = $("#to").datepicker({
-                    dateFormat: dateFormat,
-                    regional: "de",
-                    numberOfMonths: 2,
-                    monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                    minDate: 0,
-                    onSelect: function(selectedDate) {
-                        from.datepicker("option", "maxDate", selectedDate); //Prevents a pick-up date from being selected that is later than the return date.
-                    }
-                });
+            var dateFormatalt = "yy-mm-dd";
+            var dateFormat ="dd.mm.yy";
+            from = $("#from").datepicker({
+                altField: "#from_alt",
+                dateFormat: dateFormat,
+                altFormat: dateFormatalt,
+                regional: "de",
+                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                numberOfMonths: 2,   
+                minDate: 0, //Prevents a date from the past from being selected.
+                onSelect: function(selectedDate) {
+                to.datepicker("option", "minDate", selectedDate); //Prevents a return date from being selected that is earlier than the pick-up date.
+                } 
+            }),
+            to = $("#to").datepicker({
+                altField: "#to_alt",
+                dateFormat: dateFormat,
+                altFormat: dateFormatalt,
+                regional: "de",
+                numberOfMonths: 2,
+                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                minDate: 0,
+                onSelect: function(selectedDate) {
+                from.datepicker("option", "maxDate", selectedDate); //Prevents a pick-up date from being selected that is later than the return date.
+                }
+            });
 
             function getDate(element) {
                 var date;
@@ -186,8 +190,10 @@ session_start();
                     <div class="schnellfilter">
                         <label for="zeitraum">Zeitraum</label><br><!--Auswahl des Zeitraumes-->
                         <div class="date-picker-container">
-                            <input type="text" id="from" name="from" required placeholder="Abholung" autocomplete="off">
-                            <input type="text" id="to" name="to" required placeholder="Rückgabe">
+                            <input type="text" id="from" required placeholder="Abholung" autocomplete="off">
+                            <input type="hidden" id="from_alt" name="from" required placeholder="Abholung" autocomplete="off"><!--Two input fields have been added. One is not visible and should transfer the date according to the database format and the other is visible and displays the date in German format.-->
+                            <input type="text" id="to" required placeholder="Rückgabe" autocomplete="off">
+                            <input type="hidden" id="to_alt" name="to" required placeholder="Rückgabe" autocomplete="off">
                         </div>
                     </div>
 
@@ -282,10 +288,10 @@ session_start();
             //Only display additional filters if "Mehr Filter" is pressed, otherwise they should not be visible.
             function toggleMenu() {
                 var menu = document.getElementById("zusatz");
-                if (menu.style.opacity == 0) {
-                    menu.style.opacity = 1;
+                if (menu.style.display == "none") {
+                    menu.style.display = "flex";
                 } else {
-                    menu.style.opacity = 0;
+                    menu.style.display = "none";
                 }
             }
         </script>

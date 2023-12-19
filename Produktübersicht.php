@@ -23,6 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['checkboxoverview1'] = isset($_POST['checkboxoverview1']) ? 1 : 0;
         $_SESSION['checkboxoverview2'] = isset($_POST['checkboxoverview2']) ? 1 : 0;
         $_SESSION['checkboxoverview3'] = isset($_POST['checkboxoverview3']) ? 1 : 0;
+        $_SESSION['from'] = $_POST['from'] ?? date('Y-m-d');
+        $_SESSION['to'] = $_POST['to'] ?? date('Y-m-d', strtotime('+1 day'));
+
 
         // Redirect to prevent form resubmission on page refresh
         header("Location: {$_SERVER['PHP_SELF']}");
@@ -533,7 +536,7 @@ if (isset($_SESSION['OrderByPrice']) || isset($_SESSION['Stadt']) || isset($_SES
 
                     <?php
 
-                    //$selectedlocation = $_SESSION['filter0'];
+                    //$selectedlocation = $_SESSION['Stadt'];
 
                     echo '<div class="car-container">';
 
