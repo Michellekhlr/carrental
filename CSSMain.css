@@ -974,12 +974,13 @@ h3{
 
 /*Frame for Title and Subtitle*/
 .FrameTitelUntertitel{
-    width: 1920px;
+    width: 100%;
     height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
 /*Frame for Title inside FrameTitleSubtitle to align Text*/
@@ -1040,12 +1041,13 @@ h3{
 
 /*Frame for Content*/
 .FrameContent{
-    width: 1920px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 30px; /* Abstand zum Footer */
+    box-sizing: border-box;
 }
 
 /*Frame to align Content-Text*/
