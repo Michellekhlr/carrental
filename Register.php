@@ -46,18 +46,6 @@ if (isset($_POST['register'])) {
         exit();
     }
 
-    //insert into person
-        $stmt = $conn->prepare("INSERT INTO person (personID, firstname, lastname, age, phoneNumber, salutation)
-  VALUES (:personID, :firstname, :lastname, :age, :phone, :salutation)");
-  $stmt->bindParam(':personID', $personID);
-  $stmt->bindParam(':salutation', $salutation);
-  $stmt->bindParam(':firstname', $firstname);
-  $stmt->bindParam(':lastname', $lastname);
-  $stmt->bindParam(':age', $age);
-  $stmt->bindParam(':phone', $phone);
-  $stmt->execute();
-    }
-
     //check if user already exists
     //check if email is valid
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -94,6 +82,18 @@ if (isset($_POST['register'])) {
         header("Location:RegisterPage.php");
         exit();
     }
+    
+    //insert into person
+    $stmt = $conn->prepare("INSERT INTO person (personID, firstname, lastname, age, phoneNumber, salutation)
+    VALUES (:personID, :firstname, :lastname, :age, :phone, :salutation)");
+    $stmt->bindParam(':personID', $personID);
+    $stmt->bindParam(':salutation', $salutation);
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':lastname', $lastname);
+    $stmt->bindParam(':age', $age);
+    $stmt->bindParam(':phone', $phone);
+    $stmt->execute();
+      }
 
     //insert into user
     $stmt = $conn->prepare("INSERT INTO user (userID, personID, email, userName, password)

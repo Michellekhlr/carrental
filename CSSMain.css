@@ -239,11 +239,24 @@ h3{
     text-decoration: underline;
 }
 .LogRegWel-button {
-    background-color: #FFE600;
-    color: black;
-    padding: 10px;
+    padding: 5px;
     margin: 10px;
-    border: none;
+    font-size: 20px;
+    color: black;
+    background-color: #ffbf00;
+    box-shadow: 0px 0px 5px #888888;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 10px;
+    border: solid 4px #ffbf00;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+.LogRegWel-button:hover{
+    background-color: white;
+}
+.LogRegWel-button:active{
+        background-color: #ffbf00;
+        transform:translateX(4px);
 }
 .loginRegisterError {
     color: red;
@@ -910,9 +923,16 @@ h3{
 
 .buttonContainer{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    flex-direction: row;
+    align-items: baseline;    
+}
+#minAgeError {
+    color: red;
+    width: 300px;
+    font-size: 30px; 
+    float: right; 
+    width: fit-content; 
 }
 
 #book{
@@ -942,6 +962,7 @@ h3{
 /*Buchung abbrechen*/
 #resetbook{
     width: 300px;
+    height: 60px;
     font-size: 32px;
     color: black;
     background-color: white;
@@ -951,6 +972,16 @@ h3{
     border: solid 4px #ffbf00;
     transition-duration: 0.2s;
     cursor: pointer;
+    margin-right: 20px;
+}
+
+.buttonContainer div{
+    height: 60px;
+    align-items: center;
+    display: flex;
+}
+.buttonContainer-form{
+    display: flex;
 }
 
 #resetbook:hover{

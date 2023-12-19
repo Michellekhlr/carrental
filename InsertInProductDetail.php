@@ -1,5 +1,4 @@
 <?php
-
 // starting the session
 session_start();
 //initializing variables
@@ -28,39 +27,26 @@ $endDate = $_SESSION['endDate'];
 
 include_once "dbConfig.php";
 
-if($carID) {
+if(isset($carID)) {
     //get TypeId from carID
     $stmt = $conn->prepare("SELECT carlocation.typeID FROM carlocation WHERE carID=:carID");
     $stmt->bindParam(':carID',$carID);
     $stmt->execute();
     $typeID = $stmt->fetchColumn();
 
-    //filter all cars of location without date parameter
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM carlocation INNER JOIN location ON location.locationID = carlocation.locationID WHERE typeID=:typeID AND location.locationName=:location");
-    $stmt->bindParam(':typeID',$typeID);
-    $stmt->bindParam(':location',$location);
-    $stmt->execute();
-    $availabilityWODate = $stmt->fetchColumn();
 
-    //filter cars in orders
-
-    //in der carlocation auf typ und standort filtern, dann diese ids in der oders mit start und ende datum filtern
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM `order` 
-    INNER JOIN carlocation ON `order`.carID = carlocation.carID 
-    INNER JOIN location ON `order`.locationID = location.locationID
-    WHERE carlocation.typeID = :typeID 
-    AND location.locationName = :location
-    AND `order`.startDate <= :endDate 
-    AND `order`.endDate >= :startDate");
-    $stmt->bindParam(':typeID', $typeID);
-    $stmt->bindParam(':location', $location);
-    $stmt->bindParam(':startDate', $startDate);
-    $stmt->bindParam(':endDate', $endDate);
-    $stmt->execute();
-    $orderedCars = $stmt->fetchColumn();
-
-    //calculate available cars
-    $availability = $availabilityWODate - $orderedCars;
+    $stmt = $conn->prepare("SELECT COUNT(*)
+                FROM carlocation 
+                INNER JOIN cartype ON carlocation.typeID = cartype.typeID
+                INNER JOIN location ON location.locationID = carlocation.locationID
+                WHERE cartype.typeID = :typeID AND location.locationName = :location
+                AND carlocation.carID NOT IN (SELECT `order`.carID FROM `order` WHERE `order`.startDate <= :endDate AND `order`.endDate >= :startDate)");
+                $stmt->bindParam(':startDate', $startDate);
+                $stmt->bindParam(':endDate', $endDate);
+                $stmt->bindParam(':typeID', $typeID);
+                $stmt->bindParam(':location', $location);
+                $stmt->execute();
+                $availability = $stmt->fetchColumn();
     
     //get field values from cartype
     $stmt = $conn->prepare("SELECT * FROM cartype WHERE typeID=:typeID");

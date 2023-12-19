@@ -3,33 +3,24 @@
 // Include the database configuration file
 include_once "dbConfig.php";
 
-// debug info:
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
-
 // starting the session
 session_start();
 
 if (isset($_SESSION["minAgeError"]) && $_SESSION["age"] < $_SESSION["minAgeError"]) {
     $_SESSION['minAgeError'] = 'Du bist zu jung, um dieses Auto zu buchen.';
 }
-//hier session variablen durhc buchungsvorgangprozess
-$_SESSION['locationName'] = 'Hamburg';
-$_SESSION['startdate'] = '2023-12-08';
-$_SESSION['enddate'] = '2023-12-11';
 
-// Überprüfen Sie, ob eine personID in der Session vorhanden ist
+// Check if personID is in Session
 if (isset($_SESSION['personID'])) {
     $personID = $_SESSION['personID'];
 
-    // Bereiten Sie eine SQL-Abfrage vor, um die userID zu erhalten
     $stmt = $conn->prepare("SELECT userID FROM user WHERE personID = :personID");
     $stmt->bindParam(':personID', $personID);
     $stmt->execute();
 
     // Fetch the result
     if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Speichern Sie die userID in der Session
+        // safe userID in session
         $_SESSION['userID'] = $row['userID'];
     } 
 } 
@@ -79,8 +70,8 @@ if (isset($_SESSION['personID'])) {
                 <td>
                     <p style="font-size: 20px; margin: 0;">1. Ort und Zeitraum</p>
                     <div style="border: solid 2px black; width: 539px; height: 90px;">
-                        <p> <?php echo "<b>" . $_SESSION['locationName'] . "</b>"?> </p> 
-                        <p> <?php echo $_SESSION['startdate'] . " | " . $_SESSION['enddate'] ?> </p>
+                        <p> <?php echo "<b>" . $_SESSION['location'] . "</b>"?> </p> 
+                        <p> <?php echo $_SESSION['startDate'] . " | " . $_SESSION['endDate'] ?> </p>
                     </div>
                 </td>
                 <td rowspan="3" style="width: 30px;"></td>
@@ -105,10 +96,20 @@ if (isset($_SESSION['personID'])) {
                 <td>
                     <p style="font-size: 20px; margin: 0;">3. Extras</p>
                     <div style="border: solid 2px black; width: 539px; height: 90px;">
-                        <p> <?php echo "<b>" . $_SESSION["insurance"] . "</b>" ?> </p>
-                        <p> <?php foreach ($extras as $value) {
-                                echo "+" . $value . " "; 
-                                }
+                        <p> <?php
+                        if (isset($_SESSION['insuranceValue'])) {
+                             echo "<b>" . $_SESSION['insuranceValue'] . "</b>"; 
+                        } ?> </p>
+                        <p> <?php 
+                        if (isset($_SESSION['extrasValue1'])) {
+                            echo "+" . $_SESSION['extrasValue1'] . " ";
+                        }
+                        if (isset($_SESSION['extrasValue2'])) {
+                            echo "+" . $_SESSION['extrasValue2'] . " ";
+                        }
+                        if (isset($_SESSION['extrasValue3'])) {
+                            echo "+" . $_SESSION['extrasValue3'] . " ";
+                        }
                             ?>
                         </p>
                     </div>
@@ -121,16 +122,17 @@ if (isset($_SESSION['personID'])) {
 
         
         <div class="buttonContainer">
-    <?php if ($_SESSION['minAgeError']) : ?> <!--error when user is too young to drive car -->
-        <p class="minAgeError"><?php echo $_SESSION["minAgeError"]; ?></p>
-    <?php else : ?>
-        <!-- if user is allowed to drive then show book button -->
-        <form method="post" action="Buchung.php">
             <button id="resetbook" onclick="goBack()">Abbrechen</button>
+            <form class="buttonContainer-form" method="post" action="Buchung.php"> 
+                <div>
+                 <?php if (isset($_SESSION['minAgeError'])) : ?> <!--error when user is too young to drive car -->
+                    <p id="minAgeError"><?php echo $_SESSION["minAgeError"]; ?></p></div>
+                    <!-- if user is allowed to drive then show book button -->
+                    <?php else : ?> 
             <button id="book" type="submit" name="book">Kostenpflichtig buchen</button>
+            <?php endif; ?>
         </form>
-    <?php endif; ?>
-</div>
+        </div>
         </div>
     </div>
     </div><br><br><br>

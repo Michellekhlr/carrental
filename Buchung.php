@@ -1,8 +1,6 @@
 <?php
-// debug info:
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
 
+// Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -10,23 +8,38 @@ if (session_status() == PHP_SESSION_NONE) {
 // Include the database configuration file
 include_once "dbConfig.php";
 
-// Wenn der Button geklickt wurde
+// Check if the 'book' button was clicked
 if (isset($_POST['book'])) {
-    // Daten aus der Session holen
+    // Retrieve booking details from session
     $userID = $_SESSION['userID'];
     $carID = $_SESSION['carID'];
-    $startDate = $_SESSION['startdate'];
-    $endDate = $_SESSION['enddate'];
+    $startDate = $_SESSION['startDate'];
+    $endDate = $_SESSION['endDate'];
     $finalPrice = $_SESSION['finalPrice'];
 
-    $extrasDummy = "";
+    // Construct the extras string from session values  
+    $extrasArray = [];
+    if (isset($_SESSION['insuranceValue']) && $_SESSION['insuranceValue'] != '') {
+        $extrasArray[] = $_SESSION['insuranceValue'];
+    }
+    if (isset($_SESSION['extrasValue1']) && $_SESSION['extrasValue1'] != '') {
+        $extrasArray[] = $_SESSION['extrasValue1'];
+    }
+    if (isset($_SESSION['extrasValue2']) && $_SESSION['extrasValue2'] != '') {
+        $extrasArray[] = $_SESSION['extrasValue2'];
+    }
+    if (isset($_SESSION['extrasValue3']) && $_SESSION['extrasValue3'] != '') {
+        $extrasArray[] = $_SESSION['extrasValue3'];
+    }
+    $extrasDummy = implode(', ', $extrasArray);
 
-    // Ermitteln der nächsten orderID
+
+    // Determine the next order ID
     $orderIDQuery = $conn->query("SELECT MAX(orderID) AS maxID FROM `order`");
     $row = $orderIDQuery->fetch(PDO::FETCH_ASSOC);
     $nextOrderID = $row['maxID'] + 1;
 
-    // Einfügen der Daten in die Datenbank
+    // Insert booking details into the database
     $stmt = $conn->prepare("INSERT INTO `order` (orderID, carID, userID, startDate, endDate, extras, overallPrice) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bindParam(1, $nextOrderID);
     $stmt->bindParam(2, $carID);
@@ -37,7 +50,7 @@ if (isset($_POST['book'])) {
     $stmt->bindParam(7, $finalPrice);
     $stmt->execute();
 
-    // Weiterleitung zur Seite ordersPage.php
+    // Redirect to the orders page
     header("Location: ordersPage.php");
     exit();
 }

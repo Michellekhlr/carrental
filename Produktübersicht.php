@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // check and handle 'buchen' Query-Parameter, deactivate all filters and checkboxes
 if (isset($_GET['buchen'])) {
+    $_SESSION['OrderByPrice'] = 'Preis Aufsteigend';
     $_SESSION['checkboxoverview3'] = '0'; // Deaktivate Checkbox (offer)
     $_SESSION['location'] = 'alle';
     $_SESSION['startDate'] = date('Y-m-d');
@@ -75,6 +76,7 @@ if (isset($_GET['buchen'])) {
 
 // // // check and handle 'angebot' Query-Parameter, deactivate all filters and checkboxes despite "Im Angebot"
 if (isset($_GET['angebot'])) {
+    $_SESSION['OrderByPrice'] = 'Preis Aufsteigend';
     $_SESSION['checkboxoverview3'] = '1'; // Aktivate Checkbox (offer)
     $_SESSION['location'] = 'alle';
     $_SESSION['startDate'] = date('Y-m-d');
@@ -126,7 +128,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                 INNER JOIN cartype ON vendor.vendorID = cartype.vendorID 
                 INNER JOIN carlocation ON carlocation.typeID = cartype.typeID
                 INNER JOIN location ON location.locationID = carlocation.locationID
-                WHERE carlocation.carID NOT IN (SELECT `order`.carID FROM `order` WHERE `order`.startDate <= :endDate AND `order`.endDate >= :startDate)";     //Todos: auf 1 umstellen, Hier availability prüfen, 
+                WHERE carlocation.carID NOT IN (SELECT `order`.carID FROM `order` WHERE `order`.startDate <= :endDate AND `order`.endDate >= :startDate)";     
 
         //every filter must contain an other option selected than 'alle' to be checked in the query 
         if ($_SESSION['location'] != 'alle') {
@@ -625,11 +627,10 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             $carPricePerDay = $carDetails['carPricePerDay'];
                             $typeID = $carDetails['typeID'];
 
-                            $_SESSION['typeID'] = $typeID;
                             
                             //actuall car cell design in html
                             echo '<div class="car-container">';
-                                echo '<div class="autozelle" onclick="loadgetCarIDphp()">';
+                                echo '<div class="autozelle" onclick="loadgetCarIDphp('.$typeID.')">';
 
                                 //checks if the information needed are given and then view them in the html construct
                                 if (!empty($carVendor) && !empty($carName) || !empty($nameExtension)):
@@ -651,16 +652,14 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
 
                             //head to the page getCarID.php prepare the information needed for the Produktdetailseite    
                             echo '<script>
-                                    function loadgetCarIDphp() {
-                                        //Lade die externe Datei mit AJAX (jQuery)
-                                        $.get("getCarID.php", function(data) {
-                                            // Führe den geladenen Code aus
-                                            var script = document.createElement("script");
-                                            script.textContent = data;
-                                            document.body.appendChild(script);
-
-                                            // Navigiere zu einer neuen Seite
-                                            window.location.href = "getCarID.php";
+                                    function loadgetCarIDphp(typeID) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "getCarID.php",
+                                            data: { typeID: typeID}, // sends new final price to PHP
+                                            success: function(response) {
+                                               window.location.href = "InsertInProductDetail.php";
+                                            },
                                         });
                                     }
                                 </script>';

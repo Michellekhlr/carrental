@@ -10,12 +10,6 @@ if (isset($_SESSION['loginStatus']))
     {
       $loginStatus = false;
     }
-
-     $diff = $_SESSION['startDate']->diff($_SESSION['endDate']);
-     $_SESSION['dateDiff'] = intval($diff->format("%a"));
-
-    $_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
-
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +32,6 @@ if (isset($_SESSION['loginStatus']))
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <!--Include Header-->
-    <!-- <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div>  -->
     <?php
      include('Header.php');
     ?>
@@ -59,6 +52,13 @@ if (isset($_SESSION['loginStatus']))
 
 <?php
     include('progressbar.php');
+    $start = date_create($_SESSION['startDate']);
+    $end = date_create($_SESSION['endDate']);
+    $diff = $start->diff($end);
+    $_SESSION['dateDiff'] = intval($diff->format("%a")) +1;
+
+   $_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
+
 ?>
 
     <div class="produktdetailseite">
@@ -241,36 +241,56 @@ if (isset($_SESSION['loginStatus']))
         window.location.href = 'LoginPage.php';
       }
     function completeOrder() {
-        //collect data from forms and send to InsertInOrderComplition.php
-        var insuranceCheckboxes = document.querySelectorAll('#insuranceForm input[name="versicherung"]:checked'); //returns all elements from insurance checkboxes
-        var extrasCheckboxes = document.querySelectorAll('#extrasForm input[name="zubehoer"]:checked'); //returns all elements from extras checkboxes
+        //collect data from forms and send to saveCheckboxValuesSession.php
+        var option1 = document.getElementById('option1').checked;
+        var option2 = document.getElementById('option2').checked;
+        var option3 = document.getElementById('option3').checked;
+        var option4 = document.getElementById('option4').checked;
+        var option5 = document.getElementById('option5').checked;
+        var option6 = document.getElementById('option6').checked;
 
-        var insuranceValues = [];
-        var extrasValues = [];
-
-        insuranceCheckboxes.forEach(function(checkbox) { 
-            insuranceValues.push(checkbox.value);
-        });
-
-        extrasCheckboxes.forEach(function(checkbox) {
-            extrasValues.push(checkbox.value);
-        });
-
-        // send data to saveCheckboxValuesSession.php
-        fetch('saveCheckboxValuesSession.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ insurance: insuranceValues, extras: extrasValues })
-        })
-        .then(response => {
-            console.log('Daten wurden erfolgreich gespeichert.');
-        })
-        .catch(error => {
-            console.error('Es gab ein Problem beim Speichern der Daten:', error);
-        });
-        window.location.href = 'Buchungsabschluss.php';
+        if (option1) {
+            insuranceValue = 'All-inclusive';
+        }
+        if (option2) {
+            insuranceValue = 'Teilkasko';
+        }
+        if (option3) {
+            insuranceValue = 'Basic';
+        }
+        if (option4) {
+            extrasValue1 = 'Dachbox';
+        }
+        if (option5) {
+            extrasValue2 = 'Fahrradträger';
+        }
+        if (option6) {
+            extrasValue3 = 'Kindersitz';
+        }
+        if (!(option1) && !(option2) && !(option3)) {
+            insuranceValue = '';
+        }
+        if (!(option4)) {
+            extrasValue1 = '';
+        }
+        if (!(option5)) {
+            extrasValue2 = '';
+        }
+        if (!(option6)) {
+            extrasValue3 = '';
+        }
+        $.ajax({
+                type: 'POST',
+                url: 'saveCheckboxValuesSession.php',
+                data: { insuranceValue: insuranceValue, extrasValue1: extrasValue1, extrasValue2: extrasValue2, extrasValue3: extrasValue3 }, // sends new final price to PHP
+                success: function(response) {
+                    console.log('checkbox values have been transferred sucessfully.');
+                },
+                error: function(xhr, status, error) {
+                    console.error('error. No transferring of checkboxes possible');
+                }
+            });
+            window.location.href='Buchungsabschluss.php';
     }
 
       // Checks if only one checkbox is active at a time for insurance

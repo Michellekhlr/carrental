@@ -59,27 +59,6 @@ $filterOptions = [
 <body>
 
     <script>
-        // var location = document.getElementById('filterdropdown');
-        // var startDate = document.getElementById('fromprogress');
-        // var endDate = document.getElementById('toprogress');
-
-        // function safeToSession() {
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: 'locationDatesInSessionsPB.php',
-        //         data:
-        //         { location: location,
-        //         startDate: startDate,
-        //         endDate: endDate
-        //         }, // sends new final price to PHP
-        //         success: function(response) {
-        //             console.log('final price has been updated sucessfully.');
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.error('error. No updating of final price possible');
-        //         }
-        //     });
-        // }
 
         $(function() {
             var dateFormatalt = "yy-mm-dd";

@@ -7,7 +7,9 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once "dbConfig.php";
 
 // Retrieve the current user's person ID from the session
-$person_id = $_SESSION['personID'];
+if (isset($_SESSION['personID'])) {
+    $person_id = $_SESSION['personID'];
+}
 
 // Prepare an SQL statement to fetch user details from the database
 $stmt = $conn->prepare("SELECT 

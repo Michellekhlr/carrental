@@ -1,7 +1,4 @@
 <?php
-// debug info:
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
 
 // Start the session to access session variables
 session_start();
@@ -68,7 +65,9 @@ if (isset($_SESSION['personID'])) {
 
 
  // definition of variables
- $userID = $_SESSION["userID"]; // retrieving the user ID from the session
+ if (isset($_SESSION['userID'])) {
+     $userID = $_SESSION["userID"]; // retrieving the user ID from the session
+ }
  $queryUserBookings = "SELECT COUNT(orderID) AS count FROM `order` WHERE userID = :userID"; // SQL query to determine the number of bookings made by the user
  $stmt2 = $conn->prepare($queryUserBookings); // preparing the SQL query
  $stmt2->bindParam(':userID', $userID); // binding the user IDs parameter
@@ -158,7 +157,7 @@ if (isset($_SESSION['personID'])) {
                     <td class="orderTabletd"><?php echo $row['vendorNameAbbr']; ?> <?php echo $row['name']; ?></td>
                     <td class="orderTabletd"><?php echo $row['extras']; ?></td>
                     <td class="orderTabletd"><?php echo $row['locationName']; ?></td>
-                    <td class="orderTabletd"><?php echo $row['overallPrice']; ?></td>
+                    <td class="orderTabletd"><?php echo $row['overallPrice'] . " €"; ?></td>
                 </tr>
                 <?php $rowIndex++;
                     }
