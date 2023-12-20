@@ -44,7 +44,7 @@ session_start();
 
             <!-- Teammitglied 1: Michelle -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder\Michelle2.png" alt="Michelle" class="member-image"></div>
+                <div class="member-image"><img src="bilder\Michelle.png" alt="Michelle" class="member-image"></div>
                 <p class="team-member-name">Michelle</p>
                 <p class="team-member-title">Unser CEO</p>
                 <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit."</p>
@@ -72,7 +72,7 @@ session_start();
 
             <!-- Teammitglied 2: Arlind -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Arlind3.png" alt="Arlind" class="member-image"></div>
+                <div class="member-image"><img src="bilder/Arlind.png" alt="Arlind" class="member-image"></div>
                 <p class="team-member-name">Arlind</p>
                 <p class="team-member-title">Unser COO</p>
                 <p class="quote">"Ich bin für Sie da, wenn es darum geht, Sie sicher an Ihr Ziel zu bringen."</p>
@@ -100,7 +100,7 @@ session_start();
 
             <!-- Teammitglied 3: Johannes -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Johannes3.png" alt="Johannes" class="member-image"></div>
+                <div class="member-image"><img src="bilder/Johannes.png" alt="Johannes" class="member-image"></div>
                 <p class="team-member-name">Johannes</p>
                 <p class="team-member-title">Unser CTO</p>
                 <p class="quote">"Die Straße ist die Leinwand, das Auto der Pinselstrich des Reisenden."</p>
@@ -133,7 +133,7 @@ session_start();
 
             <!-- Teammitglied 4: Justus -->
             <div class="team-member">
-                <div class="member-image"><img src="bilder/Justus2.png" alt="" class="member-image"></div>
+                <div class="member-image"><img src="bilder/Justus.png" alt="" class="member-image"></div>
                 <p class="team-member-name">Justus</p>
                 <p class="team-member-title">Unser CFO</p>
                 <p class="quote">"Lenkrad in der Hand, Odyssee im Blick. Mit Ihnen am Steuer wird jede Fahrt zum Abenteuer "</p>
