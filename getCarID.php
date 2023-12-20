@@ -7,6 +7,8 @@ include_once 'dbConfig.php';
 $typeID = $_REQUEST['typeID'];
 $_SESSION['typeID'] = $typeID;
 $location = $_SESSION['location'];
+$startDate = $_SESSION['startDate'];
+$endDate = $_SESSION['endDate'];
 
 $carIDCarlocation = "";
 
@@ -43,15 +45,15 @@ if (isset($typeID) && isset($location)) {
                         INNER JOIN location ON carlocation.locationID = location.locationID 
                         WHERE location.locationName = :location
                         AND carlocation.typeID =:typeID 
-                        AND carlocation.carID <> :carIDCarlocation LIMIT 1");
+                        AND NOT carlocation.carID = :carIDCarlocation LIMIT 1");
                         $stmt->bindParam(':location', $location);
                         $stmt->bindParam(':typeID', $typeID);
                         $stmt->bindParam(':carIDCarlocation', $carIDCarlocation);
                         $stmt->execute();
 
-                        $carIDCarlocation = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                        $carIDCarlocation = $stmt->fetchColumn();
 
-                        $stmt = $conn->prepare("SELECT COUNT (*) from `order`
+                        $stmt = $conn->prepare("SELECT COUNT(*) from `order`
                         WHERE `order`.carID = :carIDCarlocation
                         AND `order`.startDate <= :endDate 
                         AND `order`.endDate >= :startDate");
@@ -67,12 +69,12 @@ if (isset($typeID) && isset($location)) {
                         }
                         else {
                             $carIDexists = false;
+                            //safe carID to session
+                            $_SESSION['carID'] = $carIDCarlocation;
                             exit();
                         }
             }
         }
-        //safe carID to session
-        $_SESSION['carID'] = $carIDCarlocation;
 }
 
 exit();
