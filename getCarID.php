@@ -76,7 +76,7 @@ if (isset($typeID) && isset($location)) {
             }
         }
 }
-
+$_SESSION['carID'] = $carIDCarlocation;
 exit();
 
 ?>
