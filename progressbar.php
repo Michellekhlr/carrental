@@ -32,7 +32,8 @@ $filterOptions = [
 <!DOCTYPE html>
 
 <head>
-    <!--Sprachenimport von Google Fonts-->
+
+    <!--language import from google fonts-->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Titillium+Web:wght@400;700&display=swap');
     </style>
@@ -58,8 +59,8 @@ $filterOptions = [
 <body>
 
     <script>
-
-$(function() {
+        //settings for the calender
+        $(function() {
             var dateFormatalt = "yy-mm-dd";
             var dateFormat ="dd.mm.yy";
             from = $("#fromprogress").datepicker({
@@ -103,90 +104,106 @@ $(function() {
 
     <!--Overview of booking process-->
     <div class="progress">
-        <table style="background-color: #e9e9e9;">
+        <table id="progresstable">
             <tr>
                 
                 <td id="progress1">
-                <!-- <a href="Produktübersicht.php"> -->
-                        <ul>
-                            <li class="p2" style="font-size: 20px; color: black;">
-                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <ul>
+                        <li class="p2" style="font-size: 20px; color: black;">
 
-                                    <label for="Stadt" class="nospacing" style="display: inline-block; margin-right: 10px;">Standort<i class="fas fa-edit" style="font-size: 15px; color:black"></i></label>
+                            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
-                                    <select name="Stadt" id="filterdropdown">
+                                <!--select section for the location-->
+                                <label for="Stadt" class="nospacing" style="display: inline-block; margin-right: 10px;">Standort<i class="fas fa-edit" style="font-size: 15px; color:black"></i></label>
 
-                                        <?php foreach ($filterOptions['Stadt'] as $option) : ?>
-                                            <option value="<?php echo $option; ?>" <?php echo ($_SESSION['location'] == $option) ? 'selected' : ''; ?>>
-                                                <?php echo $option; ?>
-                                            </option>
-                                        <?php endforeach; ?>
+                                <select name="Stadt" id="filterdropdown">
 
-                                    </select>
-                                </li>
-                                <li class="p2" style="font-size: 15px; display: inline-block;">
-                                    <div class="date-picker-container" style="margin-top: 5px;">
-                                        <label for="fromprogress" style="margin-top: 2px; margin-right: 10px;">Zeitraum</label><br>
-                                        <input type="text" id="fromprogress" 
+                                    <?php foreach ($filterOptions['Stadt'] as $option) : ?>
+                                        <option value="<?php echo $option; ?>" <?php echo ($_SESSION['location'] == $option) ? 'selected' : ''; ?>>
+                                            <?php echo $option; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+
+                                </select>
+                        </li>
+
+                        <li class="p2" style="font-size: 15px; display: inline-block;">
+                                
+                            <div class="date-picker-container" style="margin-top: 5px;">
+                                
+                                <!--select section for time of rental-->        
+                                <label for="fromprogress" style="margin-top: 2px; margin-right: 10px;">Zeitraum</label><br>
+                                    
+                                    <!--four inputs: to visible ones with german dateformat and to hidden ones where the selected dates are transformed into english dateformat, for the database query-->    
+                                    <input type="text" id="fromprogress" 
                                         value="<?php if (isset($startDate)) { 
                                             echo date("d.m.Y", strtotime($startDate));
-                                        }
-                                        else {
-                                            echo date("d.m.Y");
-                                        }  ?>" 
-                                    required placeholder="Abholung">|
+                                            }
+                                            else {
+                                                echo date("d.m.Y");
+                                            }  ?>" 
+                                        required placeholder="Abholung">|
 
                                     <input type="hidden" id="from_alt" name="from" 
-                                    value="<?php if (isset($startDate)) { 
-                                            echo $startDate;
-                                        }
-                                        else {
-                                            echo date("Y-m-d");
-                                        }  ?>" 
-                                    required placeholder="Abholung" autocomplete="off">
+                                        value="<?php if (isset($startDate)) { 
+                                                echo $startDate;
+                                            }
+                                            else {
+                                                echo date("Y-m-d");
+                                            }  ?>" 
+                                        required placeholder="Abholung" autocomplete="off">
 
                                     <input type="text" id="toprogress"
-                                    value="<?php if (isset($endDate)) { 
-                                        echo date("d.m.Y", strtotime($endDate));
-                                    }
-                                    else {
-                                        echo date("d.m.Y", strtotime("+1 day"));
-                                    }  ?>"
-                                required placeholder="Rückgabe">
+                                        value="<?php if (isset($endDate)) { 
+                                                echo date("d.m.Y", strtotime($endDate));
+                                            }
+                                            else {
+                                                echo date("d.m.Y", strtotime("+1 day"));
+                                            }  ?>"
+                                        required placeholder="Rückgabe">
 
-                                <input type="hidden" id="to_alt" name="to" required placeholder="Rückgabe"
-                                value="<?php if (isset($endDate)) { 
-                                        echo $endDate;
-                                    }
-                                    else {
-                                        echo date("Y-m-d", strtotime("+1 day"));
-                                    }  ?>"
-                                 autocomplete="off">
+                                    <input type="hidden" id="to_alt" name="to" 
+                                        value="<?php if (isset($endDate)) { 
+                                                echo $endDate;
+                                            }
+                                            else {
+                                                echo date("Y-m-d", strtotime("+1 day"));
+                                            }  ?>"
+                                        required placeholder="Rückgabe" autocomplete="off">
 
-                                <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i></li>
-                            </div><br>
+                                <i class="far fa-calendar-alt style" style="font-size: 10px; color:black"></i>
+
+                        </li>
+                        </div>
+                        
+                        <br>
                         </form>
+                    </ul>
+
+                </td>
+
+                <td id="progress2">
+                    <a href="Produktübersicht.php">
+                        <ul>
+                            <li class="p3"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
+                            <li class="p4"><span class="nospacing">230 Autos | 64 Modelle | 14 Standorte | 100% Fahrspaß</span></li>           
                         </ul>
-                        <!-- </a> -->
-                    </td>
-                   
-            <td id="progress2">
+                    </a>
+                </td>
+                <td id="progress3">
                     <ul>
-                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
-                        <li class="p2" style="font-size: 15px;"><span class="nospacing">230 Autos | 64 Modelle | 14 Standorte | 100% Fahrspaß</span></li>           
+                        <li class="p3"><span class="nospacing">Buchung abschließen</span></li>
+                        <li class="p4"><span class="nospacing">Rund-um-Schutz, Kindersitz oder Dachbox gefällig?</span></li>
                     </ul>
-            </td>
-            <td id="progress3">
-                    <ul>
-                        <li class="p2" style="font-size: 20px;"><span class="nospacing">Buchung abschließen</span></li>
-                        <li class="p2" style="font-size: 15px;"><span class="nospacing">Rund-um-Schutz, Kindersitz oder Dachbox gefällig?</span></li>
-                    </ul>
-            </td>
-        </tr>
-    </table>
-    </div><br>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <br>
 
 </body>
+
 </html>
 
 <script>
