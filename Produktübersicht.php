@@ -8,7 +8,7 @@ include_once 'dbConfig.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
-    if (!isset($_POST["clear"])) {
+    if (!isset($_POST["clear"]) && !isset($_POST["clearall"])) {
         // Save filter selections to the session
         $_SESSION['OrderByPrice'] = $_POST['OrderByPrice'] ?? "Preis Aufsteigend";
         $_SESSION['location'] = $_POST['Stadt'] ?? "alle";
@@ -25,9 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['checkboxoverview1'] = isset($_POST['checkboxoverview1']) ? 1 : 0;
         $_SESSION['checkboxoverview2'] = isset($_POST['checkboxoverview2']) ? 1 : 0;
         $_SESSION['checkboxoverview3'] = isset($_POST['checkboxoverview3']) ? 1 : 0;
-        // $_SESSION['from'] = $_POST['from'] ?? date('Y-m-d');
-        // $_SESSION['to'] = $_POST['to'] ?? date('Y-m-d', strtotime('+1 day'));
-
 
         // Redirect to prevent form resubmission on page refresh
         header("Location: {$_SERVER['PHP_SELF']}");
@@ -35,6 +32,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } elseif (isset($_POST["clear"])) {
         // Clear filter selections from the session
+        $_SESSION['Hersteller'] = 'alle';
+        $_SESSION['Sitzanzahl'] = 'alle';
+        $_SESSION['Türenanzahl'] = 'alle';
+        $_SESSION['Getriebe'] = 'alle';
+        $_SESSION['Kategorie'] = 'alle';
+        $_SESSION['Antrieb'] = 'alle';
+        $_SESSION['Preis'] = 'alle';
+        $_SESSION['Mindestalter'] = 'alle';
+        $_SESSION['checkboxoverview1'] = 0;
+        $_SESSION['checkboxoverview2'] = 0;
+        $_SESSION['checkboxoverview3'] = 0;
+
+        // Redirect to prevent filter resubmission on page refresh
+        header("Location: {$_SERVER['PHP_SELF']}");
+        exit;
+
+    } elseif (isset($_POST["clearall"])) {
+        // Clear filter selections from the session plus location and date
+        $_SESSION['location'] = 'alle';
+        $_SESSION['startDate'] = date('Y-m-d');
+        $_SESSION['endDate'] = date('Y-m-d', strtotime('+1 day'));
         $_SESSION['Hersteller'] = 'alle';
         $_SESSION['Sitzanzahl'] = 'alle';
         $_SESSION['Türenanzahl'] = 'alle';
@@ -74,7 +92,7 @@ if (isset($_GET['buchen'])) {
 }
 
 
-// // // check and handle 'angebot' Query-Parameter, deactivate all filters and checkboxes despite "Im Angebot"
+// check and handle 'angebot' Query-Parameter, deactivate all filters and checkboxes despite "Im Angebot"
 if (isset($_GET['angebot'])) {
     $_SESSION['OrderByPrice'] = 'Preis Aufsteigend';
     $_SESSION['checkboxoverview3'] = '1'; // Aktivate Checkbox (offer)
@@ -144,7 +162,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
         }
 
         if ($_SESSION['Türenanzahl'] != 'alle') {
-            $sql .= " AND doors = :Türenanzahl";
+            $sql .= " AND doors = :Tuerenanzahl";
         }
 
         if ($_SESSION['Getriebe'] != 'alle') {
@@ -209,7 +227,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
         }
 
         if ($_SESSION['Türenanzahl'] != 'alle') {
-            $stmt->bindParam(':Türenanzahl', $_SESSION['Türenanzahl']);
+            $stmt->bindParam(':Tuerenanzahl', $_SESSION['Türenanzahl']);
         }
 
         if ($_SESSION['Getriebe'] != 'alle') {
@@ -233,11 +251,6 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
         }
 
         $stmt->execute();
-
-        // echo $sql;
-
-        // echo $_SESSION['startDate'];
-        // echo $_SESSION['endDate'];
         
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -266,6 +279,16 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
 
+    <!--Processbar dynamic settings-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $("#progress1").fadeTo(0.6);
+                $("#progress2").fadeTo(0.4);
+                $("#progress3").fadeTo("slow", 0.2);
+            });
+        </script>
+
 
     <!--Include Header-->
     <?php
@@ -285,18 +308,10 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
   //includes the yellow bar that shows the progress of the booking process 
   include('progressbar.php');
   ?>
-  <!--Processbar dynamic settings-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            $("#progress1").fadeTo(0.6);
-            $("#progress2").fadeTo(0.4);
-            $("#progress3").fadeTo("slow", 0.2);
-        });
-    </script>
+  
 
     <div class="progress">
-        <table border="0" width="1500px" height="1500px">
+        <table border="0" id="contenttable">
 
             <tr>
 
@@ -308,11 +323,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                         <!--Filterslogan-->
                         <div class="filtertitel">
 
-                            <p style="color: white; font-size: 40px; margin-left: 20px;">Filter</p>
-
-                            <div style="float: right;">
-                                <i class="fas fa-sliders-h" style="font-size: 30px; color: white; padding-left: 200px;"></i>
-                            </div>
+                            <p id="filtername">Filter</p>
 
                         </div>
 
@@ -320,7 +331,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
 
 
                         <!--Filtercolumn-->                   
-                        <div style="display: flex; justify-content: center;">
+                        <div id="filterbuttons">
 
                                 <select id="sortby" name="OrderByPrice">
 
@@ -336,8 +347,14 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
 
                             <br>
 
+                            <div id="clearallbutton">
+                                <input type="submit" name="clearall" value="Alles Löschen" id="buttonclearall">
+                            </div>
+
+                            <br>
+
                             <!--delete, execute button-->
-                            <div style="display: flex; justify-content: center;">
+                            <div id="filterbuttons">
 
                                 <input type="submit" name="clear" value="Löschen" class="buttonproduktübersicht1">
 
@@ -348,7 +365,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                         <br>
 
                         <!--manufacturerfilter-->
-                        <div style="margin-left: 20px;">
+                        <div class="filters">
 
                                 <label for="Hersteller" class="filterheader">Hersteller</label>
 
@@ -367,7 +384,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--seatfilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Sitzanzahl" class="filterheader">Sitze</label>
 
@@ -386,7 +403,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--doorfilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Türenanzahl" class="filterheader">Türen</label>
 
@@ -405,7 +422,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--gearsfilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Getriebe" class="filterheader">Getriebe</label>
 
@@ -424,7 +441,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--typfilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Kategorie" class="filterheader">Typ</label>
 
@@ -443,7 +460,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--drivefilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Antrieb" class="filterheader">Antrieb</label>
 
@@ -462,7 +479,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--pricefilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Preis" class="filterheader">Preis bis:</label>
 
@@ -481,7 +498,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                             <br>
 
                             <!--minagefilter-->
-                            <div style="margin-left: 20px;">
+                            <div class="filters">
 
                                 <label for="Mindestalter" class="filterheader">Mindestalter</label>
 
@@ -548,7 +565,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
 
                 </td>
 
-                <td style="display: flex; flex-wrap: wrap;">
+                <td id="contentcarcells">
 
                 <?php
 
@@ -667,7 +684,7 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
                         
                       //if no matching car is found by the query, the following message is viewed   
                     } else{
-                            echo '<div id="notavailable" style="font-size: 40px; line-height: 1.5;">';
+                            echo '<div id="notavailable">';
                             echo "Es tut uns Leid." . '<br>' . "Deinen  <i>Drive.</i>  scheint es grade nicht zu geben." . '<br>' . "Such doch gerne weiter:)";
                             echo '</div>';
                         } 

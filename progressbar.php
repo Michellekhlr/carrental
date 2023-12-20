@@ -50,10 +50,8 @@ $filterOptions = [
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>    
      
 </head>
 
@@ -61,33 +59,33 @@ $filterOptions = [
 
     <script>
 
-        $(function() {
+$(function() {
             var dateFormatalt = "yy-mm-dd";
-            var dateFormat = "dd.mm.yy",
-                from = $("#fromprogress").datepicker({
-                    altField: "#from_alt",
-                    dateFormat: dateFormat,
-                    altFormat: dateFormatalt,
-                    regional: "de",
-                    monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                    numberOfMonths: 1,
-                    minDate: 0,
-                    onSelect: function(selectedDate) {
-                        to.datepicker("option", "minDate", selectedDate);
-                    }
-                }),
-                to = $("#toprogress").datepicker({
-                    altField: "#to_alt",
-                    dateFormat: dateFormat,
-                    altFormat: dateFormatalt,
-                    regional: "de",
-                    numberOfMonths: 1,
-                    monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                    minDate: 0,
-                    onSelect: function(selectedDate) {
-                        from.datepicker("option", "maxDate", selectedDate);
-                    }
-                });
+            var dateFormat ="dd.mm.yy";
+            from = $("#fromprogress").datepicker({
+                altField: "#from_alt",
+                dateFormat: dateFormat,
+                altFormat: dateFormatalt,
+                regional: "de",
+                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                numberOfMonths: 1,   
+                minDate: 0, //Prevents a date from the past from being selected.
+                onSelect: function(selectedDate) {
+                to.datepicker("option", "minDate", selectedDate); //Prevents a return date from being selected that is earlier than the pick-up date.
+                } 
+            }),
+            to = $("#toprogress").datepicker({
+                altField: "#to_alt",
+                dateFormat: dateFormat,
+                altFormat: dateFormatalt,
+                regional: "de",
+                numberOfMonths: 1,
+                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                minDate: 0,
+                onSelect: function(selectedDate) {
+                from.datepicker("option", "maxDate", selectedDate); //Prevents a pick-up date from being selected that is later than the return date.
+                }
+            });
 
             function getDate(element) {
                 var date;
@@ -100,14 +98,16 @@ $filterOptions = [
                 return date;
             }
         });
+
     </script>
 
     <!--Overview of booking process-->
     <div class="progress">
         <table style="background-color: #e9e9e9;">
             <tr>
-                <a href="Produktübersicht.php">
-                <td id="progress1" contenteditable="true">
+                
+                <td id="progress1">
+                <!-- <a href="Produktübersicht.php"> -->
                         <ul>
                             <li class="p2" style="font-size: 20px; color: black;">
                                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
@@ -167,8 +167,9 @@ $filterOptions = [
                             </div><br>
                         </form>
                         </ul>
+                        <!-- </a> -->
                     </td>
-                </a>   
+                   
             <td id="progress2">
                     <ul>
                         <li class="p2" style="font-size: 20px;"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
@@ -189,47 +190,8 @@ $filterOptions = [
 </html>
 
 <script>
-        $(function() {
-            var dateFormatalt = "yy-mm-dd";
-            var dateFormat ="dd.mm.yy";
-            from = $("#from").datepicker({
-                altField: "#from_alt",
-                dateFormat: dateFormat,
-                altFormat: dateFormatalt,
-                regional: "de",
-                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                numberOfMonths: 2,   
-                minDate: 0, //Prevents a date from the past from being selected.
-                onSelect: function(selectedDate) {
-                to.datepicker("option", "minDate", selectedDate); //Prevents a return date from being selected that is earlier than the pick-up date.
-                } 
-            }),
-            to = $("#to").datepicker({
-                altField: "#to_alt",
-                dateFormat: dateFormat,
-                altFormat: dateFormatalt,
-                regional: "de",
-                numberOfMonths: 2,
-                monthNames: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                minDate: 0,
-                onSelect: function(selectedDate) {
-                from.datepicker("option", "maxDate", selectedDate); //Prevents a pick-up date from being selected that is later than the return date.
-                }
-            });
-
-            function getDate(element) {
-                var date;
-                try {
-                    date = $.datepicker.parseDate(dateFormat, element.value);
-                } catch (error) {
-                    date = null;
-                }
-
-                return date;
-            }
-        });
-        //when progressbar is shown on Produktübersichtseite.php, data in progressbar should not be editable
-        window.onload = function() {
+    //when progressbar is shown on Produktübersichtseite.php, data in progressbar should not be editable
+    window.onload = function() {
         //convert php session variable in java script
         var isProductOverview = <?php echo ($isProductOverview) ? 'true' : 'false'; ?>;
 
@@ -248,4 +210,4 @@ $filterOptions = [
             toggleInputFields(true); // Produktdetailseite.php: Input fields are inactive
         }
         };
-    </script>
+</script>

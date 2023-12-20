@@ -303,7 +303,19 @@ h3{
 /*!!Produktübersichtseite!!*/
 .p2{
     list-style-type: none;
+    color: black; 
+}
+
+.p3{
+    list-style-type: none;
     color: black;
+    font-size: 20px; 
+}
+
+.p4{
+    list-style-type: none;
+    color: black; 
+    font-size: 15px;
 }
 
 /*Buchungsfortschrittsbalken*/
@@ -312,6 +324,10 @@ h3{
     justify-content: center;
     align-items: center;
     margin: 0;
+}
+
+#progresstable{
+    background-color: #e9e9e9;
 }
 
 #filterdropdown{
@@ -553,6 +569,40 @@ h3{
 /* order page Ende */
 
 /*Filterelement*/
+#contenttable{
+    width: 1500px;
+    height: 1500px;
+}
+
+#contenttable td{
+    vertical-align: top;
+}
+
+#contentcarcells{
+    display: flex; 
+    flex-wrap: wrap;
+}
+
+#filtername{
+    color: white; 
+    font-size: 40px; 
+    margin-left: 20px;
+}
+
+.filters{
+    margin-left: 20px;
+}
+
+#filterbuttons{
+    display: flex; 
+    justify-content: center;
+}
+
+#clearallbutton{
+    display: flex; 
+    justify-content: center;
+}
+
 .filtercolumn{
     height: 1320px; 
     width: 350px; 
@@ -625,6 +675,29 @@ h3{
     margin-right: 10px;
     cursor: pointer;
 }
+
+#buttonclearall{
+    width: 300px;
+    height: 48px;
+    color: black;
+    background-color: white;
+    box-shadow: 0px 0px 5px #888888;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    border-radius: 10px;
+    border: solid 4px #ffbf00;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+#buttonclearall:hover{
+    background-color: #ffbf00;
+}
+
+#buttonclearall:active{
+    background-color: white;
+    transform:translateX(-4px);
+  }
 
 .buttonproduktübersicht1:hover{
     background-color: #ffbf00;
@@ -883,6 +956,8 @@ h3{
     box-shadow: 0px 0px 5px;
     background-color: white;
     border-radius: 5px;
+    font-size: 40px; 
+    line-height: 1.5;
 }
 
 /*Seitennavigator unter Produktübersicht*/
