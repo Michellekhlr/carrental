@@ -1,3 +1,4 @@
+<!-- check if entered data is correct and change to loginstatus = true -->
 <?php
 session_start();
 
@@ -65,10 +66,12 @@ if (isset($_POST['login'])) {
         $_SESSION['loginStatus'] = true;
         }
 
-        header("Location: Welcome.php"); // Redirect after successful insertion
+        // Redirect after successful insertion
+        header("Location: Welcome.php"); 
         $_SESSION['error'] = "";
         exit();
     }
+    //show error if password is incorrect
     else {
         $error = 'Eingegebenes Passwort ist nicht korrekt';
         $_SESSION['error'] = $error;

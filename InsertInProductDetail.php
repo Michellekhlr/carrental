@@ -1,13 +1,13 @@
+<!-- open Produktdetailseite.php and fill values from car -->
 <?php
 // starting the session
 session_start();
+
 //initializing variables
 $carID = "";
 $typeID = "";
 $img = "";
 $vendorName = "";
-$availabilityWODate = ""; //without date
-$orderedCars = ""; //not available cars
 $availability = "";
 $name = "";
 $type="";
@@ -20,12 +20,27 @@ $airCondition = "";
 $gps = "";
 $price = "";
 
+//get variables from sessions
 $carID = $_SESSION['carID'];
 $location = $_SESSION['location'];
 $startDate = $_SESSION['startDate'];
 $endDate = $_SESSION['endDate'];
 
 include_once "dbConfig.php";
+
+//errors if conditions are not filled in 
+if($location === "alle") {
+    echo 'Bitte wähle einen Standort und bestätige mit "anwenden"';
+    exit();
+}
+if($startDate === "Abholung") {
+    echo 'Bitte wähle ein Startdatum und bestätige mit "anwenden"';
+    exit();
+}
+if($endDate === "Rückgabe") {
+    echo 'Bitte wähle ein Enddatum und bestätige mit "anwenden"';
+    exit();
+}
 
 if(isset($carID)) {
     //get TypeId from carID
@@ -34,7 +49,7 @@ if(isset($carID)) {
     $stmt->execute();
     $typeID = $stmt->fetchColumn();
 
-
+    //count car availability
     $stmt = $conn->prepare("SELECT COUNT(*)
                 FROM carlocation 
                 INNER JOIN cartype ON carlocation.typeID = cartype.typeID
@@ -95,7 +110,8 @@ if(isset($carID)) {
     $_SESSION['price']=$price;
     $_SESSION['carID']=$carID;
 
-    header("Location: Produktdetailseite.php"); //direct after sucessful insertion
+    //direct after sucessful insertion
+    header("Location: Produktdetailseite.php"); 
     exit();
     }
 }

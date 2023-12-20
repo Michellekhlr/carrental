@@ -1,3 +1,4 @@
+<!-- configuration of database for sql statements -->
 <?php
 $servername = "localhost";
 $username = "Michelle";

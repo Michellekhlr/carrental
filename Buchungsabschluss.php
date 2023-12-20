@@ -6,7 +6,8 @@ include_once "dbConfig.php";
 // starting the session
 session_start();
 
-if (isset($_SESSION["minAgeError"]) && $_SESSION["age"] < $_SESSION["minAgeError"]) {
+//if age from user is smaller than minAge from car, booking is not possible
+if (isset($_SESSION["minAgeError"]) && $_SESSION["age"] < $_SESSION["minAgeError"]) { 
     $_SESSION['minAgeError'] = 'Du bist zu jung, um dieses Auto zu buchen.';
 }
 
@@ -41,20 +42,23 @@ if (isset($_SESSION['personID'])) {
     <!--Styleimport CSS Datei-->
     <link rel="stylesheet" href = "CSSMain.css">
 
-    <!--Include Header-->
-    <!-- <div class = "band" style = "text-align: left; background-color:  black; color: white; margin-top: 0px;"><h3><i>Angebot des Tages: 5er BMW für 139 Kartoffeln</i></h3></div> -->
+    <!--Include Header and porgressbar-->
     <?php
     include('Header.php');
+    
+    $isProductOverview = false;
+    include('progressbar.php');
     ?><br><br><br>
 
-    <!--Processbar dynmaic settings-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+     <!--Processbar dynamic settings-->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function(){
-            $("#progress1").fadeTo("slow", 0.4);
-            $("#progress2").fadeTo(0.4);
-            $("#progress3").fadeTo("slow", 0.4);            
-            });    
+            document.addEventListener('DOMContentLoaded', 
+            function(){
+                $("#progress1").fadeTo("slow", 0.3);
+                $("#progress2").fadeTo("slow", 0.4);
+                $("#progress3").fadeTo(0.2);
+            });
     </script>
 </head>
 
@@ -62,7 +66,7 @@ if (isset($_SESSION['personID'])) {
     <div style="display: flex; justify-content: center; align-items: center;">
     <div id="rent">
         <div style="width: 100%; height: 90px; display: flex; justify-content: center; align-items: center;">
-            <h1 style="margin: 0;">Ihre Buchung</h1>
+            <h1 style="margin: 0;">Ihre Buchung</h1> 
         </div><br>
 
         <table class="buchungsabschluss-table">
@@ -125,7 +129,8 @@ if (isset($_SESSION['personID'])) {
             <button id="resetbook" onclick="goBack()">Abbrechen</button>
             <form class="buttonContainer-form" method="post" action="Buchung.php"> 
                 <div>
-                 <?php if (isset($_SESSION['minAgeError'])) : ?> <!--error when user is too young to drive car -->
+                <!--error when user is too young to drive car -->
+                 <?php if (isset($_SESSION['minAgeError'])) : ?> 
                     <p id="minAgeError"><?php echo $_SESSION["minAgeError"]; ?></p></div>
                     <!-- if user is allowed to drive then show book button -->
                     <?php else : ?> 
@@ -139,7 +144,8 @@ if (isset($_SESSION['personID'])) {
 </body>
 
 <script>
-    function goBack() {
+    //go back to Produktdetailseite.php when "Abbrechen" is clicked
+    function goBack() { 
         window.history.back();
     }
 </script>

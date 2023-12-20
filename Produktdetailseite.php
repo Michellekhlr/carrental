@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-
+//set variables from session
 if (isset($_SESSION['loginStatus']))
     {
       $loginStatus = true;
@@ -31,19 +31,23 @@ if (isset($_SESSION['loginStatus']))
     <!-- Skriptimport Ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
-    <!--Include Header-->
+    <!--Include Header and progressbar-->
     <?php
      include('Header.php');
+
+     $isProductOverview = false;
+    include('progressbar.php');
     ?>
 
      <!--Processbar dynamic settings-->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function(){
-            $("#progress1").fadeTo("slow", 0.3);
-            $("#progress2").fadeTo("slow", 0.4);
-            $("#progress3").fadeTo(0.2);
-        });
+            document.addEventListener('DOMContentLoaded', 
+            function(){
+                $("#progress1").fadeTo("slow", 0.3);
+                $("#progress2").fadeTo("slow", 0.4);
+                $("#progress3").fadeTo(0.2);
+            });
     </script>
 
 </head>
@@ -51,13 +55,14 @@ if (isset($_SESSION['loginStatus']))
 <body> 
 
 <?php
-    include('progressbar.php');
-    $start = date_create($_SESSION['startDate']);
-    $end = date_create($_SESSION['endDate']);
-    $diff = $start->diff($end);
-    $_SESSION['dateDiff'] = intval($diff->format("%a")) +1;
+// calculate distance between start and end date
+$start = date_create($_SESSION['startDate']);
+$end = date_create($_SESSION['endDate']);
+$diff = $start->diff($end);
+$_SESSION['dateDiff'] = intval($diff->format("%a")) +1;
 
-   $_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
+//calculate price from date difference with in session safed price
+$_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
 
 ?>
 
@@ -87,6 +92,7 @@ if (isset($_SESSION['loginStatus']))
                             <th>Antrieb:</th>
                             <td>
                                 <?php
+                                // show for user readable data
                                 if($_SESSION["drive"] == "Combuster") {
                                     echo "Verbrenner";
                                 }
@@ -113,6 +119,7 @@ if (isset($_SESSION['loginStatus']))
                         <th>Getriebe:</th>
                         <td>
                             <?php 
+                            // show for user readable data
                             if ($_SESSION["gear"] == "manually") {
                                 echo "Schaltung";
                             }
@@ -134,6 +141,7 @@ if (isset($_SESSION['loginStatus']))
                         <th>Klima:</th>
                         <td>
                             <?php 
+                            // show for user readable data
                                 if($_SESSION["airCondition"] == 1){
                                     echo "Verfügbar";
                                 } else{
@@ -147,6 +155,7 @@ if (isset($_SESSION['loginStatus']))
                         <th>GPS:</th>
                         <td>
                             <?php 
+                            // show for user readable data
                                 if($_SESSION["gps"] == 1){
                                     echo "Verfügbar";
                                 }else{
@@ -237,9 +246,11 @@ if (isset($_SESSION['loginStatus']))
     </div>
 <script>
     function openLoginPage() {
-        sessionStorage.setItem('previousURL', window.location.href); //safe url from page where logout is called from
+        //safe url from page where logout is called from
+        sessionStorage.setItem('previousURL', window.location.href); 
         window.location.href = 'LoginPage.php';
       }
+    //safe values from checkboxes 
     function completeOrder() {
         //collect data from forms and send to saveCheckboxValuesSession.php
         var option1 = document.getElementById('option1').checked;
@@ -279,6 +290,7 @@ if (isset($_SESSION['loginStatus']))
         if (!(option6)) {
             extrasValue3 = '';
         }
+        //send values from checkboxes to php file for saving them to session
         $.ajax({
                 type: 'POST',
                 url: 'saveCheckboxValuesSession.php',
@@ -290,22 +302,27 @@ if (isset($_SESSION['loginStatus']))
                     console.error('error. No transferring of checkboxes possible');
                 }
             });
-            window.location.href='Buchungsabschluss.php';
+        //oben Buchungsabschluss.php
+        window.location.href='Buchungsabschluss.php';
     }
 
-      // Checks if only one checkbox is active at a time for insurance
+    // Checks if only one checkbox is active at a time for insurance
     function handleCheckboxChange(checkbox) {
+        //define which checkboxes are meant
         var checkboxes = document.querySelectorAll('input[name="' + checkbox.name + '"]');
         checkboxes.forEach(function(currentCheckbox) {
             if (currentCheckbox !== checkbox) {
                 currentCheckbox.checked = false;
             }
         });
-        calculatePrice(); // call function for price calculation
+        // call function for price calculation
+        calculatePrice(); 
     }
-
+        //calc price depending on chosen checkboxes
       function calculatePrice() {
+            //convert Session value to integer
             var origPrice = parseInt("<?php echo isset($_SESSION['price']) ? $_SESSION['price'] : 0; ?>");
+            //check checkboxes
             var option1 = document.getElementById('option1').checked;
             var option2 = document.getElementById('option2').checked;
             var option3 = document.getElementById('option3').checked;
@@ -313,6 +330,7 @@ if (isset($_SESSION['loginStatus']))
             var option5 = document.getElementById('option5').checked;
             var option6 = document.getElementById('option6').checked;
             
+            //get dateDiff from PHP
             var dateDiff = "<?php echo $_SESSION['dateDiff']; ?>";
             
             var prefixText = 'Gesamt: ';

@@ -23,9 +23,11 @@ session_start();
     <body >
         <div id="background-image">
             <div class="LogRegWel-container">
-            <div class="LogRegWel-title"><h2 style="margin: 0px">Registrieren</h2> </div>
+            <!-- Registrieren-Container  -->
+            <div class="LogRegWel-title"><h2>Registrieren</h2> </div>
                 <form class="register-form" action="Register.php" method="post"> 
-                    <?php if (isset($_SESSION['error'])) { ?> <!--error when something is wrong with input data -->
+                    <!--error when something is wrong with input data -->
+                    <?php if (isset($_SESSION['error'])) { ?> 
                         <p class="loginRegisterError"><?php echo $_SESSION['error']; ?> </p>
                         <?php } ?>
 
@@ -51,7 +53,8 @@ session_start();
                         <td class="register-td"><label for="password">Wiederhole Passwort:</label><input type="password" id="password" name="password2" required></td>
                     </tr>
                 </table>
-                <a href="LoginPage.php" style="color:black; text-decoration:underline;">Stattdessen anmelden</a> <br>
+                <!-- Wenn schon ein Konto, dann anmelden -->
+                <a class="LogRegWel-link" href="LoginPage.php">Stattdessen anmelden</a> <br>
                 <button class="LogRegWel-button" name="register" type="submit">Registrieren</button>
             </form>
         </div>

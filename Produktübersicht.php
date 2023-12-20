@@ -274,16 +274,6 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
 
     <br>
 
-    <!--Processbar dynamic settings-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            $("#progress1").fadeTo(0.6);
-            $("#progress2").fadeTo(0.4);
-            $("#progress3").fadeTo("slow", 0.2);
-        });
-    </script>
-
 </head>
 
 <body>
@@ -291,9 +281,19 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
   <?php
+  $isProductOverview = true;
   //includes the yellow bar that shows the progress of the booking process 
   include('progressbar.php');
   ?>
+  <!--Processbar dynamic settings-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $("#progress1").fadeTo(0.6);
+            $("#progress2").fadeTo(0.4);
+            $("#progress3").fadeTo("slow", 0.2);
+        });
+    </script>
 
     <div class="progress">
         <table border="0" width="1500px" height="1500px">

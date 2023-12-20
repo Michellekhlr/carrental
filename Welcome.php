@@ -25,8 +25,8 @@ session_start();
     <div id="background-image">
         <div class="LogRegWel-container">
             <div class="welcomeLogout-Div">
-            <div class="LogRegWel-title"><h1 style="margin: 0px">Willkommen</h1></div>
-                <p style="font-size: 30px;"> Sie sind jetzt eingeloggt </p>
+            <div class="LogRegWel-title"><h1>Willkommen</h1></div>
+                <p> Sie sind jetzt eingeloggt </p>
                 <button onclick="goBack()" class="LogRegWel-button">Zurück</button>
             </div>
         </div>
@@ -35,14 +35,18 @@ session_start();
     Einfach.Flexibel.
 </div>
     <script>
-    function goBack() {  //go back to page where logout was called from
-        var previousURL = sessionStorage.getItem('previousURL');
-        if (previousURL) {
-        // use saved URL
-        window.location.href = previousURL;
-        } else {
-            // if no saved URL go back to Hompage
-            window.location.href = 'Homepage.php';
+        function goBack() { //go back to page where logout was called from
+            var previousURL = sessionStorage.getItem('previousURL');
+            var logoutPageURL = 'http://localhost/carrental/LogoutPage.php';
+
+            if (previousURL && previousURL.toLowerCase() === logoutPageURL.toLowerCase()) { //if was called from logoutPage go to Homepage
+                window.location.href = 'Homepage.php';
+            } else if (previousURL) {
+                //use saved URL
+                window.location.href = previousURL;
+            } else {
+                // if no saved URL go back to Hompage
+                window.location.href = 'Homepage.php';
         }
     }
     </script>

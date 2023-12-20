@@ -1,4 +1,5 @@
 <?php
+// set variables from session
 if (isset($_SESSION['location'])) {
     $location = $_SESSION['location'];
 }
@@ -105,8 +106,8 @@ $filterOptions = [
     <div class="progress">
         <table style="background-color: #e9e9e9;">
             <tr>
-                <td id="progress1">
-                    <a href="#"><!--Platzhalterlink für Homepagefilter-->
+                <a href="Produktübersicht.php">
+                <td id="progress1" contenteditable="true">
                         <ul>
                             <li class="p2" style="font-size: 20px; color: black;">
                                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
@@ -166,23 +167,19 @@ $filterOptions = [
                             </div><br>
                         </form>
                         </ul>
+                    </td>
                 </a>   
-            </td>
             <td id="progress2">
-                <a href="Produktübersicht.php"><!--Platzhalterlink für Homepagefilter-->
                     <ul>
                         <li class="p2" style="font-size: 20px;"><span class="nospacing">Finde deinen <i>Drive</i>!</span></li>
                         <li class="p2" style="font-size: 15px;"><span class="nospacing">230 Autos | 64 Modelle | 14 Standorte | 100% Fahrspaß</span></li>           
                     </ul>
-                </a>
             </td>
             <td id="progress3">
-                <a href="#"><!--Platzhalterlink für Homepagefilter-->
                     <ul>
                         <li class="p2" style="font-size: 20px;"><span class="nospacing">Buchung abschließen</span></li>
                         <li class="p2" style="font-size: 15px;"><span class="nospacing">Rund-um-Schutz, Kindersitz oder Dachbox gefällig?</span></li>
                     </ul>
-                </a>
             </td>
         </tr>
     </table>
@@ -231,4 +228,24 @@ $filterOptions = [
                 return date;
             }
         });
+        //when progressbar is shown on Produktübersichtseite.php, data in progressbar should not be editable
+        window.onload = function() {
+        //convert php session variable in java script
+        var isProductOverview = <?php echo ($isProductOverview) ? 'true' : 'false'; ?>;
+
+        function toggleInputFields(disabled) {
+            //get input fields which switch from being editable or not
+            var inputs = document.querySelectorAll('#progress1 input[type="text"], #progress1 select');
+            inputs.forEach(function(input) {
+                input.disabled = disabled;
+            });
+        }
+
+        // depending on calling page the input fields of the form are set disabled or not
+        if (isProductOverview) {
+            toggleInputFields(false); // Produktübersicht.php: Input fields are active
+        } else {
+            toggleInputFields(true); // Produktdetailseite.php: Input fields are inactive
+        }
+        };
     </script>

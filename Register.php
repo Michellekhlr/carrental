@@ -1,4 +1,6 @@
+<!-- safe values from user in database and sessions and make login status true -->
 <?php
+//start session
 session_start();
 
 //initializing variables
@@ -114,7 +116,9 @@ if (isset($_POST['register'])) {
     $_SESSION['email'] = $email;
     $_SESSION['loginStatus'] = true;
 
-    header("Location: Welcome.php"); // Redirect after successful insertion
+    // Redirect after successful insertion
+    header("Location: Welcome.php"); 
     exit();
+    //if no error, reset Session['error']
     $_SESSION['error'] = "";
 ?>
