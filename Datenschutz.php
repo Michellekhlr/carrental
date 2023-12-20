@@ -111,7 +111,7 @@ session_start();
 <footer>
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 

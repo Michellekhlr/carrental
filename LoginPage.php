@@ -36,13 +36,13 @@ session_start();
                         <td><label for="username">Benutzername:</label></td>
                     </tr>
                     <tr>
-                        <td><input type="text" id="username" name="username" required> </td>
+                        <td><input type="text" id="username" name="username" required class="inputText"> </td>
                     </tr>
                     <tr>
                         <td><label for="password">Passwort:</label></td>
                     </tr>
                     <tr>
-                        <td><input type="password" id="password" name="password" required> </td>
+                        <td><input type="password" id="password" name="password" required class="inputText"> </td>
                     </tr>
                 </table>
                 <!-- Link für Registrieren statt einloggen -->
@@ -52,14 +52,11 @@ session_start();
                 </form>
             </div>
         </div>
-        <div class="SloganLogRegWel">
-            Einfach.Flexibel.
-        </div>
     </body>
     <footer>
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 </html>

@@ -26,15 +26,12 @@ session_start();
         <!-- Feld mit Verabschiedung vom user -->
         <div class="LogRegWel-container">
             <div class="welcomeLogout-Div">
-            <div class="LogRegWel-title"><h1>Auf Wiedersehen</h1> </div>
+            <div class="LogRegWel-title"><h1>Bis Bald!</h1> </div>
             <p> Sie sind jetzt ausgeloggt </p>
             <button onclick="goBack()" class="LogRegWel-button">Zurück</button>
             </div>
         </div>
     </div>
-    <div class="SloganLogRegWel">
-    Einfach.Flexibel.
-</div>
 <script>
     //go back to page from wich logout was called from
     function goBack() {
@@ -64,7 +61,7 @@ session_start();
 <footer>
 <!--Include Footer-->
     <?php
-        include('Footer.html');
+        include('Footer.php');
     ?>
 </footer>
 </html>

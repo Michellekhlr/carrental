@@ -40,7 +40,7 @@ if (isset($_POST['book'])) {
     $nextOrderID = $row['maxID'] + 1;
 
     // Insert booking details into the database
-    $stmt = $conn->prepare("INSERT INTO `order` (orderID, carID, userID, startDate, endDate, extras, overallPrice) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO `order` (orderID, carID, userID, startDate, endDate, extras, overallPrice, orderDateTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bindParam(1, $nextOrderID);
     $stmt->bindParam(2, $carID);
     $stmt->bindParam(3, $userID);
@@ -48,10 +48,11 @@ if (isset($_POST['book'])) {
     $stmt->bindParam(5, $endDate);
     $stmt->bindParam(6, $extrasDummy);
     $stmt->bindParam(7, $finalPrice);
+    $stmt->bindParam(8, date("Y-m-d H:i:s"));
     $stmt->execute();
 
     // Redirect to the orders page
-    header("Location: ordersPage.php");
+    header("Location: Buchungsbestätigung.php");
     exit();
 }
 

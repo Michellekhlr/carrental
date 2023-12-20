@@ -33,24 +33,24 @@ session_start();
 
                 <table class="register-table">
                     <tr>
-                    <td class="register-td"><label for="salutation">Anrede:</label><input input list="salutation" name="salutation" required></td>
+                    <td class="register-td"><label for="salutation">Anrede:</label><input input list="salutation" name="salutation" required class="inputTextReg"></td>
                         <datalist id="salutation">
                             <option value="Frau">
                             <option value="Herr">
                             <option value="Divers">
                             </datalist>
-                            <td class="register-td"> <label for="firstname">Vorname:</label> <input type="text" id="firstname" name="firstname" required></td>
-                            <td class="register-td"><label for="lastname">Nachname:</label><input type="text" id="lastname" name="lastname" required></td>
+                            <td class="register-td"> <label for="firstname">Vorname:</label> <input type="text" id="firstname" name="firstname" required class="inputTextReg"></td>
+                            <td class="register-td"><label for="lastname">Nachname:</label><input type="text" id="lastname" name="lastname" required class="inputTextReg"></td>
                     </tr>
                     <tr>
-                        <td class="register-td"><label for="age">Alter:</label><input type="number" id="age" name="age" required></td>
-                        <td class="register-td"><label for="phone">Mobilnummer:</label><input type="tel" id="phone" name="phone"></td>
-                        <td class="register-td"><label for="email">Email:</label><input type="email" id="email" name="email" required></td>
+                        <td class="register-td"><label for="age">Alter:</label><input type="number" id="age" name="age" required class="inputTextReg"></td>
+                        <td class="register-td"><label for="phone">Mobilnummer:</label><input type="tel" id="phone" name="phone" class="inputTextReg"></td>
+                        <td class="register-td"><label for="email">Email:</label><input type="email" id="email" name="email" required class="inputTextReg"></td>
                     </tr>
                     <tr>
-                        <td class="register-td"><label for="username">Benutzername:</label><input type="text" id="username" name="username" required></td>
-                        <td class="register-td"><label for="password">Passwort:</label><input type="password" id="password" name="password1" required></td>
-                        <td class="register-td"><label for="password">Wiederhole Passwort:</label><input type="password" id="password" name="password2" required></td>
+                        <td class="register-td"><label for="username">Benutzername:</label><input type="text" id="username" name="username" required class="inputTextReg"></td>
+                        <td class="register-td"><label for="password">Passwort:</label><input type="password" id="password" name="password1" required class="inputTextReg"></td>
+                        <td class="register-td"><label for="password">Wiederhole Passwort:</label><input type="password" id="password" name="password2" required class="inputTextReg"></td>
                     </tr>
                 </table>
                 <!-- Wenn schon ein Konto, dann anmelden -->
@@ -59,14 +59,11 @@ session_start();
             </form>
         </div>
     </div>
-    <div class="SloganLogRegWel">
-    Einfach.Flexibel.
-</div>
 </body>
     <footer>
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 </html>

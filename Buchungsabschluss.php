@@ -6,6 +6,12 @@ include_once "dbConfig.php";
 // starting the session
 session_start();
 
+//checking if a car is selected
+if (!isset($_SESSION['carID'])) {
+    header("Location: Produktübersicht.php");
+    exit();
+} 
+
 //if age from user is smaller than minAge from car, booking is not possible
 if (isset($_SESSION["minAgeError"]) && $_SESSION["age"] < $_SESSION["minAgeError"]) { 
     $_SESSION['minAgeError'] = 'Du bist zu jung, um dieses Auto zu buchen.';
@@ -25,6 +31,7 @@ if (isset($_SESSION['personID'])) {
         $_SESSION['userID'] = $row['userID'];
     } 
 } 
+
 
 ?>
 <!DOCTYPE html>
@@ -65,8 +72,8 @@ if (isset($_SESSION['personID'])) {
 <body>
     <div style="display: flex; justify-content: center; align-items: center;">
     <div id="rent">
-        <div style="width: 100%; height: 90px; display: flex; justify-content: center; align-items: center;">
-            <h1 style="margin: 0;">Ihre Buchung</h1> 
+        <div style="width: 100%; height: 90px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);">
+            <h1 style="margin: 0; font-size: 48px;">Ihre Buchung</h1> 
         </div><br>
 
         <table class="buchungsabschluss-table">
@@ -129,14 +136,15 @@ if (isset($_SESSION['personID'])) {
             <button id="resetbook" onclick="goBack()">Abbrechen</button>
             <form class="buttonContainer-form" method="post" action="Buchung.php"> 
                 <div>
-                <!--error when user is too young to drive car -->
-                 <?php if (isset($_SESSION['minAgeError'])) : ?> 
-                    <p id="minAgeError"><?php echo $_SESSION["minAgeError"]; ?></p></div>
+                    <!--error when user is too young to drive car -->
+                    <?php if (isset($_SESSION['minAgeError'])) : ?> 
+                    <p id="minAgeError"><?php echo $_SESSION["minAgeError"]; ?></p>
+                </div>
                     <!-- if user is allowed to drive then show book button -->
                     <?php else : ?> 
-            <button id="book" type="submit" name="book">Kostenpflichtig buchen</button>
-            <?php endif; ?>
-        </form>
+                    <button id="book" type="submit" name="book">Kostenpflichtig buchen</button>
+                    <?php endif; ?>
+            </form>
         </div>
         </div>
     </div>
@@ -152,7 +160,7 @@ if (isset($_SESSION['personID'])) {
 <footer>
     <!--Include Footer-->
 <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 </html>

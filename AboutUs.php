@@ -34,7 +34,7 @@ session_start();
 <body>
 
     <!-- Weißer Banner mit Slogan -->
-    <div class="SloganAboutUs">
+    <div class="SloganFooter">
         Wir sind Drive.
     </div>
 
@@ -47,7 +47,7 @@ session_start();
                 <div class="member-image"><img src="bilder\Michelle.png" alt="Michelle" class="member-image"></div>
                 <p class="team-member-name">Michelle</p>
                 <p class="team-member-title">Unser CEO</p>
-                <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit."</p>
+                <p class="quote">"Ein Tag ohne Auto ist wie ein Tag ohne Sonnenschein-bei uns ist jeder Tag strahlend"</p>
 
                 <!-- Im Team seit -->
                 <p class="team-member-lieblingsauto">
@@ -189,10 +189,6 @@ session_start();
 
         </section>
 
-        <div class="SloganAboutUs">
-            Schnell & Sicher ans Ziel
-        </div>
-
     </div>
 
 </body>
@@ -202,7 +198,7 @@ session_start();
 <footer>
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 

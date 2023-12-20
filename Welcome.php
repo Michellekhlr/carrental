@@ -31,9 +31,6 @@ session_start();
             </div>
         </div>
     </div>
-    <div class="SloganLogRegWel">
-    Einfach.Flexibel.
-</div>
     <script>
         function goBack() { //go back to page where logout was called from
             var previousURL = sessionStorage.getItem('previousURL');
@@ -55,7 +52,7 @@ session_start();
 <footer>
     <!--Include Footer-->
     <?php
-        include('Footer.html');
+        include('Footer.php');
     ?>
 </footer>
 </html>

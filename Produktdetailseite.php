@@ -10,6 +10,12 @@ if (isset($_SESSION['loginStatus']))
     {
       $loginStatus = false;
     }
+
+ //checking if a car is selected
+if (!isset($_SESSION['carID'])) {
+    header("Location: Produktübersicht.php");
+    exit();
+} 
 ?>
 
 <!DOCTYPE html>
@@ -386,7 +392,7 @@ $_SESSION['finalPrice'] = $_SESSION['price'] * $_SESSION['dateDiff'];
 <footer>
     <!--Include Footer-->
 <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 </html>

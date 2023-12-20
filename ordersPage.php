@@ -82,12 +82,12 @@ $recordsPerPage = 5; // Set the number of entries to display per page
 $offset = ($currentPage - 1) * $recordsPerPage; // Calculate the offset - determines where to start the query based on the current page
 
 // SQL query to retrieve booking data based on user ID and page size
-$queryOfRecords = "SELECT orderID, startDate, endDate, vendorNameAbbr, name, extras, locationName,  overallPrice FROM `order`
+$queryOfRecords = "SELECT orderID, startDate, endDate, vendorNameAbbr, `name`, extras, locationName,  overallPrice, orderDateTime FROM `order`
  LEFT JOIN carlocation ON carlocation.carID = `order`.carID
  LEFT JOIN cartype ON cartype.TypeID = carlocation.typeID
  LEFT JOIN vendor ON vendor.vendorID = cartype.vendorID
  LEFT JOIN `location` ON `location`.locationID = carlocation.locationID
- WHERE userID = :userID ORDER BY endDate DESC, orderID DESC LIMIT $offset, $recordsPerPage";
+ WHERE userID = :userID ORDER BY orderDateTime DESC LIMIT $offset, $recordsPerPage";
 
 
 // Prepare the SQL query
@@ -116,7 +116,7 @@ if ($currentPage > $maxPage) {
     <div class="background-banner">
         <!-- Background video for the banner -->
         <video autoplay muted loop class="hintergrundvideo">
-            <source src="Infitite_Loop.mp4" type="video/mp4">
+            <source src="videos/Infitite_Loop.mp4" type="video/mp4">
         </video>
         <div class="firstName-banner">
             <!-- Display welcome message or login prompt based on user's login status -->
@@ -158,12 +158,14 @@ if ($currentPage > $maxPage) {
                             <td>Extras</td>
                             <td>Standort</td>
                             <td>Preis</td>
+                            <td>Buchungs-Datum</td>
                         </tr>
                         <?php
                         $rowIndex = 1;
                         foreach ($result as $row) {
                             $startDateDisplay = date("d.m.Y", strtotime($row['startDate'])); // format the start date
                             $endDateDisplay = date("d.m.Y", strtotime($row['endDate'])); // format the end date
+                            $orderDateDisplay = date("d.m.Y H:i", strtotime($row['orderDateTime'])); // format the order date
                         ?>
 
                             <!-- Table row for each booking, with a dynamic class attribute -->
@@ -172,20 +174,21 @@ if ($currentPage > $maxPage) {
                                 <td class="orderTabletd"><?php echo $startDateDisplay; ?></td>
                                 <td class="orderTabletd"><?php echo $endDateDisplay; ?></td>
                                 <td class="orderTabletd"><?php echo $row['vendorNameAbbr']; ?> <?php echo $row['name']; ?></td>
-                                <td class="orderTabletd"><?php echo $row['extras']; ?></td>
+                                <td class="orderTabletd"><?php echo (!empty($row['extras'])) ? $row['extras'] : '—'; ?></td>
                                 <td class="orderTabletd"><?php echo $row['locationName']; ?></td>
                                 <td class="orderTabletd"><?php echo $row['overallPrice'] . "€"; ?></td>
+                                <td class="orderTabletd"><?php echo $orderDateDisplay; ?></td>
                             </tr>
                         <?php $rowIndex++;
                         }
                         ?>
                         <tr class="orderTableLastRow"> <!-- Table row for navigation and page information -->
                             <!-- Display a link to the previous page if current page is greater than 1 -->
-                            <td class="orderTabletd"><?php if ($currentPage > 1) { ?><a class="orderText" href="?page=<?php echo ($currentPage - 1); ?>">Vorherige Seite</a><?php } ?> </td>
+                            <td class="orderTabletd"><?php if ($currentPage > 1) { ?><a class="orderTextPage" href="?page=<?php echo ($currentPage - 1); ?>">Vorherige Seite</a><?php } ?> </td>
                             <!-- Display current page, booking range, and total bookings -->
-                            <td class="orderTabletd" colspan="5"> Seite <?php echo $currentPage; ?> - Buchung <?php echo ($offset + 1); ?> bis <?php echo ($offset + count($result)); ?> <span class="orderTextLight">(von <?php echo $UserOrders; ?>)</span> </td>
+                            <td class="orderTabletd" colspan="6"> Seite <?php echo $currentPage; ?> - Buchung <?php echo ($offset + 1); ?> bis <?php echo ($offset + count($result)); ?> <span class="orderTextLight">(von <?php echo $UserOrders; ?>)</span> </td>
                             <!-- Display a link to the next page if current page is less than the maximum page -->
-                            <td class="orderTabletd"><?php if ($currentPage < $maxPage) { ?><a class="orderText" href="?page=<?php echo ($currentPage + 1) ?>">Nächste Seite</a><?php } ?> </td>
+                            <td class="orderTabletd"><?php if ($currentPage < $maxPage) { ?><a class="orderTextPage" href="?page=<?php echo ($currentPage + 1) ?>">Nächste Seite</a><?php } ?> </td>
                         </tr>
                     </table>
                 <?php
@@ -197,7 +200,7 @@ if ($currentPage > $maxPage) {
             <?php
             } else {
                 // Display a message prompting the user to log in
-                echo '<p class="noBookingsText">Bitte melde dich an, um deine Buchungen zu sehen</p>';
+                echo '<p class="noBookingsText">Bitte melde dich <a href="LoginPage.php" class="linkOrderPage">hier</a> an, um deine Buchungen zu sehen</p>';
             }
             ?>
         </div>
@@ -262,7 +265,7 @@ if ($currentPage > $maxPage) {
             </form>
         <?php
                 } else {
-                    echo '<p class="noBookingsText">Bitte melde dich an, um deine Daten zu ändern</p>';
+                    echo '<p class="noBookingsText">Bitte melde dich <a href="LoginPage.php" class="linkOrderPage">hier</a> an, um deine Daten zu ändern</p>';
                 }
         ?>
         <div class="ordersSpacer"></div>
@@ -273,7 +276,7 @@ if ($currentPage > $maxPage) {
 <footer>
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 

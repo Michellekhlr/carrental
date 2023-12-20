@@ -154,7 +154,7 @@ session_start();
     <div class="hintergrundschnellsuche">
 
         <video autoplay muted loop class="hintergrundvideo"> <!--Hintergrundvideo eigefügt, das endlos läuft-->
-            <source src="Infitite_Loop.mp4" type="video/mp4">
+            <source src="videos/Infitite_Loop.mp4" type="video/mp4">
         </video>
 
         <div class="schnellsuche">
@@ -405,7 +405,7 @@ session_start();
                 <form>
                     <button class="kategoriename" name="Kategorie" value="Coupé" formmethod="POST" formaction="Produktübersicht.php">Coupé</button>
                 </form>
-                <p>Eleganz in Bewegung: Dein Statement auf der Straße.</p>
+                <p id="Standorte">Eleganz in Bewegung: Dein Statement auf der Straße.</p><!--Deutschlandkarte, auf der alle Standorte gepinnt sind / id is needed for anker link(footer)-->
             </div>
         </div>
 
@@ -425,7 +425,7 @@ session_start();
             <p>14 Standorte.</p>
         </div>
 
-        <div class="map-container" id="Standorte"><!--Deutschlandkarte, auf der alle Standorte gepinnt sind / id is needed for anker link(footer)-->
+        <div class="map-container">
             <div class="ger-map">
                 <img src="bilder/karte.png" alt="map"><!--Bild der Deutschlandkarte-->
 
@@ -566,7 +566,7 @@ session_start();
 <footer>
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 </footer>
 

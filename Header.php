@@ -29,7 +29,7 @@ if (isset($_SESSION['loginStatus'])) {
         <h1 class="logo"><a class="logo" href="Homepage.php"><i>Drive.</i></a></h1>
         <p class="booknow">Book now!</p>
       </div>
-      <div class="headerPuffer">
+      <div class="headerPufferLeft">
 
       </div>
       <div class="headerNavigation">
@@ -39,15 +39,18 @@ if (isset($_SESSION['loginStatus'])) {
         <a href="Produktübersicht.php?angebot=ja"> <!-- Activating checkbox " offer" (id="checkboxoverview3" ) by klicking "Unsere Angebote" via query-selector-->
           <h2 class="navigator">Unsere Angebote</h2>
         </a>
-        <a href="ordersPage.php">
-          <h2 class="navigator">Buchungen verwalten</h2>
-        </a>
         <a href="AboutUs.php">
           <h2 class="navigator">Über uns</h2>
         </a>
-      </div>
-      <div class="headerPuffer">
-
+        <?php if (isset($loginStatus) && $loginStatus == true) : ?>
+        <a href="ordersPage.php">
+          <h2 class="navigator">Buchungen verwalten</h2>
+        </a>
+        <?php else : ?>
+        <a href="Homepage.php#Standorte">
+          <h2 class="navigator">Standorte</h2>
+         </a>
+        <?php endif; ?>
       </div>
       <div class="headerLogin">
         <!-- if user is logged in show logout button -->

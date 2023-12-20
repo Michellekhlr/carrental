@@ -294,12 +294,72 @@ if(isset($_SESSION['OrderByPrice']) || isset($_SESSION['location']) || isset($_S
     <?php
     include('Header.php');
     ?>
-
-    <br>
-
 </head>
 
 <body>
+<div class="background-banner">
+        <!-- Background video for the banner -->
+        <video autoplay muted loop class="hintergrundvideo">
+            <source src="videos/Infitite_Loop.mp4" type="video/mp4">
+        </video>
+        <div class="firstName-banner">
+           <!-- Welcoming Message for every location inside the banner --> 
+    <?php if ($_SESSION['location'] === "alle") : ?>
+        <p class="aufforderungTitel">Wähle einen <span class="blackText">Standort</span></p>
+        <p class="aufforderungUntertitel">Bestätige mit "Anwenden"</p>
+    <?php elseif ($_SESSION['location'] === "Hamburg") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Hamburg.</span></p>
+        <p class="aufforderungUntertitel">Entdecke die maritime Pracht der Hansestadt mit prächtigen Drives</p>
+    <?php elseif ($_SESSION['location'] === "Berlin") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Berlin.</span></p>
+        <p class="aufforderungUntertitel">Erlebe das pulsierende Herz Deutschlands mit urbanen Drives</p>
+    <?php elseif ($_SESSION['location'] === "München") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">München.</span></p>
+        <p class="aufforderungUntertitel">Erlebe die elegante Stadt, mit unseren eleganten Drives</p>
+    <?php elseif ($_SESSION['location'] === "Bielefeld") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Bielefeld.</span></p>
+        <p class="aufforderungUntertitel">Die Stadt der Mythen und Legenden, erlebe hier magische Drives</p>
+    <?php elseif ($_SESSION['location'] === "Bochum") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Bochum.</span></p>
+        <p class="aufforderungUntertitel">Entdecke das Herz des Ruhrgebiets mit stilvollen Drives</p>
+    <?php elseif ($_SESSION['location'] === "Dortmund") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Dortmund.</span></p>
+        <p class="aufforderungUntertitel">Erfahre das pulsierende Leben der Stadt mit jedem Drive</p>
+    <?php elseif ($_SESSION['location'] === "Bremen") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Bremen.</span></p>
+        <p class="aufforderungUntertitel">Erkunde die Hansestadt mit ihrer reichen Geschichte und Kultur</p>
+    <?php elseif ($_SESSION['location'] === "Dresden") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Dresden.</span></p>
+        <p class="aufforderungUntertitel">Erlebe barocke Pracht und zeitgenössische Eleganz in jedem Drive</p>
+    <?php elseif ($_SESSION['location'] === "Freiburg") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Freiburg.</span></p>
+        <p class="aufforderungUntertitel">Genieße idyllische Fahrten in der sonnigsten Stadt Deutschlands</p>
+    <?php elseif ($_SESSION['location'] === "Köln") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Köln.</span></p>
+        <p class="aufforderungUntertitel">Entdecke die rheinische Lebensfreude mit jedem Kilometer</p>
+    <?php elseif ($_SESSION['location'] === "Leipzig") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Leipzig.</span></p>
+        <p class="aufforderungUntertitel">Entdecke Leipzigs historische Straßen mit deinem Drives</p>
+    <?php elseif ($_SESSION['location'] === "Nürnberg") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Nürnberg.</span></p>
+        <p class="aufforderungUntertitel">Erlebe historischen Flair gepaart mit modernsten Drives</p>
+    <?php elseif ($_SESSION['location'] === "Paderborn") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Paderborn.</span></p>
+        <p class="aufforderungUntertitel">Entdecke die charmante Mischung aus Tradition und Innovation</p>
+    <?php elseif ($_SESSION['location'] === "Rostock") : ?>
+        <p class="aufforderungTitel">Drive. <span class="blackText">Rostock.</span></p>
+        <p class="aufforderungUntertitel">Genieße die maritime Atmosphäre der Hansestadt mit jedem Drive</p>
+    <?php else : ?>
+        <p class="aufforderungTitel">Finde deinen <span class="blackText">Drive.</span></p>
+        <p class="aufforderungUntertitel">Wähle aus über 230 Autos das passende!</p>
+    <?php endif; ?>
+        </div>
+    </div>
+    <!-- displaying the company slogan -->
+    <div class="SloganOrders">
+        Einfach.Flexibel.
+    </div>
+
 <!-- starts the big form with every filter included-->
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
@@ -754,7 +814,7 @@ if($totalPages > 1){
 
     <!--Include Footer-->
     <?php
-    include('Footer.html');
+    include('Footer.php');
     ?>
 
 </footer>
