@@ -35,19 +35,31 @@ session_start();
 </head>
 
 <body>
-    <div class="confirmWindow">
-    <div id="rent">
-        <div class="confirmHeader">
-            <h1 class="confirmTitle">Vielen Dank für ihre Buchung</h1> 
+    <!-- Container for the confirmation window -->
+    <div class="confirmWindow"> 
+        <div id="rent">
+            <!-- Header of the confirmation window -->
+            <div class="confirmHeader"> 
+                <!-- Title of the confirmation window -->
+                <h1 class="confirmTitle">Vielen Dank für ihre Buchung</h1> 
+            </div>
+            <!-- Text content of the confirmation window -->
+            <p class="confirmText">
+                Schön, dass sie bei Drive. mieten! <br> 
+                Folgen Sie uns gerne auch auf <a class="confirmTextLink" href="https://www.instagram.com">Instagram</a> <br>
+                Oder geben Sie uns eine Bewertung bei <a class="confirmTextLink" href="https://www.google.com">Google</a>
+            </p>
+            <!-- Container for buttons -->
+            <div class="buttonContainer">
+                <!-- Button to book more cars, redirects to 'Produktübersicht.php' -->
+                <button id="resetbook" onclick="location.href='Produktübersicht.php'">Weitere Autos buchen</button>
+                <!-- Button to view bookings, redirects to 'ordersPage.php' -->
+                <button id="book" onclick="location.href='ordersPage.php'">Zu Ihren Buchungen</button>
+            </div>
         </div>
-        <p class="confirmText">Schön, dass sie bei Drive. mieten! <br> Folgen Sie uns gerne auch auf <a class="confirmTextLink" href="https://www.instagram.com">Instagram</a> <br> Oder geben Sie uns eine Bewertung bei <a class="confirmTextLink" href="https://www.google.com">Google</a></p>
-        <div class="buttonContainer">
-        <button id="resetbook" onclick="location.href='Produktübersicht.php'">Weitere Autos buchen</button>
-        <button id="book" onclick="location.href='ordersPage.php'">Zu Ihren Buchungen</button>
-        </div>
-    </div>
     </div>
 </body>
+
 
 <footer>
     <!--Include Footer-->
