@@ -37,21 +37,19 @@ session_start();
     function goBack() {
     //get previousURL
     var previousURL = sessionStorage.getItem('previousURL');
-    var productDetailURL = 'http://localhost/carrental/Produktdetailseite.php';
-    var ordersComplitionURL = 'http://localhost/carrental/Buchungsabschluss.php';
-    var welcomeURL = 'http://localhost/carrental/Welcome.php';
+    var productDetailPath = 'Produktdetailseite.php';
+    var ordersComplitionPath = 'Buchungsabschluss.php';
+    var welcomePath = 'Welcome.php';
+    var productOverviewPath = 'Produkt%c3%bcbersicht.php';
 
-    //if user comes from Produktdetailseite.php or Buchungsabschluss.php or WelcomePage.php than go back to homepage.php
-    if (previousURL && previousURL.toLowerCase() === productDetailURL.toLowerCase()) {
+    // if user came from Produktdetailseite.php, Buchungsabschluss.php, WelcomePage.php or Produktübersicht.php go back to homepage
+    if (previousURL && (previousURL.toLowerCase().includes(productDetailPath.toLowerCase()) || previousURL.toLowerCase().includes(ordersComplitionPath.toLowerCase()) || previousURL.toLowerCase().includes(welcomePath.toLowerCase()) || previousURL.toLowerCase().includes(productOverviewPath.toLowerCase()))) {
         window.location.href = 'Homepage.php';
-    } else if (previousURL && previousURL.toLowerCase() === ordersComplitionURL.toLowerCase()) {
-        window.location.href = 'Homepage.php';
-    } else if (previousURL && previousURL.toLowerCase() === welcomeURL.toLowerCase()) {
-        window.location.href = 'Homepage.php';
+        //otherwise go back to previous URL
     } else if (previousURL) {
         window.location.href = previousURL;
     } else {
-        // if previous page is not valid go back to homepage.php
+        // if previous URL not valid, go back to Homepage
         window.location.href = 'Homepage.php';
     }
 }

@@ -34,9 +34,9 @@ session_start();
     <script>
         function goBack() { //go back to page where logout was called from
             var previousURL = sessionStorage.getItem('previousURL');
-            var logoutPageURL = 'http://localhost/carrental/LogoutPage.php';
+            var logoutPageURL = 'LogoutPage.php';
 
-            if (previousURL && previousURL.toLowerCase() === logoutPageURL.toLowerCase()) { //if was called from logoutPage go to Homepage
+            if (previousURL && (previousURL.toLowerCase().includes(logoutPageURL.toLowerCase()))) { //if was called from logoutPage go to Homepage
                 window.location.href = 'Homepage.php';
             } else if (previousURL) {
                 //use saved URL
