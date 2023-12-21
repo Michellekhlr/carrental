@@ -361,7 +361,7 @@ session_start();
 
             <div class="cslider-item">
                 <img src="bilder/Mehrsitzer.png" alt="Slider Image" />
-                < <div class="cslider-text">
+                 <div class="cslider-text">
                     <form>
                         <button class="kategoriename" name="Kategorie" value="Mehrsitzer" formmethod="POST" formaction="Produktübersicht.php">Mehrsitzer</button>
                     </form>
