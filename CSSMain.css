@@ -1544,7 +1544,7 @@ h3{
 /*Page Banner start*/
 /*Frame for page banner*/
 .FramePageBanner{
-    width: 1920px;
+    width: 100%;
     height: 750px;
     display: flex;
     flex-direction: column;
@@ -1579,7 +1579,7 @@ h3{
 .SloganNewsAndStory { 
     font-family: 'Bebas Neue', sans-serif;
     font-size: 64px;
-    width: 1920px;
+    width: 100%;
     height:70px;
     text-align: center;
     padding-top: 10px;
@@ -1592,7 +1592,7 @@ h3{
 /*Main Article start*/
 /*Frame for main article*/
 .FrameMainArticleNews{
-    width: 1920px;
+    width: 100%;
     height: 1590px;
     display: flex;
     align-content: center;
@@ -1603,7 +1603,7 @@ h3{
 }
 /*Frame for main article*/
 .FrameMainArticleStory{
-    width: 1920px;
+    width: 100%;
     height: 1770px;
     display: flex;
     align-content: center;
@@ -1715,7 +1715,7 @@ h3{
 
 /*Frame for Titel More Articles*/
 .FrameTitleMoreArticles {
-    width: 1920px;
+    width: 100%;
     height: 90px;
     display: flex;
     align-content: center;
@@ -1746,7 +1746,7 @@ h3{
 /*More Articles start*/
 /*Frame for MoreArticles*/
 .FrameMoreArticles{
-    width: 1920px;
+    width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
